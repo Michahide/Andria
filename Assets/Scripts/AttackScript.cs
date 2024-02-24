@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttackScript : MonoBehaviour
@@ -11,6 +12,7 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private bool magicAttack;
 
     [SerializeField] private float magicCost;
+    [SerializeField] private string magicElement;
 
     [SerializeField] private float minAttackMultiplier;
 
@@ -38,7 +40,20 @@ public class AttackScript : MonoBehaviour
                 damage = multiplier * attackerStats.magicRange;
             }
 
-            if(targetStats.IsBlockingAttack && magicAttack)
+            if(targetStats.elementBlock.Contains(magicElement))
+            {
+                targetStats.IsBlockingAttack = true;
+            }
+            else if(targetStats.elementResistance.Contains(magicElement))
+            {
+                targetStats.IsResistingAttack = true;
+            }
+            else if(targetStats.elementWeakness.Contains(magicElement))
+            {
+                targetStats.IsWeakToAttack = true;
+            }
+
+            if(targetStats.IsBlockingAttack)
             {
                 damage = 0;
             }

@@ -24,15 +24,19 @@ public class FighterStats : MonoBehaviour, IComparable
     public float experience;
 
     [Header("Element")]
-    public bool IsBlockingAttack;
-    public bool IsResistingAttack;
-    public bool IsWeakToAttack;
+     // Fire, Ice, Poison, etc.
+    public string [] elementResistance;
+    public string [] elementWeakness;
+    public string [] elementBlock;
 
+    [HideInInspector] public bool IsBlockingAttack;
+    [HideInInspector] public bool IsResistingAttack;
+    [HideInInspector] public bool IsWeakToAttack;
     private float startHealth;
     private float startMagic;
 
-    [HideInInspector]
-    public int nextActTurn;
+    // Turn Order
+    [HideInInspector] public int nextActTurn;
 
     private bool dead = false;
 
