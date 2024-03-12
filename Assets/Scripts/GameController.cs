@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Transactions;
 using UnityEngine.SocialPlatforms;
+using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 
 public class GameController : MonoBehaviour
 {
@@ -19,6 +22,7 @@ public class GameController : MonoBehaviour
     }
     void Start()
     {
+        Academy.Instance.AutomaticSteppingEnabled = false;
         fighterStats = new List<FighterStats>();
         GameObject hero = GameObject.FindGameObjectWithTag("Hero");
         FighterStats currentFighterStats = hero.GetComponent<FighterStats>();
@@ -31,9 +35,14 @@ public class GameController : MonoBehaviour
         fighterStats.Add(currentEnemyStats);
 
         fighterStats.Sort();
-        
+
 
         NextTurn();
+    }
+
+    private void FixedUpdate()
+    {
+        Academy.Instance.EnvironmentStep();
     }
 
     public void NextTurn()
@@ -47,16 +56,30 @@ public class GameController : MonoBehaviour
             currentFighterStats.CalculateNextTurn(currentFighterStats.nextActTurn);
             fighterStats.Add(currentFighterStats);
             fighterStats.Sort();
-            if(currentUnit.tag == "Hero")
+            if (currentUnit.CompareTag("Hero"))
             {
-                this.battleMenu.SetActive(true);
-            } else
-            {
-                this.battleMenu.SetActive(false);
-                string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
-                currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
+                battleMenu.SetActive(true);
+                Debug.Log("Hero's turn");
             }
-        } else
+            else
+            {
+                battleMenu.SetActive(false);
+                Debug.Log("Enemy's turn");
+
+                // Scripted AI
+                // string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
+                // currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
+
+                // ML-Agents AI
+                // float[] actions = new float[2];
+                // float[] actions = new float[] { 0, 1, 0, 0, 0, 0, 0 };
+                // ActionBuffers actionBuffers = ActionBuffers.FromDiscreteActions(actions);
+                // currentUnit.GetComponent<EnemyAIAgent>().OnActionReceived(actionBuffers);
+                currentUnit.GetComponent<EnemyAIAgent>().RequestDecision();
+            
+            }
+        }
+        else
         {
             NextTurn();
         }

@@ -28,10 +28,6 @@ public class FighterStats : MonoBehaviour, IComparable
     public string [] elementResistance;
     public string [] elementWeakness;
     public string [] elementBlock;
-
-    [HideInInspector] public bool IsBlockingAttack;
-    [HideInInspector] public bool IsResistingAttack;
-    [HideInInspector] public bool IsWeakToAttack;
     private float startHealth;
     private float startMagic;
 
@@ -79,6 +75,16 @@ public class FighterStats : MonoBehaviour, IComparable
             gameObject.tag = "Dead";
             Destroy(healthFill);
             Destroy(gameObject);
+            if(gameObject.tag == "Hero")
+            {
+                GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleText.text = "You Lose!";
+            }
+            else
+            {
+                GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleText.text = "You Win!";
+            }
         } else if (damage > 0)
         {
             xNewHealthScale = healthScale.x * (health / startHealth);
@@ -90,6 +96,17 @@ public class FighterStats : MonoBehaviour, IComparable
             GameControllerObj.GetComponent<GameController>().battleText.text = damage.ToString();
         }
         Invoke("ContinueGame", 2);
+    }
+
+    public void Heal(float heal)
+    {
+        health = health + heal;
+        if(health > startHealth)
+        {
+            health = startHealth;
+        }
+        xNewHealthScale = healthScale.x * (health / startHealth);
+        healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
     }
 
     public void updateMagicFill(float cost)

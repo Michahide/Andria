@@ -6,14 +6,16 @@ using UnityEngine;
 public class AttackScript : MonoBehaviour
 {
     public GameObject owner;
+    [SerializeField] private string magicName;
+    [HideInInspector] public float damage = 0.0f;
 
     [SerializeField] private string animationName;
 
     [SerializeField] private bool magicAttack;
 
     [SerializeField] private float magicCost;
-    [SerializeField] private string magicElement;
-
+    public enum magicElement { Physical, Fire, Ice, Wind, Thunder, LastElement};
+    public magicElement element;
     [SerializeField] private float minAttackMultiplier;
 
     [SerializeField] private float maxAttackMultiplier;
@@ -23,8 +25,11 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private float maxDefenseMultiplier;
 
     private FighterStats attackerStats;
-    private FighterStats targetStats;
-    private float damage = 0.0f;
+    [HideInInspector] public FighterStats targetStats;
+
+    [HideInInspector] public bool IsBlockingAttack;
+    [HideInInspector] public bool IsResistingAttack;
+    [HideInInspector] public bool IsWeakToAttack;
 
     public void Attack(GameObject victim)
     {
@@ -40,29 +45,19 @@ public class AttackScript : MonoBehaviour
                 damage = multiplier * attackerStats.magicRange;
             }
 
-            if(targetStats.elementBlock.Contains(magicElement))
+            if (targetStats.elementBlock.ToList().Contains(element.ToString()))
             {
-                targetStats.IsBlockingAttack = true;
-            }
-            else if(targetStats.elementResistance.Contains(magicElement))
-            {
-                targetStats.IsResistingAttack = true;
-            }
-            else if(targetStats.elementWeakness.Contains(magicElement))
-            {
-                targetStats.IsWeakToAttack = true;
-            }
-
-            if(targetStats.IsBlockingAttack)
-            {
+                IsBlockingAttack = true;
                 damage = 0;
             }
-            else if(targetStats.IsResistingAttack)
+            else if (targetStats.elementResistance.ToList().Contains(element.ToString()))
             {
+                IsResistingAttack = true;
                 damage = Mathf.CeilToInt(damage / 2);
             }
-            else if(targetStats.IsWeakToAttack)
+            else if (targetStats.elementWeakness.ToList().Contains(element.ToString()))
             {
+                IsWeakToAttack = true;
                 damage = Mathf.CeilToInt(damage * 2);
             }
 

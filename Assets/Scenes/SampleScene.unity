@@ -1123,6 +1123,9 @@ GameObject:
   - component: {fileID: 709661706}
   - component: {fileID: 709661705}
   - component: {fileID: 709661707}
+  - component: {fileID: 709661709}
+  - component: {fileID: 709661708}
+  - component: {fileID: 709661710}
   m_Layer: 0
   m_Name: GiantEnemy
   m_TagString: Enemy
@@ -1238,6 +1241,9 @@ MonoBehaviour:
   defense: 5
   speed: 6
   experience: 0
+  elementResistance: []
+  elementWeakness: []
+  elementBlock: []
   IsBlockingAttack: 0
   IsResistingAttack: 0
   IsWeakToAttack: 0
@@ -1263,6 +1269,70 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &709661708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709661702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064055cc761d0f746811e2177daf1cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  attackPower: 10
+  weaknessMultiplier: 2
+  resistanceMultiplier: 0.5
+  blockMultiplier: 0.2
+--- !u!114 &709661709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709661702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 0100000001000000
+    VectorActionSize: 0100000001000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 1
+  m_BehaviorType: 0
+  m_BehaviorName: My Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!114 &709661710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709661702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1
 --- !u!1 &719233328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,7 +1539,12 @@ MonoBehaviour:
   defense: 4
   speed: 5
   experience: 0
-  IsBlockingAttack: 1
+  elementResistance: []
+  elementWeakness:
+  - Physical
+  elementBlock:
+  - Fire
+  IsBlockingAttack: 0
   IsResistingAttack: 0
   IsWeakToAttack: 0
   nextActTurn: 0
@@ -1828,6 +1903,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
         type: 3}
+      propertyPath: magicElement
+      value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
+        type: 3}
       propertyPath: animationName
       value: Range
       objectReference: {fileID: 0}
@@ -2092,6 +2172,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 709661702}
+    - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
+        type: 3}
+      propertyPath: element
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
         type: 3}
       propertyPath: magicCost
