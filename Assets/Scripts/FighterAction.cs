@@ -16,6 +16,21 @@ public class FighterAction : MonoBehaviour
 
     private GameObject currentAttack;
 
+    // public int GetCurrentAttackType()
+    // {
+    //     if (currentAttack == meleePrefab)
+    //     {
+    //         return 0;
+    //     }
+    //     else if (currentAttack == rangePrefab)
+    //     {
+    //         return 1;
+    //     }
+    //     return -1;
+    // }
+
+    public int GetCurrentAttackType;
+
     void Awake()
     {
         hero = GameObject.FindGameObjectWithTag("Hero");
@@ -31,23 +46,28 @@ public class FighterAction : MonoBehaviour
         if (btn.CompareTo("melee") == 0)
         {
             meleePrefab.GetComponent<AttackScript>().Attack(victim);
+            GetCurrentAttackType = 1;
 
         }
         else if (btn.CompareTo("range") == 0)
         {
             rangePrefab.GetComponent<AttackScript>().Attack(victim);
+            GetCurrentAttackType = 2;
         }
         else if (btn.CompareTo("block") == 0)
         {
             Debug.Log("Block");
+            GetCurrentAttackType = 3;
         }
         else if (btn.CompareTo("resist") == 0)
         {
             Debug.Log("Resist");
+            GetCurrentAttackType = 4;
         }
         else if (btn.CompareTo("run") == 0)
         {
             Debug.Log("Run");
+            GetCurrentAttackType = 5;
         }
     }
 }

@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
         {
             GameObject currentUnit = currentFighterStats.gameObject;
             currentFighterStats.CalculateNextTurn(currentFighterStats.nextActTurn);
+            Debug.Log("NextActTurn: " + currentFighterStats.nextActTurn);
             fighterStats.Add(currentFighterStats);
             fighterStats.Sort();
             if (currentUnit.CompareTag("Hero"))

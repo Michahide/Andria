@@ -18,51 +18,53 @@ public class EnemyAIAgent : Agent
     private float reward = 0f;
 
     public AttackScript attackScript;
+    public FighterStats fighterStats;
+    public FighterAction fighterAction;
+    public GameController gameController;
 
     void Start()
     {
         attackScript = GetComponent<AttackScript>();
+        fighterStats = GameObject.Find("WizardHero").GetComponent<FighterStats>();
+        fighterAction = GetComponent<FighterAction>();
+        gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
     }
 
-    public override void OnEpisodeBegin()
-    {
-        RequestDecision();
-        // RequestAction();
-    }
+    // public void CollectObservations(VectorSensor sensor)
+    // {
+    //     FighterStats fighterStats = GetComponent<FighterStats>();
 
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        // Observe the attack element
-        NUM_ELEMENT = (int)AttackScript.magicElement.LastElement;
-        sensor.AddObservation(NUM_ELEMENT);
-        
-    }
+    //     // Add the physicalAttack and fireAttack values to the sensor
+    //     sensor.AddObservation(fighterStats.PhysicalAttack);
+    //     sensor.AddObservation(fighterStats.FireAttack);
+    // }
 
     public void AgentAttack(ActionSegment<int> act)
     {
-        FighterStats fighterStats = GetComponent<FighterStats>();
-        FighterAction fighterAction = GetComponent<FighterAction>();
-        var dirToGo = Vector3.zero;
-        var rotateDir = Vector3.zero;
         var physicalAttack = act[0];
         var fireAttack = act[1];
+
+        Debug.Log("Physical Attack: " + physicalAttack);
+        Debug.Log("Fire Attack: " + fireAttack);
+
         // var iceAttack = act[2];
         // var lightningAttack = act[3];
         // var windAttack = act[4];
         // var heal = act[5];
         // var item = act[6];
 
-        if(physicalAttack == 1)
+        if (physicalAttack == 1)
         {
             attackScript = GameObject.Find("EMeleePrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("melee");
             Debug.Log("Melee attack");
-        } else if (fireAttack == 1)
+        }
+        else if (fireAttack == 1)
         {
             attackScript = GameObject.Find("ERangePrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("range");
             Debug.Log("Range attack");
-        } 
+        }
         // else if (iceAttack == 1)
         // {
         //     attackScript.element = AttackScript.magicElement.Ice;
@@ -82,16 +84,19 @@ public class EnemyAIAgent : Agent
             {
                 // reward = -attackPower * blockMultiplier;
                 reward = -1f;
-            } else if (attackScript.IsResistingAttack)
+            }
+            else if (attackScript.IsResistingAttack)
             {
                 // reward = -attackPower * resistanceMultiplier;
                 reward = -0.5f;
-            } else if (attackScript.IsWeakToAttack)
+            }
+            else if (attackScript.IsWeakToAttack)
             {
                 // reward = attackPower * weaknessMultiplier;
                 reward = 1f;
 
-            } else
+            }
+            else
             {
                 // reward = attackPower;
                 reward = 0.5f;
@@ -100,7 +105,7 @@ public class EnemyAIAgent : Agent
 
         // if(heal == 1)
         // {
-           
+
         // }
     }
 
@@ -111,7 +116,6 @@ public class EnemyAIAgent : Agent
         // Declare and assign a value to the vectorAction variable
         // float vectorAction = actions.ContinuousActions[0];
         // int action = Mathf.FloorToInt(vectorAction);
-        // Debug.Log("Action: " + action);
 
         // Calculate the reward based on the action and target element
         // float reward = 0f;
@@ -127,94 +131,25 @@ public class EnemyAIAgent : Agent
         //         reward = Resist();
         //         break;
         // }
-
         AgentAttack(actions.DiscreteActions);
 
         // Apply the reward
         AddReward(reward);
         Debug.Log("Reward: " + reward);
 
-        // NextTurn();
+        gameController.NextTurn();
         EndEpisode();
     }
 
-    private float Attack()
+    public override void CollectObservations(VectorSensor sensor)
     {
-        // Observe the attack element
-        AttackScript attackScript = GetComponent<AttackScript>();
-        FighterStats fighterStats = GetComponent<FighterStats>();
-        // attackScript.element = (AttackScript.magicElement) Mathf.FloorToInt(0);
+        // Observe the fighter's health
+        sensor.AddObservation(fighterStats.health);
+        Debug.Log("Health: " + fighterStats.health);
 
-        Debug.Log(attackScript.element);
-        float reward = 0f;
-
-        // Check if the attack hits the weakness
-        if (attackScript.IsWeakToAttack)
-        {
-            reward = attackPower * weaknessMultiplier;
-            // element.TakeDamage(attackPower);
-        }
-        else
-        {
-            reward = -attackPower;
-        }
-
-        return reward;
+        // Observe the current attack type
+        sensor.AddObservation(fighterAction.GetCurrentAttackType);
+        Debug.Log("Attack Type: " + fighterAction.GetCurrentAttackType);
     }
-
-    private float Block()
-    {
-        float reward = 0f;
-
-        // Observe the attack element
-        AttackScript attackScript = GetComponent<AttackScript>();
-        FighterStats fighterStats = GetComponent<FighterStats>();
-        // attackScript.element = (AttackScript.magicElement) Mathf.FloorToInt(0);
-
-        Debug.Log(attackScript.element);
-
-        // Check if the attack is being blocked
-        if (attackScript.IsBlockingAttack)
-        {
-            reward = -attackPower * blockMultiplier;
-        }
-        else
-        {
-            reward = -attackPower;
-            // element.TakeDamage(attackPower);
-        }
-
-        return reward;
-    }
-
-    private float Resist()
-    {
-        float reward = 0f;
-
-        // Observe the attack element
-        AttackScript attackScript = GetComponent<AttackScript>();
-        FighterStats fighterStats = GetComponent<FighterStats>();
-        // attackScript.element = (AttackScript.magicElement) Mathf.FloorToInt(0);
-
-        Debug.Log(attackScript.element);
-
-        // Check if the attack is being resisted
-        if (attackScript.IsResistingAttack)
-        {
-            reward = -attackPower * resistanceMultiplier;
-        }
-        else
-        {
-            reward = -attackPower;
-            // element.TakeDamage(attackPower);
-        }
-
-        return reward;
-    }
-
-    // private Element GetRandomElement()
-    // {
-    //     return elements[Random.Range(0, elements.Length)];
-    // }
 }
 
