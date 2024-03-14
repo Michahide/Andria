@@ -22,7 +22,6 @@ public class GameController : MonoBehaviour
     }
     void Start()
     {
-        Academy.Instance.AutomaticSteppingEnabled = false;
         fighterStats = new List<FighterStats>();
         GameObject hero = GameObject.FindGameObjectWithTag("Hero");
         FighterStats currentFighterStats = hero.GetComponent<FighterStats>();
@@ -36,13 +35,7 @@ public class GameController : MonoBehaviour
 
         fighterStats.Sort();
 
-
         NextTurn();
-    }
-
-    private void FixedUpdate()
-    {
-        Academy.Instance.EnvironmentStep();
     }
 
     public void NextTurn()
@@ -54,7 +47,6 @@ public class GameController : MonoBehaviour
         {
             GameObject currentUnit = currentFighterStats.gameObject;
             currentFighterStats.CalculateNextTurn(currentFighterStats.nextActTurn);
-            Debug.Log("NextActTurn: " + currentFighterStats.nextActTurn);
             fighterStats.Add(currentFighterStats);
             fighterStats.Sort();
             if (currentUnit.CompareTag("Hero"))

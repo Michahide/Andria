@@ -41,8 +41,8 @@ public class EnemyAIAgent : Agent
 
     public void AgentAttack(ActionSegment<int> act)
     {
-        var physicalAttack = act[0];
-        var fireAttack = act[1];
+        var physicalAttack = act[1];
+        var fireAttack = act[2];
 
         Debug.Log("Physical Attack: " + physicalAttack);
         Debug.Log("Fire Attack: " + fireAttack);
