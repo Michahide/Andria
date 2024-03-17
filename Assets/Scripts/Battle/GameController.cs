@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour
     public GameObject hero;
     public GameObject enemy;
 
+    public GameMode gameMode;
+
     private void Awake()
     {
         battleMenu = GameObject.Find("ActionMenu");
@@ -29,6 +31,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         changeScene = GetComponent<ChangeScene>();
+
+        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
 
         fighterStats = new List<FighterStats>();
         hero = GameObject.FindGameObjectWithTag("Hero");
@@ -69,13 +73,27 @@ public class GameController : MonoBehaviour
                 battleMenu.SetActive(false);
                 Debug.Log("Enemy's turn");
 
-                // Scripted AI
-                // string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
-                // currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
+                if(gameMode.isUsingMLAgent)
+                {
+                    Debug.Log("Using ML Agents");
+                    currentUnit.GetComponent<EnemyAIAgent>().RequestDecision();
+                }
+                else
+                {
+                    Debug.Log("Using Simple AI");
+                    string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
+                    currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
+                }
 
-                // ML-Agents AI
-                currentUnit.GetComponent<EnemyAIAgent>().RequestDecision();
-
+                if(gameMode.isUsingElement)
+                {
+                    Debug.Log("Using Element");
+                    // currentUnit.GetComponent<FighterAction>().SelectElement();
+                }
+                else
+                {
+                    Debug.Log("Not Using Element");
+                }
             }
         }
         else

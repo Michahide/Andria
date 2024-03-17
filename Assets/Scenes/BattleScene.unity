@@ -496,6 +496,7 @@ MonoBehaviour:
   changeScene: {fileID: 0}
   hero: {fileID: 0}
   enemy: {fileID: 0}
+  gameMode: {fileID: 0}
 --- !u!4 &421185457
 Transform:
   m_ObjectHideFlags: 0
@@ -523,6 +524,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61f0cca17d26774fa3d8c01489e3f96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SettingsPanel: {fileID: 0}
+  MenuPanel: {fileID: 0}
+  GameModePanel: {fileID: 0}
 --- !u!1 &430624101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,6 +1901,11 @@ PrefabInstance:
       objectReference: {fileID: 757240847}
     - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
         type: 3}
+      propertyPath: element
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
+        type: 3}
       propertyPath: magicCost
       value: 10
       objectReference: {fileID: 0}
@@ -2179,7 +2188,7 @@ PrefabInstance:
     - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
         type: 3}
       propertyPath: element
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757722, guid: 34ee5fd3ac867fc408ffd9d8a781780c,
         type: 3}
@@ -2507,6 +2516,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 709661702}
+    - target: {fileID: 3964838364831968566, guid: 5f994afae7ee91b4b86c6c1cd4866aa5,
+        type: 3}
+      propertyPath: element
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3964838364831968566, guid: 5f994afae7ee91b4b86c6c1cd4866aa5,
         type: 3}
       propertyPath: maxAttackMultiplier
@@ -3704,6 +3718,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 757240847}
+    - target: {fileID: 3964838364831968566, guid: 5f994afae7ee91b4b86c6c1cd4866aa5,
+        type: 3}
+      propertyPath: element
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3964838364831968566, guid: 5f994afae7ee91b4b86c6c1cd4866aa5,
         type: 3}
       propertyPath: animationName

@@ -14,7 +14,7 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private bool magicAttack;
 
     [SerializeField] private float magicCost;
-    public enum magicElement { Physical, Fire, Ice, Wind, Thunder, LastElement};
+    public enum magicElement { None, Physical, Fire, Ice, Wind, Thunder, LastElement};
     public magicElement element;
     [SerializeField] private float minAttackMultiplier;
 
@@ -23,6 +23,7 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private float minDefenseMultiplier;
 
     [SerializeField] private float maxDefenseMultiplier;
+    private GameMode gameMode;
 
     private FighterStats attackerStats;
     [HideInInspector] public FighterStats targetStats;
@@ -30,6 +31,15 @@ public class AttackScript : MonoBehaviour
     [HideInInspector] public bool IsBlockingAttack;
     [HideInInspector] public bool IsResistingAttack;
     [HideInInspector] public bool IsWeakToAttack;
+
+    public void Awake()
+    {
+        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
+        if(!gameMode.isUsingElement)
+        {
+            element = magicElement.None;
+        }
+    }
 
     public void Attack(GameObject victim)
     {
