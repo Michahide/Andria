@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-9032412763569804333
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: f51562f08a1a8364da605f5c5390e161
+  m_EffectName: Attenuation
+  m_MixLevel: b3e75c6e6be983b4190b5e21c8b3b86c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-6355598865669396092
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 80e8f6ea8655d9f4887520dd3567f01a
+  m_Children: []
+  m_Volume: ff812539f3608944e98a3396fd532869
+  m_Pitch: 2faee78d7f6ff2a40a7e3bd3dfd13c75
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -9032412763569804333}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-4338738615145779236
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -32,10 +65,13 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 6cd2e99ba3281234999e528dec32791c
     name: Music
+  - guid: ff812539f3608944e98a3396fd532869
+    name: SFX
   m_AudioMixerGroupViews:
   - guids:
     - 04bd164be8e7b62408fdd9cdbe4da82d
     - 71e2ca6d1c4a2b24d81758a61be55f1d
+    - 80e8f6ea8655d9f4887520dd3567f01a
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -50,6 +86,7 @@ AudioMixerGroupController:
   m_GroupID: 04bd164be8e7b62408fdd9cdbe4da82d
   m_Children:
   - {fileID: 4598066501729278687}
+  - {fileID: -6355598865669396092}
   m_Volume: e2419feed6883f54abbaf27e38071179
   m_Pitch: 1ed79b3083cb7b84782cb832e44ceaec
   m_Send: 00000000000000000000000000000000

@@ -13,6 +13,7 @@ public class FighterAction : MonoBehaviour
     [SerializeField] private GameObject rangePrefab;
 
     [SerializeField] private Sprite faceIcon;
+    private GameObject gameAudioManager;
 
     private GameObject currentAttack;
 
@@ -46,12 +47,14 @@ public class FighterAction : MonoBehaviour
         if (btn.CompareTo("melee") == 0)
         {
             meleePrefab.GetComponent<AttackScript>().Attack(victim);
+            AudioManager.Instance.Play("NormalAttack");
             GetCurrentAttackType = 1;
 
         }
         else if (btn.CompareTo("range") == 0)
         {
             rangePrefab.GetComponent<AttackScript>().Attack(victim);
+            AudioManager.Instance.Play("MagicAttack");
             GetCurrentAttackType = 2;
         }
         else if (btn.CompareTo("block") == 0)

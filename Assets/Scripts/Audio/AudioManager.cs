@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [SerializeField] private AudioMixerGroup musikMixerGroup;
-    // [SerializeField] private AudioMixerGroup soundEffectsMixerGroup;
+    [SerializeField] private AudioMixerGroup soundEffectsMixerGroup;
     [SerializeField] private Sound[] sounds;
 
     private static AudioManager instance;
@@ -26,9 +26,9 @@ public class AudioManager : MonoBehaviour
 
             switch (s.audioType)
             {
-                // case Sound.AudioTypes.soundEffect:
-                //     s.source.outputAudioMixerGroup = soundEffectsMixerGroup;
-                //     break;
+                case Sound.AudioTypes.soundEffect:
+                    s.source.outputAudioMixerGroup = soundEffectsMixerGroup;
+                    break;
 
                 case Sound.AudioTypes.music:
                     s.source.outputAudioMixerGroup = musikMixerGroup;
@@ -44,10 +44,10 @@ public class AudioManager : MonoBehaviour
                 GameObject.DontDestroyOnLoad(this.gameObject);
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
-            else
-            {
-                Destroy(this.gameObject);
-            }
+            // else
+            // {
+            //     Destroy(this.gameObject);
+            // }
         }
     }
 
@@ -87,6 +87,30 @@ public class AudioManager : MonoBehaviour
     public void UpdateMixerVolume()
     {
         musikMixerGroup.audioMixer.SetFloat("Music", Mathf.Log10(AudioOptionsManager.musicVolume) * 20);
-        // soundEffectsMixerGroup.audioMixer.SetFloat("Sound Effects Volume", Mathf.Log10(AudioOptionsManager.soundEffectsVolume) * 20);
+        soundEffectsMixerGroup.audioMixer.SetFloat("SFX", Mathf.Log10(AudioOptionsManager.soundEffectsVolume) * 20);
+    }
+
+    public void muteMusic(bool isMusicMute)
+    {
+        if(isMusicMute)
+        {
+            musikMixerGroup.audioMixer.SetFloat("Music", -80);
+        }
+        else
+        {
+            musikMixerGroup.audioMixer.SetFloat("Music", AudioOptionsManager.musicVolume);
+        }
+    }
+
+    public void muteSFX(bool isSFXMute)
+    {
+        if(isSFXMute)
+        {
+            soundEffectsMixerGroup.audioMixer.SetFloat("SFX", -80);
+        }
+        else
+        {
+            soundEffectsMixerGroup.audioMixer.SetFloat("SFX", AudioOptionsManager.soundEffectsVolume);
+        }
     }
 }
