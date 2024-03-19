@@ -14,8 +14,6 @@ public class GameController : MonoBehaviour
     public BattleState state;
     private List<FighterStats> fighterStats;
 
-    private GameObject battleMenu;
-
     public Text battleText;
 
     public ChangeScene changeScene;
@@ -24,12 +22,14 @@ public class GameController : MonoBehaviour
 
     public GameMode gameMode;
 
-    private void Awake()
-    {
-        battleMenu = GameObject.Find("ActionMenu");
-    }
+    [SerializeField] GameObject ActionMainPanel;
+    [SerializeField] GameObject ItemPanel;
+    [SerializeField] GameObject SkillPanel;
     void Start()
     {
+        ActionMainPanel.SetActive(true);
+        ItemPanel.SetActive(false);
+        SkillPanel.SetActive(false);
         changeScene = GetComponent<ChangeScene>();
 
         gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
@@ -64,13 +64,17 @@ public class GameController : MonoBehaviour
             if (currentUnit.CompareTag("Hero"))
             {
                 state = BattleState.HEROTURN;
-                battleMenu.SetActive(true);
+                ActionMainPanel.SetActive(true);
+                ItemPanel.SetActive(false);
+                SkillPanel.SetActive(false);
                 Debug.Log("Hero's turn");
             }
             else
             {
                 state = BattleState.ENEMYTURN;
-                battleMenu.SetActive(false);
+                ActionMainPanel.SetActive(false);
+                ItemPanel.SetActive(false);
+                SkillPanel.SetActive(false);
                 Debug.Log("Enemy's turn");
 
                 if(gameMode.isUsingMLAgent)
