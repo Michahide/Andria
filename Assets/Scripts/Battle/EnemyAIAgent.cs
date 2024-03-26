@@ -42,10 +42,11 @@ public class EnemyAIAgent : Agent
     public void AgentAttack(ActionSegment<int> act)
     {
         var physicalAttack = act[0];
-        var fireAttack = act[1];
+        var iceAttack = act[1];
+        var earthAttack = act[2];
+        var windAttack = act[3];
 
         Debug.Log("Physical Attack: " + physicalAttack);
-        Debug.Log("Fire Attack: " + fireAttack);
 
         // var iceAttack = act[2];
         // var lightningAttack = act[3];
@@ -59,26 +60,28 @@ public class EnemyAIAgent : Agent
             fighterAction.SelectAttack("melee");
             Debug.Log("Melee attack");
         }
-        else if (fireAttack == 1)
+        else if (iceAttack == 1)
         {
-            attackScript = GameObject.Find("ERangePrefab").GetComponent<AttackScript>();
-            fighterAction.SelectAttack("range");
-            Debug.Log("Range attack");
+            attackScript = GameObject.Find("EIceStormPrefab").GetComponent<AttackScript>();
+            fighterAction.SelectAttack("iceStorm");
+            Debug.Log("Ice Storm attack");
         }
-        // else if (iceAttack == 1)
-        // {
-        //     attackScript.element = AttackScript.magicElement.Ice;
-        // } else if (lightningAttack == 1)
-        // {
-        //     attackScript.element = AttackScript.magicElement.Thunder;
-        // } else if (windAttack == 1)
-        // {
-        //     attackScript.element = AttackScript.magicElement.Wind;
-        // }
+        else if (earthAttack == 1)
+        {
+            attackScript = GameObject.Find("EStompPrefab").GetComponent<AttackScript>();
+            fighterAction.SelectAttack("stomp");
+            Debug.Log("Stomp Attack");
+        }
+        else if (windAttack == 1)
+        {
+            attackScript = GameObject.Find("EWindSlashPrefab").GetComponent<AttackScript>();
+            fighterAction.SelectAttack("windSlash");
+            Debug.Log("Wind Slash Attack");
+        }
 
         // If the agent is trying to attack
 
-        if (physicalAttack == 1 || fireAttack == 1)
+        if (physicalAttack == 1 || iceAttack == 1 || earthAttack == 1 || windAttack == 1)
         {
             if (attackScript.IsBlockingAttack)
             {
@@ -99,7 +102,7 @@ public class EnemyAIAgent : Agent
             else
             {
                 // reward = attackPower;
-                reward = 0.5f;
+                reward = 0.1f;
             }
         }
 
