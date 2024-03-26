@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Transactions;
 using UnityEngine.SocialPlatforms;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -14,7 +14,10 @@ public class GameController : MonoBehaviour
     public BattleState state;
     private List<FighterStats> fighterStats;
 
-    public Text battleText;
+    public TMP_Text battleText;
+    public TMP_Text battleAffinityText;
+    public TMP_Text battleEnemyText;
+    public TMP_Text battlePlayerText;
 
     public ChangeScene changeScene;
     public GameObject hero;
@@ -53,9 +56,12 @@ public class GameController : MonoBehaviour
     public void NextTurn()
     {
         battleText.gameObject.SetActive(false);
+        battleAffinityText.gameObject.SetActive(false);
+        battleEnemyText.gameObject.SetActive(false);
+        battlePlayerText.gameObject.SetActive(false);
         FighterStats currentFighterStats = fighterStats[0];
         fighterStats.Remove(currentFighterStats);
-        if (!currentFighterStats.GetDead())
+        if (enemy && hero) // If there is an enemy and a player
         {
             GameObject currentUnit = currentFighterStats.gameObject;
             currentFighterStats.CalculateNextTurn(currentFighterStats.nextActTurn);
@@ -67,7 +73,7 @@ public class GameController : MonoBehaviour
                 ActionMainPanel.SetActive(true);
                 ItemPanel.SetActive(false);
                 SkillPanel.SetActive(false);
-                Debug.Log("Hero's turn");
+                // Debug.Log("Hero's turn");
             }
             else
             {
@@ -75,48 +81,57 @@ public class GameController : MonoBehaviour
                 ActionMainPanel.SetActive(false);
                 ItemPanel.SetActive(false);
                 SkillPanel.SetActive(false);
-                Debug.Log("Enemy's turn");
+                // Debug.Log("Enemy's turn");
 
-                if(gameMode.isUsingMLAgent)
+                if (gameMode.isUsingMLAgent)
                 {
-                    Debug.Log("Using ML Agents");
+                    // Debug.Log("Using ML Agents");
                     currentUnit.GetComponent<EnemyAIAgent>().RequestDecision();
                 }
                 else
                 {
-                    Debug.Log("Using Simple AI");
-                    string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
+                    // Debug.Log("Using Simple AI");
+                    // string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
+                    int intAttackType = Random.Range(0, 4);
+                    Debug.Log("intAttackType: " + intAttackType);
+                    string attackType;
+                    if (intAttackType == 1)
+                    {
+                        attackType = "stomp";
+                    }
+                    else if (intAttackType == 2)
+                    {
+                        attackType = "iceStorm";
+                    }
+                    else if (intAttackType == 3)
+                    {
+                        attackType = "windSlash";
+                    }
+                    else if (intAttackType == 4)
+                    {
+                        attackType = "guard";
+                    }
+                    else
+                    {
+                        attackType = "melee";
+                    }
                     currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
                 }
 
-                if(gameMode.isUsingElement)
+                if (gameMode.isUsingElement)
                 {
-                    Debug.Log("Using Element");
+                    // Debug.Log("Using Element");
                     // currentUnit.GetComponent<FighterAction>().SelectElement();
                 }
                 else
                 {
-                    Debug.Log("Not Using Element");
+                    // Debug.Log("Not Using Element");
                 }
             }
         }
         else
         {
-            Academy.Instance.AutomaticSteppingEnabled = false;
-            Debug.Log("Unit is dead");
-            GameObject currentUnit = currentFighterStats.gameObject;
-            if (currentUnit.CompareTag("Hero"))
-            {
-                Debug.Log("Menang");
-                state = BattleState.WON;
-                EndBattle();
-            }
-            else
-            {
-                Debug.Log("Kalah");
-                state = BattleState.LOST;
-                EndBattle();
-            }
+            NextTurn();
         }
     }
 
@@ -125,25 +140,25 @@ public class GameController : MonoBehaviour
         changeScene.ChangeToScene("MainMenu");
     }
 
-    void Credit()
+    public void Credit()
     {
         changeScene.ChangeToScene("Credit");
     }
 
-    void EndBattle()
+    public void EndBattle()
     {
 
         if (state == BattleState.WON)
         {
             battleText.gameObject.SetActive(true);
             battleText.text = "You won the battle!";
-            Invoke("Credit", 10);
+            Invoke("Credit", 5);
         }
         else if (state == BattleState.LOST)
         {
             battleText.gameObject.SetActive(true);
             battleText.text = "You were defeated.";
-            Invoke("MainMenu", 10);
+            Invoke("MainMenu", 5);
         }
     }
 }

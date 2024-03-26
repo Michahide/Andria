@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class MakeButton : MonoBehaviour
 {
-    [SerializeField]
-    private bool physical;
     [SerializeField] GameObject ActionMainPanel;
     [SerializeField] GameObject ItemPanel;
     [SerializeField] GameObject SkillPanel;
@@ -51,18 +49,22 @@ public class MakeButton : MonoBehaviour
                 ItemPanel.SetActive(true);
                 ActionMainPanel.SetActive(false);
             }
-        } 
+        }
         else if (btn.CompareTo("FireballBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("range");
+            hero.GetComponent<FighterAction>().SelectAttack("fireball");
         }
         else if (btn.CompareTo("WaterSlashBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("range");
+            hero.GetComponent<FighterAction>().SelectAttack("waterSlash");
         }
         else if (btn.CompareTo("ChainLightningBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("range");
+            hero.GetComponent<FighterAction>().SelectAttack("chainLightning");
+        }
+        else if (btn.CompareTo("GuardBtn") == 0)
+        {
+            hero.GetComponent<FighterAction>().SelectAttack("guard");
         }
     }
 }

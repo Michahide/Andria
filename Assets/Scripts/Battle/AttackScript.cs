@@ -14,7 +14,7 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private bool magicAttack;
 
     [SerializeField] private float magicCost;
-    public enum magicElement { None, Physical, Fire, Ice, Wind, Thunder, LastElement};
+    public enum magicElement { None, Physical, Fire, Ice, Water, Wind, Thunder, Earth, LastElement };
     public magicElement element;
     [SerializeField] private float minAttackMultiplier;
 
@@ -24,6 +24,7 @@ public class AttackScript : MonoBehaviour
 
     [SerializeField] private float maxDefenseMultiplier;
     private GameMode gameMode;
+    private GameObject GameControllerObj;
 
     private FighterStats attackerStats;
     [HideInInspector] public FighterStats targetStats;
@@ -32,10 +33,18 @@ public class AttackScript : MonoBehaviour
     [HideInInspector] public bool IsResistingAttack;
     [HideInInspector] public bool IsWeakToAttack;
 
+    private string NotEnoughMagic = "Tidak cukup magic untuk menyerang!";
+    private string WeakText = "Weak!";
+    private string BlockText = "Block!";
+    private string ResistText = "Resist!";
+    private float GuardMultiplier;
+
     public void Awake()
     {
         gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
-        if(!gameMode.isUsingElement)
+        GameControllerObj = GameObject.Find("GameControllerObject");
+
+        if (!gameMode.isUsingElement)
         {
             element = magicElement.None;
         }
@@ -48,26 +57,41 @@ public class AttackScript : MonoBehaviour
         if (attackerStats.magic >= magicCost)
         {
             float multiplier = Random.Range(minAttackMultiplier, maxAttackMultiplier);
+            if (targetStats.guard)
+            {
+                GuardMultiplier = 0.75f;
+                targetStats.guard = false;
+                Debug.Log("Target is guarding");
+            } else {
+                GuardMultiplier = 1.0f;
+                Debug.Log("Target is not guarding");
+            }
 
-            damage = multiplier * attackerStats.melee;
+            damage = multiplier * attackerStats.melee * GuardMultiplier;
             if (magicAttack)
             {
-                damage = multiplier * attackerStats.magicRange;
+                damage = multiplier * attackerStats.magicRange * GuardMultiplier;
             }
 
             if (targetStats.elementBlock.ToList().Contains(element.ToString()))
             {
                 IsBlockingAttack = true;
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = BlockText;
                 damage = 0;
             }
             else if (targetStats.elementResistance.ToList().Contains(element.ToString()))
             {
                 IsResistingAttack = true;
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = ResistText;
                 damage = Mathf.CeilToInt(damage / 2);
             }
             else if (targetStats.elementWeakness.ToList().Contains(element.ToString()))
             {
                 IsWeakToAttack = true;
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = WeakText;
                 damage = Mathf.CeilToInt(damage * 2);
             }
 
@@ -80,14 +104,14 @@ public class AttackScript : MonoBehaviour
         }
         else
         {
-            Invoke("SkipTurnContinueGame", 2);
+            GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
+            GameControllerObj.GetComponent<GameController>().battleText.text = NotEnoughMagic;
+            Invoke("SkipTurnContinueGame", 4);
         }
     }
 
     void SkipTurnContinueGame()
     {
-        GameObject.Find("GameControllerObject").GetComponent<GameController>().battleText.gameObject.SetActive(true);
-        GameObject.Find("GameControllerObject").GetComponent<GameController>().battleText.text = "Not enough magic to perform this action";
         GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
     }
 }
