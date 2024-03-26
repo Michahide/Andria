@@ -24,10 +24,10 @@ public class FighterStats : MonoBehaviour, IComparable
     public float experience;
 
     [Header("Element")]
-     // Fire, Ice, Poison, etc.
-    public string [] elementResistance;
-    public string [] elementWeakness;
-    public string [] elementBlock;
+    // Fire, Ice, Poison, etc.
+    public string[] elementResistance;
+    public string[] elementWeakness;
+    public string[] elementBlock;
     [HideInInspector] public float startHealth;
     [HideInInspector] private float startMagic;
 
@@ -35,6 +35,7 @@ public class FighterStats : MonoBehaviour, IComparable
     [HideInInspector] public int nextActTurn;
 
     private bool dead = false;
+    public bool guard = false;
 
     // Resize health and magic bar
     private Transform healthTransform;
@@ -69,18 +70,28 @@ public class FighterStats : MonoBehaviour, IComparable
 
         // Set damage text
 
-        if(health <= 0)
+        if (health <= 0)
         {
             dead = true;
-            gameObject.tag = "Dead";
             Destroy(healthFill);
+            if (gameObject.CompareTag("Hero"))
+            {
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.LOST;
+                GameControllerObj.GetComponent<GameController>().EndBattle();
+            }
+            else
+            {
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.WON;
+                GameControllerObj.GetComponent<GameController>().EndBattle();
+            }
             Destroy(gameObject);
-        } else if (damage > 0)
+        }
+        else if (health > 0 && damage > 0)
         {
             xNewHealthScale = healthScale.x * (health / startHealth);
             healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
         }
-        if(damage > 0)
+        if (health > 0 && damage > 0)
         {
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
             GameControllerObj.GetComponent<GameController>().battleText.text = damage.ToString();
@@ -91,7 +102,7 @@ public class FighterStats : MonoBehaviour, IComparable
     public void Heal(float heal)
     {
         health += heal;
-        if(health > startHealth)
+        if (health > startHealth)
         {
             health = startHealth;
         }
@@ -101,7 +112,7 @@ public class FighterStats : MonoBehaviour, IComparable
 
     public void updateMagicFill(float cost)
     {
-        if(cost > 0)
+        if (cost > 0)
         {
             magic = magic - cost;
             xNewMagicScale = magicScale.x * (magic / startMagic);
