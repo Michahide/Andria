@@ -50,25 +50,33 @@ public class FighterAction : MonoBehaviour
 
     public int GetCurrentAttackType;
 
-    void Awake()
+    void Start()
     {
         hero = GameObject.FindGameObjectWithTag("Hero");
         enemy = GameObject.FindGameObjectWithTag("Enemy");
+        // hero = GameControllerObj.GetComponent<GameController>().hero;
+        // enemy = GameControllerObj.GetComponent<GameController>().enemy;
         GameControllerObj = GameObject.Find("GameControllerObject");
     }
     public void SelectAttack(string btn)
     {
+        Debug.Log("FighterAction Hero: " + hero);
+        Debug.Log("FighterAction Enemy: " + enemy);
+        Debug.Log("btn: " + btn);
         currentTurn = enemy;
         victim = hero;
+
         if (tag == "Hero")
         {
             currentTurn = hero;
             victim = enemy;
         }
+        Debug.Log("Victim: " + victim);
         if (btn.CompareTo("melee") == 0)
         {
             meleePrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("NormalAttack");
+            GetCurrentAttackType = 1;
             SkillText(AttackText);
 
         }
@@ -89,30 +97,35 @@ public class FighterAction : MonoBehaviour
         {
             waterSlashPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
+            GetCurrentAttackType = 3;
             SkillText(WaterSlashText);
         }
         else if (btn.CompareTo("chainLightning") == 0)
         {
             chainLightningPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
+            GetCurrentAttackType = 4;
             SkillText(ChainLightningText);
         }
         else if (btn.CompareTo("stomp") == 0)
         {
             stompPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
+            GetCurrentAttackType = 5;
             SkillText(StompText);
         }
         else if (btn.CompareTo("iceStorm") == 0)
         {
             iceStormPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
+            GetCurrentAttackType = 6;
             SkillText(IceStormText);
         }
         else if (btn.CompareTo("windSlash") == 0)
         {
             windSlashPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
+            GetCurrentAttackType = 7;
             SkillText(WindSlashText);
         }
         else if (btn.CompareTo("guard") == 0)
@@ -121,12 +134,16 @@ public class FighterAction : MonoBehaviour
             if (tag == "Hero")
             {
                 hero.GetComponent<FighterStats>().guard = true;
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.ENEMYTURN;
+                GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().EnemyTurn());
             }
             else
             {
                 enemy.GetComponent<FighterStats>().guard = true;
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.HEROTURN;
+                GameControllerObj.GetComponent<GameController>().HeroTurn();
             }
-            Invoke("ContinueGame", 2);
+            // Invoke("ContinueGame", 2);
         }
     }
 
@@ -144,8 +161,8 @@ public class FighterAction : MonoBehaviour
         }
     }
 
-    void ContinueGame()
-    {
-        GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
-    }
+    // void ContinueGame()
+    // {
+    //     GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
+    // }
 }

@@ -51,6 +51,17 @@ public class FighterStats : MonoBehaviour, IComparable
 
     void Awake()
     {
+        if (tag == "hero")
+        {
+            healthFill = GameObject.Find("HeroHealthFill");
+            magicFill = GameObject.Find("HeroMagicFill");
+        }
+        else
+        {
+            healthFill = GameObject.Find("EnemyHealthFill");
+            magicFill = GameObject.Find("EnemyMagicFill");
+        }
+
         healthTransform = healthFill.GetComponent<RectTransform>();
         healthScale = healthFill.transform.localScale;
 
@@ -63,7 +74,7 @@ public class FighterStats : MonoBehaviour, IComparable
         GameControllerObj = GameObject.Find("GameControllerObject");
     }
 
-    public void ReceiveDamage(float damage)
+    public bool ReceiveDamage(float damage)
     {
         health = health - damage;
         animator.Play("Damage");
@@ -85,6 +96,7 @@ public class FighterStats : MonoBehaviour, IComparable
                 GameControllerObj.GetComponent<GameController>().EndBattle();
             }
             Destroy(gameObject);
+            return true;
         }
         else if (health > 0 && damage > 0)
         {
@@ -96,7 +108,8 @@ public class FighterStats : MonoBehaviour, IComparable
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
             GameControllerObj.GetComponent<GameController>().battleText.text = damage.ToString();
         }
-        Invoke("ContinueGame", 2);
+        return false;
+        // Invoke("ContinueGame", 2);
     }
 
     public void Heal(float heal)
@@ -125,10 +138,10 @@ public class FighterStats : MonoBehaviour, IComparable
         return dead;
     }
 
-    void ContinueGame()
-    {
-        GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
-    }
+    // void ContinueGame()
+    // {
+    //     GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
+    // }
     public void CalculateNextTurn(int currentTurn)
     {
         nextActTurn = currentTurn + Mathf.CeilToInt(100f / speed);

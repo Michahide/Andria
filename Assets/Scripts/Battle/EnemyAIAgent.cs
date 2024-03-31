@@ -25,7 +25,8 @@ public class EnemyAIAgent : Agent
     void Start()
     {
         attackScript = GetComponent<AttackScript>();
-        fighterStats = GameObject.Find("WizardHero").GetComponent<FighterStats>();
+        // fighterStats = GameObject.Find("WizardHero").GetComponent<FighterStats>();
+        fighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
         fighterAction = GetComponent<FighterAction>();
         gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
     }
@@ -45,6 +46,7 @@ public class EnemyAIAgent : Agent
         var iceAttack = act[1];
         var earthAttack = act[2];
         var windAttack = act[3];
+        var guard = act[4];
 
         Debug.Log("Physical Attack: " + physicalAttack);
 
@@ -78,10 +80,15 @@ public class EnemyAIAgent : Agent
             fighterAction.SelectAttack("windSlash");
             Debug.Log("Wind Slash Attack");
         }
+        else if (guard == 1)
+        {
+            fighterAction.SelectAttack("guard");
+            Debug.Log("Guard");
+        }
 
         // If the agent is trying to attack
 
-        if (physicalAttack == 1 || iceAttack == 1 || earthAttack == 1 || windAttack == 1)
+        if (physicalAttack == 1 || iceAttack == 1 || earthAttack == 1 || windAttack == 1 || guard == 1)
         {
             if (attackScript.IsBlockingAttack)
             {
@@ -134,13 +141,18 @@ public class EnemyAIAgent : Agent
         //         reward = Resist();
         //         break;
         // }
-        AgentAttack(actions.DiscreteActions);
+        if (gameController.state == GameController.BattleState.ENEMYTURN)
+        {
+            AgentAttack(actions.DiscreteActions);
 
-        // Apply the reward
-        AddReward(reward);
-        Debug.Log("Reward: " + reward);
+            // Apply the reward
+            AddReward(reward);
+            Debug.Log("Reward: " + reward);
+        }
 
-        gameController.NextTurn();
+        gameController.state = GameController.BattleState.HEROTURN;
+        // gameController.HeroTurn();
+        // gameController.NextTurn();
         EndEpisode();
     }
 

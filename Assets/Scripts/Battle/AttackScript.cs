@@ -62,7 +62,9 @@ public class AttackScript : MonoBehaviour
                 GuardMultiplier = 0.75f;
                 targetStats.guard = false;
                 Debug.Log("Target is guarding");
-            } else {
+            }
+            else
+            {
                 GuardMultiplier = 1.0f;
                 Debug.Log("Target is not guarding");
             }
@@ -101,17 +103,34 @@ public class AttackScript : MonoBehaviour
             owner.GetComponent<Animator>().Play(animationName);
             targetStats.ReceiveDamage(Mathf.CeilToInt(damage));
             attackerStats.updateMagicFill(magicCost);
+            if (owner.tag == "Hero")
+            {
+                Debug.Log("Hero's attack!");
+                GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().HeroAttack());
+            }
+            else
+            {
+                Debug.Log("Enemy's attack!");
+            }
         }
         else
         {
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
             GameControllerObj.GetComponent<GameController>().battleText.text = NotEnoughMagic;
-            Invoke("SkipTurnContinueGame", 4);
+            // Invoke("SkipTurnContinueGame", 4);
+            if (owner.tag == "Hero")
+            {
+                GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().HeroAttack());
+            }
+            else
+            {
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.HEROTURN;
+            }
         }
     }
 
-    void SkipTurnContinueGame()
-    {
-        GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
-    }
+    // void SkipTurnContinueGame()
+    // {
+    //     GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
+    // }
 }
