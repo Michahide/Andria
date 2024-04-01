@@ -11,11 +11,19 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup soundEffectsMixerGroup;
     [SerializeField] private Sound[] sounds;
 
-    private static AudioManager instance;
 
-    private void Awake()
+    private void Start()
     {
-        Instance = this;
+        DontDestroyOnLoad(this);
+        if (Instance == null)
+        {
+            Instance = this;
+            // SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         foreach (Sound s in sounds)
         {
@@ -34,42 +42,37 @@ public class AudioManager : MonoBehaviour
                     s.source.outputAudioMixerGroup = musikMixerGroup;
                     break;
             }
-
-            if (s.playOnAwake)
-                s.source.Play();
-
-            if (AudioManager.instance == null)
-            {
-                AudioManager.instance = this;
-                GameObject.DontDestroyOnLoad(this.gameObject);
-                SceneManager.sceneLoaded += OnSceneLoaded;
-            }
-            // else
-            // {
-            //     Destroy(this.gameObject);
-            // }
         }
     }
 
-     void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode) {
-       if (scene.name == "Death" || scene.name == "HappyEnding") {
-            this.gameObject.SetActive(false);
-             Debug.Log("I am inside the if statement");
-       }
-        else
-        {
-            this.gameObject.SetActive(true);
-        }
-    }
+    // void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // {
+    //     if (scene.name == "Death" || scene.name == "HappyEnding")
+    //     {
+    //         this.gameObject.SetActive(false);
+    //         Debug.Log("I am inside the if statement");
+    //     }
+    //     else
+    //     {
+    //         this.gameObject.SetActive(true);
+    //     }
+    // }
 
     public void Play(string clipname)
     {
         Sound s = Array.Find(sounds, dummySound => dummySound.clipName == clipname);
+
+        Debug.Log("Clipname: " + clipname);
         if (s == null)
         {
             Debug.LogError("Sound: " + clipname + " does NOT exist!");
             return;
         }
+
+        // if(s.source == null)
+        //     gameObject.AddComponent<AudioSource>();
+
+        Debug.Log("S.source: " + s.source);
         s.source.Play();
     }
 
@@ -92,7 +95,7 @@ public class AudioManager : MonoBehaviour
 
     public void muteMusic(bool isMusicMute)
     {
-        if(isMusicMute)
+        if (isMusicMute)
         {
             musikMixerGroup.audioMixer.SetFloat("Music", -80);
         }
@@ -104,7 +107,7 @@ public class AudioManager : MonoBehaviour
 
     public void muteSFX(bool isSFXMute)
     {
-        if(isSFXMute)
+        if (isSFXMute)
         {
             soundEffectsMixerGroup.audioMixer.SetFloat("SFX", -80);
         }
