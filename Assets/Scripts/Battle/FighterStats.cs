@@ -29,7 +29,7 @@ public class FighterStats : MonoBehaviour, IComparable
     public string[] elementWeakness;
     public string[] elementBlock;
     [HideInInspector] public float startHealth;
-    [HideInInspector] private float startMagic;
+    [HideInInspector] public float startMagic;
 
     // Turn Order
     [HideInInspector] public int nextActTurn;
@@ -51,22 +51,22 @@ public class FighterStats : MonoBehaviour, IComparable
 
     void Awake()
     {
-        if (tag == "hero")
-        {
-            healthFill = GameObject.Find("HeroHealthFill");
-            magicFill = GameObject.Find("HeroMagicFill");
-        }
-        else
-        {
-            healthFill = GameObject.Find("EnemyHealthFill");
-            magicFill = GameObject.Find("EnemyMagicFill");
-        }
+        // if (tag == "hero")
+        // {
+        //     healthFill = GameObject.Find("HeroHealthFill");
+        //     magicFill = GameObject.Find("HeroMagicFill");
+        // }
+        // else
+        // {
+        //     healthFill = GameObject.Find("EnemyHealthFill");
+        //     magicFill = GameObject.Find("EnemyMagicFill");
+        // }
 
-        healthTransform = healthFill.GetComponent<RectTransform>();
-        healthScale = healthFill.transform.localScale;
+        // healthTransform = healthFill.GetComponent<RectTransform>();
+        // healthScale = healthFill.transform.localScale;
 
-        magicTransform = magicFill.GetComponent<RectTransform>();
-        magicScale = magicFill.transform.localScale;
+        // magicTransform = magicFill.GetComponent<RectTransform>();
+        // magicScale = magicFill.transform.localScale;
 
         startHealth = health;
         startMagic = magic;
@@ -98,12 +98,12 @@ public class FighterStats : MonoBehaviour, IComparable
             Destroy(gameObject);
             return true;
         }
-        else if (health > 0 && damage > 0)
-        {
-            xNewHealthScale = healthScale.x * (health / startHealth);
-            healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
-        }
-        if (health > 0 && damage > 0)
+        // else if (health > 0 && damage > 0)
+        // {
+        //     xNewHealthScale = healthScale.x * (health / startHealth);
+        //     healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
+        // }
+        if (health > 0)
         {
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
             GameControllerObj.GetComponent<GameController>().battleText.text = damage.ToString();
@@ -128,8 +128,8 @@ public class FighterStats : MonoBehaviour, IComparable
         if (cost > 0)
         {
             magic = magic - cost;
-            xNewMagicScale = magicScale.x * (magic / startMagic);
-            magicFill.transform.localScale = new Vector2(xNewMagicScale, magicScale.y);
+            // xNewMagicScale = magicScale.x * (magic / startMagic);
+            // magicFill.transform.localScale = new Vector2(xNewMagicScale, magicScale.y);
         }
     }
 

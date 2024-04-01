@@ -8,20 +8,20 @@ public class ChangeScene : MonoBehaviour
     [SerializeField] GameObject SettingsPanel;
     [SerializeField] GameObject MenuPanel;
     [SerializeField] GameObject GameModePanel;
-    private static ChangeScene instance;
+    // private static ChangeScene instance;
 
-    void Awake()
-    {
-        DontDestroyOnLoad(this);
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    // void Awake()
+    // {
+    //     DontDestroyOnLoad(this);
+    //     if (instance == null)
+    //     {
+    //         instance = this;
+    //     }
+    //     else
+    //     {
+    //         Destroy(gameObject);
+    //     }
+    // }
 
     void Start()
     {
@@ -65,17 +65,17 @@ public class ChangeScene : MonoBehaviour
 
     public void ChangeToScene(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
-        if (sceneName == "MainMenu")
-        {
-            SettingsPanel = GameObject.Find("PengaturanPanel");
-            MenuPanel = GameObject.Find("MenuUtamaPanel");
-            GameModePanel = GameObject.Find("GameModePanel");
+        SceneManager.LoadScene(sceneName);
+        // if (SceneManager.GetActiveScene().name == "MainMenu")
+        // {
+        //     SettingsPanel = GameObject.Find("PengaturanPanel");
+        //     MenuPanel = GameObject.Find("MenuUtamaPanel");
+        //     GameModePanel = GameObject.Find("GameModePanel");
 
-            SettingsPanel.SetActive(false);
-            MenuPanel.SetActive(true);
-            GameModePanel.SetActive(false);
-        }
+        //     SettingsPanel.SetActive(false);
+        //     MenuPanel.SetActive(true);
+        //     GameModePanel.SetActive(false);
+        // }
     }
 
     public void QuitGame()

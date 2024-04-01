@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
 {
     public enum BattleState { START, HEROTURN, ENEMYTURN, WON, LOST };
     public BattleState state;
-    private List<FighterStats> fighterStats;
+    // private List<FighterStats> fighterStats;
 
     public TMP_Text battleText;
     public TMP_Text battleAffinityText;
@@ -37,26 +37,27 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject ItemPanel;
     [SerializeField] GameObject SkillPanel;
 
+    public BattleHUD heroHUD;
+    public BattleHUD enemyHUD;
+
     void Awake()
     {
         // Academy.Instance.AutomaticSteppingEnabled = false;
-        GameObject playerGO = Instantiate(heroPrefab, heroStation);
-        // playerUnit = playerGO.GetComponent<Unit>();
-
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyStation);
-
-        fighterStats = new List<FighterStats>();
-        hero = GameObject.FindGameObjectWithTag("Hero");
+        // fighterStats = new List<FighterStats>();
+        // hero = GameObject.FindGameObjectWithTag("Hero");
+        hero = Instantiate(heroPrefab, heroStation);
         currentFighterStats = hero.GetComponent<FighterStats>();
-        currentFighterStats.CalculateNextTurn(0);
-        fighterStats.Add(currentFighterStats);
 
-        enemy = GameObject.FindGameObjectWithTag("Enemy");
+        // currentFighterStats.CalculateNextTurn(0);
+        // fighterStats.Add(currentFighterStats);
+
+        // enemy = GameObject.FindGameObjectWithTag("Enemy");
+        enemy = Instantiate(enemyPrefab, enemyStation);
         currentEnemyStats = enemy.GetComponent<FighterStats>();
-        currentEnemyStats.CalculateNextTurn(0);
-        fighterStats.Add(currentEnemyStats);
+        // currentEnemyStats.CalculateNextTurn(0);
+        // fighterStats.Add(currentEnemyStats);
 
-        fighterStats.Sort();
+        // fighterStats.Sort();
         Debug.Log("GameController Enemy: " + enemy);
     }
     void Start()
@@ -82,12 +83,9 @@ public class GameController : MonoBehaviour
         battleAffinityText.gameObject.SetActive(false);
         battleEnemyText.gameObject.SetActive(false);
         battlePlayerText.gameObject.SetActive(false);
-        // enemyUnit = enemyGO.GetComponent<Unit>();
 
-        // dialogueText.text = "A wild " + enemyUnit.unitName + " approaches...";
-
-        // playerHUD.SetHUD(playerUnit);
-        // enemyHUD.SetHUD(enemyUnit);
+        heroHUD.SetHUD(currentFighterStats);
+        enemyHUD.SetHUD(currentEnemyStats);
 
         yield return new WaitForSeconds(2f);
 
@@ -97,6 +95,9 @@ public class GameController : MonoBehaviour
 
     public IEnumerator HeroAttack()
     {
+        enemyHUD.SetHP(currentEnemyStats.health);
+        heroHUD.SetMP(currentFighterStats.magic);
+        
         bool isDead = currentEnemyStats.GetDead();
 
         yield return new WaitForSeconds(2f);
@@ -170,6 +171,16 @@ public class GameController : MonoBehaviour
         {
             // Debug.Log("Not Using Element");
         }
+
+        Debug.Log("Enemy's Turn");
+
+
+        heroHUD.SetHP(currentFighterStats.health);
+        enemyHUD.SetMP(currentEnemyStats.magic);
+
+
+
+
         bool isDead = currentFighterStats.GetDead();
 
         yield return new WaitForSeconds(2f);
@@ -197,7 +208,6 @@ public class GameController : MonoBehaviour
         ActionMainPanel.SetActive(true);
         ItemPanel.SetActive(false);
         SkillPanel.SetActive(false);
-        Debug.Log("Hero's turn");
     }
 
     // public void NextTurn()
