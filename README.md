@@ -10,12 +10,13 @@ venv\scripts\activate
 py -m pip install --upgrade pip
 pip install mlagents
 pip install torch torchvision torchaudio
-pip install protobuf==3.20.3
-pip install onnx
+pip install protobuf==3.19.6
+pip install onnx==1.12
+pip install tensorflow<2.11
 mlagents-learn -h
 ```
 
-3. After everything has been installed, at virtual environment, run this command with format mlagents-learn --run-id="Name ML Agents Learn Process", for example:
+3. After everything has been installed, at virtual environment, run this command with format mlagents-learn <trainer-config-file> --env=<env_name> --run-id=<run-identifier>, for example:
 
 ```bash
 mlagents-learn --run-id="Test1"
@@ -30,5 +31,11 @@ mlagents-learn --run-id="Test1"
 **Q: What Python version used?**\
 A: Python 3.9.13. Python 3.10.x and above cannot use Numpy that will be used for ML-Agents.
 
-**Q: Why we need protobuf version 3.20.3?**\
-A:  The upper version (3.21 or above) is not supported.
+**Q: Why we need protobuf version 3.19.6?**\
+A: 3.20 above cannot be used by TensorFlow 2.10.\
+
+**Q: Why we need ONNX 1.12?**\
+A: This version is last compatible with protobuf 3.19.6 .\
+
+**Q: Why we need Tensorflow 2.11 lower (2.10)?**\
+A: This version is last support training using GPU.\

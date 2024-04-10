@@ -110,8 +110,8 @@ MonoBehaviour:
   animator: {fileID: 4839421928311411744}
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
-  health: 100
-  magic: 25
+  health: 1000
+  magic: 250
   melee: 12
   magicRange: 6
   defense: 5
@@ -125,6 +125,7 @@ MonoBehaviour:
   elementBlock:
   - 
   startHealth: 0
+  startMagic: 0
   nextActTurn: 0
   guard: 0
 --- !u!114 &7031525141576703017
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BrainParameters:
     VectorObservationSize: 2
-    NumStackedVectorObservations: 1
+    NumStackedVectorObservations: 3
     m_ActionSpec:
       m_NumContinuousActions: 0
       BranchSizes: 0200000002000000020000000200000002000000
@@ -196,7 +197,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 1
   m_BehaviorType: 0
-  m_BehaviorName: My Behavior
+  m_BehaviorName: Enemy Agent
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -217,14 +218,12 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
-  attackPower: 10
-  weaknessMultiplier: 2
-  resistanceMultiplier: 0.5
-  blockMultiplier: 0.2
   attackScript: {fileID: 0}
-  fighterStats: {fileID: 0}
+  heroFighterStats: {fileID: 0}
+  enemyFighterStats: {fileID: 0}
   fighterAction: {fileID: 0}
   gameController: {fileID: 0}
+  behaviorParameters: {fileID: 0}
 --- !u!1001 &2219489731668150033
 PrefabInstance:
   m_ObjectHideFlags: 0

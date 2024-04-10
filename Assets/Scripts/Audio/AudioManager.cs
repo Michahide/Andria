@@ -12,13 +12,13 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private Sound[] sounds;
 
 
-    private void Start()
+    private void Awake()
     {
         DontDestroyOnLoad(this);
         if (Instance == null)
         {
             Instance = this;
-            // SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -43,20 +43,21 @@ public class AudioManager : MonoBehaviour
                     break;
             }
         }
+        Play("Menu");
     }
 
-    // void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    // {
-    //     if (scene.name == "Death" || scene.name == "HappyEnding")
-    //     {
-    //         this.gameObject.SetActive(false);
-    //         Debug.Log("I am inside the if statement");
-    //     }
-    //     else
-    //     {
-    //         this.gameObject.SetActive(true);
-    //     }
-    // }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Death" || scene.name == "HappyEnding")
+        {
+            this.gameObject.SetActive(false);
+            Debug.Log("I am inside the if statement");
+        }
+        else
+        {
+            this.gameObject.SetActive(true);
+        }
+    }
 
     public void Play(string clipname)
     {

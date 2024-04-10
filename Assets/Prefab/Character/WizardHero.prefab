@@ -151,8 +151,8 @@ MonoBehaviour:
   animator: {fileID: 4498645755281623482}
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
-  health: 100
-  magic: 50
+  health: 1000
+  magic: 500
   melee: 10
   magicRange: 25
   defense: 4
@@ -166,6 +166,7 @@ MonoBehaviour:
   elementBlock:
   - Fire
   startHealth: 0
+  startMagic: 0
   nextActTurn: 0
   guard: 0
 --- !u!1001 &3372961865298647688
@@ -186,6 +187,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 7896991221781629267}
+    - target: {fileID: 6361829891152757722, guid: 69f57071643aa4b4d96a0a1b328fbc0c,
+        type: 3}
+      propertyPath: magicCost
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757723, guid: 69f57071643aa4b4d96a0a1b328fbc0c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -391,6 +397,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 7896991221781629267}
+    - target: {fileID: 6361829891152757722, guid: d3f14b5850251f54fb6db13ec4eba339,
+        type: 3}
+      propertyPath: magicCost
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757723, guid: d3f14b5850251f54fb6db13ec4eba339,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -611,6 +622,11 @@ PrefabInstance:
       propertyPath: owner
       value: 
       objectReference: {fileID: 7896991221781629267}
+    - target: {fileID: 6361829891152757722, guid: 2929116ee4fac4c4ca0b872ba1253e70,
+        type: 3}
+      propertyPath: magicCost
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6361829891152757723, guid: 2929116ee4fac4c4ca0b872ba1253e70,
         type: 3}
       propertyPath: m_LocalPosition.x

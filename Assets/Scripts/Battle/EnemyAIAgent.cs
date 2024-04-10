@@ -3,32 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 public class EnemyAIAgent : Agent
 {
-    public float attackPower = 10f;
-    public float weaknessMultiplier = 2f;
-    public float resistanceMultiplier = 0.5f;
-    public float blockMultiplier = 0.2f;
-
+    private int selectedElement;
     private int NUM_ELEMENT;
     private float reward = 0f;
 
     public AttackScript attackScript;
-    public FighterStats fighterStats;
+    public FighterStats heroFighterStats;
+    public FighterStats enemyFighterStats;
     public FighterAction fighterAction;
     public GameController gameController;
+    public BehaviorParameters behaviorParameters;
 
     void Start()
     {
-        attackScript = GetComponent<AttackScript>();
+        // attackScript = GetComponent<AttackScript>();
+        behaviorParameters = GetComponent<BehaviorParameters>();
         // fighterStats = GameObject.Find("WizardHero").GetComponent<FighterStats>();
-        fighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        enemyFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
         fighterAction = GetComponent<FighterAction>();
         gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
+
+        // if (attackScript == null)
+        // {
+        //     behaviorParameters.BrainParameters.VectorObservationSize = 2;
+        //     behaviorParameters.BrainParameters.NumStackedVectorObservations = 3;
+        // }
     }
 
     // public void CollectObservations(VectorSensor sensor)
@@ -40,6 +47,14 @@ public class EnemyAIAgent : Agent
     //     sensor.AddObservation(fighterStats.FireAttack);
     // }
 
+    void Update()
+    {
+        if (attackScript != null)
+        {
+            behaviorParameters.BrainParameters.VectorObservationSize = 11;
+            behaviorParameters.BrainParameters.NumStackedVectorObservations = 14;
+        }
+    }
     public void AgentAttack(ActionSegment<int> act)
     {
         var physicalAttack = act[0];
@@ -48,42 +63,34 @@ public class EnemyAIAgent : Agent
         var windAttack = act[3];
         var guard = act[4];
 
-        Debug.Log("Physical Attack: " + physicalAttack);
-
-        // var iceAttack = act[2];
-        // var lightningAttack = act[3];
-        // var windAttack = act[4];
-        // var heal = act[5];
-        // var item = act[6];
-
         if (physicalAttack == 1)
         {
             attackScript = GameObject.Find("EMeleePrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("melee");
-            Debug.Log("Melee attack");
+            Debug.Log("Agent Melee attack");
         }
         else if (iceAttack == 1)
         {
             attackScript = GameObject.Find("EIceStormPrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("iceStorm");
-            Debug.Log("Ice Storm attack");
+            Debug.Log("Agent Ice Storm attack");
         }
         else if (earthAttack == 1)
         {
             attackScript = GameObject.Find("EStompPrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("stomp");
-            Debug.Log("Stomp Attack");
+            Debug.Log("Agent Stomp Attack");
         }
         else if (windAttack == 1)
         {
             attackScript = GameObject.Find("EWindSlashPrefab").GetComponent<AttackScript>();
             fighterAction.SelectAttack("windSlash");
-            Debug.Log("Wind Slash Attack");
+            Debug.Log("Agent Wind Slash Attack");
         }
         else if (guard == 1)
         {
             fighterAction.SelectAttack("guard");
-            Debug.Log("Guard");
+            Debug.Log("Agent Guard");
         }
 
         // If the agent is trying to attack
@@ -92,55 +99,27 @@ public class EnemyAIAgent : Agent
         {
             if (attackScript.IsBlockingAttack)
             {
-                // reward = -attackPower * blockMultiplier;
                 reward = -1f;
             }
             else if (attackScript.IsResistingAttack)
             {
-                // reward = -attackPower * resistanceMultiplier;
                 reward = -0.5f;
             }
             else if (attackScript.IsWeakToAttack)
             {
-                // reward = attackPower * weaknessMultiplier;
                 reward = 1f;
 
             }
             else
             {
-                // reward = attackPower;
                 reward = 0.1f;
             }
         }
-
-        // if(heal == 1)
-        // {
-
-        // }
     }
 
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // Get the selected action
-        // Declare and assign a value to the vectorAction variable
-        // float vectorAction = actions.ContinuousActions[0];
-        // int action = Mathf.FloorToInt(vectorAction);
-
-        // Calculate the reward based on the action and target element
-        // float reward = 0f;
-        // switch (action)
-        // {
-        //     case 0: // Attack
-        //         reward = Attack();
-        //         break;
-        //     case 1: // Block
-        //         reward = Block();
-        //         break;
-        //     case 2: // Resist
-        //         reward = Resist();
-        //         break;
-        // }
         if (gameController.state == GameController.BattleState.ENEMYTURN)
         {
             AgentAttack(actions.DiscreteActions);
@@ -151,20 +130,23 @@ public class EnemyAIAgent : Agent
         }
 
         gameController.state = GameController.BattleState.HEROTURN;
-        // gameController.HeroTurn();
-        // gameController.NextTurn();
         EndEpisode();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Observe the fighter's health
-        sensor.AddObservation(fighterStats.health);
-        Debug.Log("Health: " + fighterStats.health);
-
+        // Observe the target's health
+        sensor.AddObservation(heroFighterStats.health/heroFighterStats.startHealth);
+        // if (attackScript != null)
+        // {
+        //     sensor.AddOneHotObservation((int)attackScript.element, attackScript.NUM_MAGIC_ELEMENT);
+        // }
         // Observe the current attack type
-        sensor.AddObservation(fighterAction.GetCurrentAttackType);
-        Debug.Log("Attack Type: " + fighterAction.GetCurrentAttackType);
+        sensor.AddObservation(fighterAction.GetCurrentAttackType/7);
+
+        // Observe the element used by Enemy
+        // Debug.Log("Num Magic Element: " + attackScript.NUM_MAGIC_ELEMENT);
+
     }
 }
 
