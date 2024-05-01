@@ -10,8 +10,8 @@ using UnityEngine;
 
 public class EnemyAIAgent : Agent
 {
-    private int selectedElement;
-    private int NUM_ELEMENT;
+    // private int selectedElement;
+    // private int NUM_ELEMENT;
     private float reward = 0f;
 
     public AttackScript attackScript;
@@ -46,15 +46,6 @@ public class EnemyAIAgent : Agent
     //     sensor.AddObservation(fighterStats.PhysicalAttack);
     //     sensor.AddObservation(fighterStats.FireAttack);
     // }
-
-    void Update()
-    {
-        if (attackScript != null)
-        {
-            behaviorParameters.BrainParameters.VectorObservationSize = 11;
-            behaviorParameters.BrainParameters.NumStackedVectorObservations = 14;
-        }
-    }
     public void AgentAttack(ActionSegment<int> act)
     {
         var physicalAttack = act[0];

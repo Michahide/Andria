@@ -105,8 +105,16 @@ public class FighterStats : MonoBehaviour, IComparable
         // }
         if (health > 0)
         {
-            GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
-            GameControllerObj.GetComponent<GameController>().battleText.text = damage.ToString();
+            if (gameObject.CompareTag("Hero"))
+            {
+                GameControllerObj.GetComponent<GameController>().battlePlayerText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battlePlayerText.text = "-" + damage.ToString();
+            }
+            else
+            {
+                GameControllerObj.GetComponent<GameController>().battleEnemyText.gameObject.SetActive(true);
+                GameControllerObj.GetComponent<GameController>().battleEnemyText.text = "-" + damage.ToString();
+            }
         }
         return false;
         // Invoke("ContinueGame", 2);

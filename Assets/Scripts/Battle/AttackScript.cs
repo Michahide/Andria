@@ -33,11 +33,6 @@ public class AttackScript : MonoBehaviour
     [HideInInspector] public bool IsBlockingAttack;
     [HideInInspector] public bool IsResistingAttack;
     [HideInInspector] public bool IsWeakToAttack;
-
-    private string NotEnoughMagic = "Tidak cukup magic untuk menyerang!";
-    private string WeakText = "Weak!";
-    private string BlockText = "Block!";
-    private string ResistText = "Resist!";
     private float GuardMultiplier;
 
     public void Awake()
@@ -79,22 +74,16 @@ public class AttackScript : MonoBehaviour
             if (targetStats.elementBlock.ToList().Contains(element.ToString()))
             {
                 IsBlockingAttack = true;
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = BlockText;
                 damage = 0;
             }
             else if (targetStats.elementResistance.ToList().Contains(element.ToString()))
             {
                 IsResistingAttack = true;
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = ResistText;
                 damage = Mathf.CeilToInt(damage / 2);
             }
             else if (targetStats.elementWeakness.ToList().Contains(element.ToString()))
             {
                 IsWeakToAttack = true;
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.gameObject.SetActive(true);
-                GameControllerObj.GetComponent<GameController>().battleAffinityText.text = WeakText;
                 damage = Mathf.CeilToInt(damage * 2);
             }
 
@@ -106,18 +95,52 @@ public class AttackScript : MonoBehaviour
             attackerStats.updateMagicFill(magicCost);
             if (owner.tag == "Hero")
             {
-                Debug.Log("Hero's attack!");
+                GameControllerObj.GetComponent<GameController>().battleEnemyText.gameObject.SetActive(true);
+                // Debug.Log("Hero's attack!");
+                if (IsBlockingAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battleEnemyText.text = "Blok Serangan!";
+                }
+                else if (IsWeakToAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battleEnemyText.text = "Musuh Lemah!\n" + "-" + Mathf.CeilToInt(damage).ToString();
+                }
+                else if (IsResistingAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battleEnemyText.text = "Menahan Sebagian Serangan!\n" + "-" + Mathf.CeilToInt(damage).ToString();
+                }
+                else
+                {
+                    GameControllerObj.GetComponent<GameController>().battleEnemyText.text = "-" + Mathf.CeilToInt(damage).ToString();
+                }
                 GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().HeroAttack());
             }
             else
             {
-                Debug.Log("Enemy's attack!");
+                GameControllerObj.GetComponent<GameController>().battlePlayerText.gameObject.SetActive(true);
+                // Debug.Log("Enemy's attack!");
+                if (IsBlockingAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battlePlayerText.text = "Blok Serangan!";
+                }
+                else if (IsWeakToAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battlePlayerText.text = "Pemain Lemah!\n" + "-" + Mathf.CeilToInt(damage).ToString();
+                }
+                else if (IsResistingAttack)
+                {
+                    GameControllerObj.GetComponent<GameController>().battlePlayerText.text = "Menahan Sebagian Serangan!\n" + "-" + Mathf.CeilToInt(damage).ToString();
+                }
+                else
+                {
+                    GameControllerObj.GetComponent<GameController>().battlePlayerText.text = "-" + Mathf.CeilToInt(damage).ToString();
+                }
             }
         }
         else
         {
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
-            GameControllerObj.GetComponent<GameController>().battleText.text = NotEnoughMagic;
+            GameControllerObj.GetComponent<GameController>().battleText.text = "Tidak cukup magic untuk menyerang!";
             // Invoke("SkipTurnContinueGame", 4);
             if (owner.tag == "Hero")
             {

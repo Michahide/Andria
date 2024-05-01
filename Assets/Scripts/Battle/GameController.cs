@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
-        ActionMainPanel.SetActive(true);
+        ActionMainPanel.SetActive(false);
         ItemPanel.SetActive(false);
         SkillPanel.SetActive(false);
         loadBasicScene = GetComponent<LoadBasicScene>();
@@ -87,7 +87,10 @@ public class GameController : MonoBehaviour
         heroHUD.SetHUD(currentFighterStats);
         enemyHUD.SetHUD(currentEnemyStats);
 
-        yield return new WaitForSeconds(2f);
+        battleText.gameObject.SetActive(true);
+        battleText.text = "Kamu bertemu Ratu Rubah!";
+        yield return new WaitForSeconds(1f);
+        battleText.gameObject.SetActive(false);
 
         state = BattleState.HEROTURN;
         HeroTurn();
@@ -97,7 +100,7 @@ public class GameController : MonoBehaviour
     {
         enemyHUD.SetHP(currentEnemyStats.health);
         heroHUD.SetMP(currentFighterStats.magic);
-        
+
         bool isDead = currentEnemyStats.GetDead();
 
         yield return new WaitForSeconds(2f);
@@ -174,14 +177,13 @@ public class GameController : MonoBehaviour
 
         Debug.Log("Enemy's Turn");
 
+        bool isDead = currentFighterStats.GetDead();
 
+        yield return new WaitForSeconds(0.1f);
+
+        Debug.Log("Hero health after enemy attack: " + currentFighterStats.health);
         heroHUD.SetHP(currentFighterStats.health);
         enemyHUD.SetMP(currentEnemyStats.magic);
-
-
-
-
-        bool isDead = currentFighterStats.GetDead();
 
         yield return new WaitForSeconds(2f);
 
@@ -307,14 +309,20 @@ public class GameController : MonoBehaviour
 
         if (state == BattleState.WON)
         {
+            ActionMainPanel.SetActive(false);
+            ItemPanel.SetActive(false);
+            SkillPanel.SetActive(false);
             battleText.gameObject.SetActive(true);
-            battleText.text = "You won the battle!";
+            battleText.text = "Kamu Menang!";
             Invoke("Credit", 5);
         }
         else if (state == BattleState.LOST)
         {
+            ActionMainPanel.SetActive(false);
+            ItemPanel.SetActive(false);
+            SkillPanel.SetActive(false);
             battleText.gameObject.SetActive(true);
-            battleText.text = "You were defeated.";
+            battleText.text = "Kamu Kalah.";
             Invoke("MainMenu", 5);
         }
     }

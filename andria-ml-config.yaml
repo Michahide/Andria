@@ -4,14 +4,27 @@ behaviors:
     trainer_type: ppo
     hyperparameters:
       # Hyperparameters common to PPO and SAC
+      # Batch Size: Number of experiences in each iteration of gradient descent. 
       batch_size: 1024
+      # Buffer Size: Number of experiences to collect before updating the policy model. 
+      # Corresponds to how many experiences should be collected before we do any learning or updating of the model.
       buffer_size: 10240
+      # Learning Rate: The rate at which the agent learns from its experiences. 
+      # The learning rate is the step size in gradient descent. Initial learning rate for gradient descent. 
+      # Corresponds to the strength of each gradient descent update step. 
       learning_rate: 0.0003
 
       # PPO-specific hyperparameters
+      # Beta: Strength of the entropy regularization, which makes the policy "more random." This ensures that agents properly explore the action space during training.
       beta: 0.01
+      # Epsilon: The clipping parameter for the PPO loss function. Influences how rapidly the policy can evolve during training. Corresponds to the acceptable threshold of divergence between the old and new policies during gradient descent updating.
       epsilon: 0.2
+      # Lambda: The discount factor for the Generalized Advantage Estimation (GAE) calculation. 
+      # Corresponds to the discount factor for the return calculation. 
+      # Indicates how much the agent relies on its current value estimate when calculating an updated value estimate.
       lambd: 0.95
+      # Number of epochs: Number of times the agent will iterate over the entire training data set. 
+      # Corresponds to the number of times the gradient descent algorithm will be run over the entire training data set.
       num_epoch: 3
       shared_critic: false
       learning_rate_schedule: linear
@@ -34,7 +47,7 @@ behaviors:
     time_horizon: 64
     summary_freq: 5
     keep_checkpoints: 5
-    checkpoint_interval: 100
+    checkpoint_interval: 10
     threaded: false
     init_path: null
     
@@ -44,7 +57,9 @@ behaviors:
     reward_signals:   
       # Environment reward (default)
       extrinsic:
+        # Gamma: Discount factor for future rewards coming from the environment. This can be thought of as how far into the future the agent should care about possible rewards. 
         gamma: 0.99
+        # Strength: Factor by which to multiply the reward given by the environment.
         strength: 1.0
         network_settings:
           normalize: false
@@ -85,7 +100,6 @@ environment_parameters: null
 
 # Checkpoint Settings
 checkpoint_settings:
-  run_id: Test5
   initialize_from: null
   load_model: false
   resume: false
