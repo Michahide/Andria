@@ -37,7 +37,7 @@ public class MakeButton : MonoBehaviour
                 ActionMainPanel.SetActive(false);
             }
         }
-        else if (btn.CompareTo("ItemBtn") == 0)
+        else if (btn.CompareTo("ItemBtn") == 0 || btn.CompareTo("ItemExit") == 0)
         {
             if (ItemPanel.activeInHierarchy)
             {

@@ -5,10 +5,10 @@ behaviors:
     hyperparameters:
       # Hyperparameters common to PPO and SAC
       # Batch Size: Number of experiences in each iteration of gradient descent. 
-      batch_size: 1024
+      batch_size: 256
       # Buffer Size: Number of experiences to collect before updating the policy model. 
       # Corresponds to how many experiences should be collected before we do any learning or updating of the model.
-      buffer_size: 10240
+      buffer_size: 2560
       # Learning Rate: The rate at which the agent learns from its experiences. 
       # The learning rate is the step size in gradient descent. Initial learning rate for gradient descent. 
       # Corresponds to the strength of each gradient descent update step. 

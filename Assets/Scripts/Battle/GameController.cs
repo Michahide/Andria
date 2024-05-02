@@ -45,6 +45,8 @@ public class GameController : MonoBehaviour
         // Academy.Instance.AutomaticSteppingEnabled = false;
         // fighterStats = new List<FighterStats>();
         // hero = GameObject.FindGameObjectWithTag("Hero");
+        AudioManager.Instance.Stop("Menu");
+        AudioManager.Instance.Play("Battle");
         hero = Instantiate(heroPrefab, heroStation);
         currentFighterStats = hero.GetComponent<FighterStats>();
 
@@ -181,7 +183,6 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        Debug.Log("Hero health after enemy attack: " + currentFighterStats.health);
         heroHUD.SetHP(currentFighterStats.health);
         enemyHUD.SetMP(currentEnemyStats.magic);
 
@@ -207,9 +208,13 @@ public class GameController : MonoBehaviour
         battlePlayerText.gameObject.SetActive(false);
 
         battleAffinityText.text = "Pilih Aksimu!";
-        ActionMainPanel.SetActive(true);
-        ItemPanel.SetActive(false);
-        SkillPanel.SetActive(false);
+        bool isDead = currentFighterStats.GetDead();
+        if (!isDead)
+        {
+            ActionMainPanel.SetActive(true);
+            ItemPanel.SetActive(false);
+            SkillPanel.SetActive(false);
+        }
     }
 
     // public void NextTurn()
@@ -296,12 +301,26 @@ public class GameController : MonoBehaviour
 
     void MainMenu()
     {
+        AudioManager.Instance.Stop("Battle");
+        AudioManager.Instance.Play("Menu");
         loadBasicScene.ChangeToScene("MainMenu");
     }
 
     public void Credit()
     {
+        AudioManager.Instance.Stop("Battle");
+        AudioManager.Instance.Play("Menu");
         loadBasicScene.ChangeToScene("Credit");
+    }
+
+    public void Win()
+    {
+        AudioManager.Instance.Play("Win");
+    }
+
+    public void Lose()
+    {
+        AudioManager.Instance.Play("Lose");
     }
 
     public void EndBattle()
@@ -314,6 +333,7 @@ public class GameController : MonoBehaviour
             SkillPanel.SetActive(false);
             battleText.gameObject.SetActive(true);
             battleText.text = "Kamu Menang!";
+            Invoke("Win", 2);
             Invoke("Credit", 5);
         }
         else if (state == BattleState.LOST)
@@ -323,6 +343,7 @@ public class GameController : MonoBehaviour
             SkillPanel.SetActive(false);
             battleText.gameObject.SetActive(true);
             battleText.text = "Kamu Kalah.";
+            Invoke("Lose", 2);
             Invoke("MainMenu", 5);
         }
     }
