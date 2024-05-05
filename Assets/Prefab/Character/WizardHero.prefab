@@ -60,6 +60,54 @@ MonoBehaviour:
   IsBlockingAttack: 0
   IsResistingAttack: 0
   IsWeakToAttack: 0
+--- !u!1 &2555184423127603756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3618211092110851973}
+  - component: {fileID: 8293084888607646207}
+  m_Layer: 0
+  m_Name: WRamuanMujarabPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3618211092110851973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2555184423127603756}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2379742042009170948}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8293084888607646207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2555184423127603756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9988aad22b30c4e41998d1dd5b63acb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 5710112596253442002}
+  animationName: 
+  healAmount: 50
+  itemAmount: 1
 --- !u!1 &3454285589109888501
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +266,8 @@ Transform:
   - {fileID: 3525243851584804805}
   - {fileID: 9003587008093855060}
   - {fileID: 8313340688216931128}
+  - {fileID: 3618211092110851973}
+  - {fileID: 8192807415587436249}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &7183159623694586838
@@ -292,8 +342,10 @@ MonoBehaviour:
   stompPrefab: {fileID: 0}
   iceStormPrefab: {fileID: 0}
   windSlashPrefab: {fileID: 0}
+  ramuanMujarabPrefab: {fileID: 2555184423127603756}
+  ramuanPemulaPrefab: {fileID: 8591613013770322959}
   faceIcon: {fileID: 21300000, guid: 230a03bb62924d6489368204bfa3eec0, type: 3}
-  GetCurrentAttackType: 0
+  GetCurrentActionType: 0
 --- !u!95 &6105293762970895670
 Animator:
   serializedVersion: 5
@@ -408,6 +460,54 @@ MonoBehaviour:
   IsBlockingAttack: 0
   IsResistingAttack: 0
   IsWeakToAttack: 0
+--- !u!1 &8591613013770322959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8192807415587436249}
+  - component: {fileID: 7079849619897274291}
+  m_Layer: 0
+  m_Name: WRamuanPemulaPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8192807415587436249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8591613013770322959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2379742042009170948}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7079849619897274291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8591613013770322959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9988aad22b30c4e41998d1dd5b63acb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 5710112596253442002}
+  animationName: 
+  healAmount: 25
+  itemAmount: 3
 --- !u!1 &9098171152677646050
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,30 +57,30 @@ public class EnemyAIAgent : Agent
         if (physicalAttack == 1)
         {
             attackScript = GameObject.Find("EMeleePrefab").GetComponent<AttackScript>();
-            fighterAction.SelectAttack("melee");
+            fighterAction.SelectAction("melee");
             Debug.Log("Agent Melee attack");
         }
         else if (iceAttack == 1)
         {
             attackScript = GameObject.Find("EIceStormPrefab").GetComponent<AttackScript>();
-            fighterAction.SelectAttack("iceStorm");
+            fighterAction.SelectAction("iceStorm");
             Debug.Log("Agent Ice Storm attack");
         }
         else if (earthAttack == 1)
         {
             attackScript = GameObject.Find("EStompPrefab").GetComponent<AttackScript>();
-            fighterAction.SelectAttack("stomp");
+            fighterAction.SelectAction("stomp");
             Debug.Log("Agent Stomp Attack");
         }
         else if (windAttack == 1)
         {
             attackScript = GameObject.Find("EWindSlashPrefab").GetComponent<AttackScript>();
-            fighterAction.SelectAttack("windSlash");
+            fighterAction.SelectAction("windSlash");
             Debug.Log("Agent Wind Slash Attack");
         }
         else if (guard == 1)
         {
-            fighterAction.SelectAttack("guard");
+            fighterAction.SelectAction("guard");
             Debug.Log("Agent Guard");
         }
 
@@ -133,7 +133,7 @@ public class EnemyAIAgent : Agent
         //     sensor.AddOneHotObservation((int)attackScript.element, attackScript.NUM_MAGIC_ELEMENT);
         // }
         // Observe the current attack type
-        sensor.AddObservation(fighterAction.GetCurrentAttackType/7);
+        sensor.AddObservation(fighterAction.GetCurrentActionType/7);
 
         // Observe the element used by Enemy
         // Debug.Log("Num Magic Element: " + attackScript.NUM_MAGIC_ELEMENT);

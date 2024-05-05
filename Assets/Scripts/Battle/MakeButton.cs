@@ -22,7 +22,7 @@ public class MakeButton : MonoBehaviour
     {
         if (btn.CompareTo("MeleeBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("melee");
+            hero.GetComponent<FighterAction>().SelectAction("melee");
         }
         else if (btn.CompareTo("SkillBtn") == 0 || btn.CompareTo("SkillExit") == 0)
         {
@@ -52,19 +52,27 @@ public class MakeButton : MonoBehaviour
         }
         else if (btn.CompareTo("FireballBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("fireball");
+            hero.GetComponent<FighterAction>().SelectAction("fireball");
         }
         else if (btn.CompareTo("WaterSlashBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("waterSlash");
+            hero.GetComponent<FighterAction>().SelectAction("waterSlash");
         }
         else if (btn.CompareTo("ChainLightningBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("chainLightning");
+            hero.GetComponent<FighterAction>().SelectAction("chainLightning");
         }
         else if (btn.CompareTo("GuardBtn") == 0)
         {
-            hero.GetComponent<FighterAction>().SelectAttack("guard");
+            hero.GetComponent<FighterAction>().SelectAction("guard");
+        }
+        else if (btn.CompareTo("RamuanMujarabBtn") == 0)
+        {
+            hero.GetComponent<FighterAction>().SelectAction("ramuanMujarab");
+        }
+                else if (btn.CompareTo("RamuanPemulaBtn") == 0)
+        {
+            hero.GetComponent<FighterAction>().SelectAction("ramuanPemula");
         }
     }
 }

@@ -127,8 +127,6 @@ public class FighterStats : MonoBehaviour, IComparable
         {
             health = startHealth;
         }
-        xNewHealthScale = healthScale.x * (health / startHealth);
-        healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
     }
 
     public void updateMagicFill(float cost)

@@ -119,6 +119,16 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public IEnumerator HeroUseItem()
+    {
+        heroHUD.SetHP(currentFighterStats.health);
+
+        yield return new WaitForSeconds(2f);
+
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
+    }
+
     public IEnumerator EnemyTurn()
     {
         battleText.gameObject.SetActive(false);
@@ -164,7 +174,7 @@ public class GameController : MonoBehaviour
             {
                 attackType = "melee";
             }
-            currentEnemyStats.GetComponent<FighterAction>().SelectAttack(attackType);
+            currentEnemyStats.GetComponent<FighterAction>().SelectAction(attackType);
         }
 
         if (gameMode.isUsingElement)
