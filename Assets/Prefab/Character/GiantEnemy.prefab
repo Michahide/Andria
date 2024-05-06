@@ -40,6 +40,9 @@ Transform:
   - {fileID: 858332062513164712}
   - {fileID: 4496445518772477169}
   - {fileID: 2401378560531707795}
+  - {fileID: 1178324204599956812}
+  - {fileID: 6032097440466656672}
+  - {fileID: 8645054456709873860}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &497729681847332759
@@ -147,9 +150,13 @@ MonoBehaviour:
   stompPrefab: {fileID: 8614173234808636639}
   iceStormPrefab: {fileID: 2569477599386130991}
   windSlashPrefab: {fileID: 2903635362013674006}
+  ramuanMujarabPrefab: {fileID: 4853335038091530503}
+  ramuanPemulaPrefab: {fileID: 2935493749739214796}
+  magicBurstPrefab: {fileID: 0}
+  hempasanRatuPrefab: {fileID: 2838972601903925864}
   faceIcon: {fileID: 8212810944262560738, guid: b55f9a2f4fed8b64a8f5fd2f8f9e3913,
     type: 3}
-  GetCurrentAttackType: 0
+  GetCurrentActionType: 0
 --- !u!95 &4153405973881098840
 Animator:
   serializedVersion: 5
@@ -184,16 +191,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 2
+    VectorObservationSize: 3
     NumStackedVectorObservations: 3
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 0200000002000000020000000200000002000000
-    VectorActionSize: 0200000002000000020000000200000002000000
+      BranchSizes: 02000000020000000200000002000000020000000200000002000000
+    VectorActionSize: 02000000020000000200000002000000020000000200000002000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: f9ed66800e754a04885b81c2d6300f4b, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Enemy Agent
@@ -274,7 +281,6 @@ MonoBehaviour:
   magicAttack: 0
   magicCost: 0
   element: 1
-  NUM_MAGIC_ELEMENT: 9
   minAttackMultiplier: 0.5
   maxAttackMultiplier: 1.2
   minDefenseMultiplier: 0.5
@@ -334,7 +340,65 @@ MonoBehaviour:
   magicAttack: 1
   magicCost: 5
   element: 3
-  NUM_MAGIC_ELEMENT: 9
+  minAttackMultiplier: 0.4
+  maxAttackMultiplier: 1.2
+  minDefenseMultiplier: 0.2
+  maxDefenseMultiplier: 1
+  targetStats: {fileID: 0}
+  IsBlockingAttack: 0
+  IsResistingAttack: 0
+  IsWeakToAttack: 0
+--- !u!1 &2838972601903925864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1178324204599956812}
+  - component: {fileID: 7667807405918899866}
+  m_Layer: 0
+  m_Name: 'EHempasanRatuPrefab '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1178324204599956812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838972601903925864}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.40834177, y: -1.9556977, z: 579.9541}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 233000658514510112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7667807405918899866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838972601903925864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c45876742323dd4da966b81dbb5a4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 281984682982205022}
+  magicName: 
+  damage: 0
+  animationName: Range
+  magicAttack: 1
+  magicCost: 5
+  element: 0
   minAttackMultiplier: 0.4
   maxAttackMultiplier: 1.2
   minDefenseMultiplier: 0.2
@@ -394,7 +458,6 @@ MonoBehaviour:
   magicAttack: 1
   magicCost: 5
   element: 5
-  NUM_MAGIC_ELEMENT: 9
   minAttackMultiplier: 0.4
   maxAttackMultiplier: 1.2
   minDefenseMultiplier: 0.2
@@ -403,6 +466,106 @@ MonoBehaviour:
   IsBlockingAttack: 0
   IsResistingAttack: 0
   IsWeakToAttack: 0
+--- !u!1 &2935493749739214796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8645054456709873860}
+  - component: {fileID: 1944862601982552280}
+  m_Layer: 0
+  m_Name: ERamuanPemulaPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8645054456709873860
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2935493749739214796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 233000658514510112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1944862601982552280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2935493749739214796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9988aad22b30c4e41998d1dd5b63acb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 281984682982205022}
+  RamuanMujarabValue: {fileID: 0}
+  RamuanPemulaValue: {fileID: 0}
+  animationName: 
+  healAmount: 25
+  itemAmount: 3
+--- !u!1 &4853335038091530503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6032097440466656672}
+  - component: {fileID: 823146793255516653}
+  m_Layer: 0
+  m_Name: ERamuanMujarabPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6032097440466656672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853335038091530503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 233000658514510112}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &823146793255516653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4853335038091530503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9988aad22b30c4e41998d1dd5b63acb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 281984682982205022}
+  RamuanMujarabValue: {fileID: 0}
+  RamuanPemulaValue: {fileID: 0}
+  animationName: 
+  healAmount: 50
+  itemAmount: 1
 --- !u!1 &8031948482477614433
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +617,6 @@ MonoBehaviour:
   magicAttack: 1
   magicCost: 5
   element: 2
-  NUM_MAGIC_ELEMENT: 9
   minAttackMultiplier: 0.1
   maxAttackMultiplier: 1
   minDefenseMultiplier: 0.4
@@ -514,7 +676,6 @@ MonoBehaviour:
   magicAttack: 1
   magicCost: 5
   element: 7
-  NUM_MAGIC_ELEMENT: 9
   minAttackMultiplier: 0.4
   maxAttackMultiplier: 1.2
   minDefenseMultiplier: 0.2

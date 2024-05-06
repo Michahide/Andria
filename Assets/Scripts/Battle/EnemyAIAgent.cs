@@ -23,36 +23,29 @@ public class EnemyAIAgent : Agent
 
     void Start()
     {
-        // attackScript = GetComponent<AttackScript>();
         behaviorParameters = GetComponent<BehaviorParameters>();
-        // fighterStats = GameObject.Find("WizardHero").GetComponent<FighterStats>();
         heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
-        enemyFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        enemyFighterStats = GameObject.FindWithTag("Enemy").GetComponent<FighterStats>();
         fighterAction = GetComponent<FighterAction>();
         gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
-
-        // if (attackScript == null)
-        // {
-        //     behaviorParameters.BrainParameters.VectorObservationSize = 2;
-        //     behaviorParameters.BrainParameters.NumStackedVectorObservations = 3;
-        // }
     }
 
-    // public void CollectObservations(VectorSensor sensor)
-    // {
-    //     FighterStats fighterStats = GetComponent<FighterStats>();
-
-    //     // Add the physicalAttack and fireAttack values to the sensor
-    //     sensor.AddObservation(fighterStats.PhysicalAttack);
-    //     sensor.AddObservation(fighterStats.FireAttack);
-    // }
-    public void AgentAttack(ActionSegment<int> act)
+    public void AgentAction(ActionSegment<int> act)
     {
         var physicalAttack = act[0];
-        var iceAttack = act[1];
-        var earthAttack = act[2];
-        var windAttack = act[3];
-        var guard = act[4];
+        var guard = act[1];
+
+        // Elemental Skill
+        var iceAttack = act[2];
+        var earthAttack = act[3];
+        var windAttack = act[4];
+
+        // Item
+        var ramuanMujarab = act[5];
+        var ramuanPemula = act[6];
+
+        // Non elemental skill
+        // var hempasanRatu = act[2];
 
         if (physicalAttack == 1)
         {
@@ -83,6 +76,16 @@ public class EnemyAIAgent : Agent
             fighterAction.SelectAction("guard");
             Debug.Log("Agent Guard");
         }
+        else if (ramuanMujarab == 1)
+        {
+            fighterAction.SelectAction("ramuanMujarab");
+            Debug.Log("Agent use Ramuan Mujarab");
+        }
+        else if (ramuanPemula == 1)
+        {
+            fighterAction.SelectAction("ramuanPemula");
+            Debug.Log("Agent use Ramuan Pemula");
+        }
 
         // If the agent is trying to attack
 
@@ -106,6 +109,40 @@ public class EnemyAIAgent : Agent
                 reward = 0.1f;
             }
         }
+        else if (ramuanMujarab == 1)
+        {
+            if (enemyFighterStats.health > 75)
+            {
+                reward = -1f;
+            }
+            else if (enemyFighterStats.health > 50)
+            {
+                reward = -0.5f;
+            }
+            else
+            {
+                reward = 1f;
+            }
+        }
+        else if (ramuanPemula == 1)
+        {
+            if (enemyFighterStats.health > 90)
+            {
+                reward = -1f;
+            }
+            else if (enemyFighterStats.health > 75)
+            {
+                reward = -0.5f;
+            }
+            else
+            {
+                reward = 1f;
+            }
+        }
+        // else if (hempasanRatu == 1)
+        // {
+        //     reward = 1f;
+        // }
     }
 
 
@@ -113,7 +150,7 @@ public class EnemyAIAgent : Agent
     {
         if (gameController.state == GameController.BattleState.ENEMYTURN)
         {
-            AgentAttack(actions.DiscreteActions);
+            AgentAction(actions.DiscreteActions);
 
             // Apply the reward
             AddReward(reward);
@@ -127,13 +164,13 @@ public class EnemyAIAgent : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         // Observe the target's health
-        sensor.AddObservation(heroFighterStats.health/heroFighterStats.startHealth);
-        // if (attackScript != null)
-        // {
-        //     sensor.AddOneHotObservation((int)attackScript.element, attackScript.NUM_MAGIC_ELEMENT);
-        // }
-        // Observe the current attack type
-        sensor.AddObservation(fighterAction.GetCurrentActionType/7);
+        sensor.AddObservation(heroFighterStats.health / heroFighterStats.startHealth);
+
+        // Observe owner (enemy)'s health
+        sensor.AddObservation(enemyFighterStats.health / enemyFighterStats.startHealth);
+
+        // Observe the current action type
+        sensor.AddObservation(fighterAction.GetCurrentActionType / 10);
 
         // Observe the element used by Enemy
         // Debug.Log("Num Magic Element: " + attackScript.NUM_MAGIC_ELEMENT);

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameMode : MonoBehaviour
 {
-    public bool isUsingMLAgent;
-    public bool isUsingElement;
+    public static bool isUsingMLAgent;
+    public static bool isUsingElement;
     private static GameMode instance;
 
     public void Awake()
@@ -25,25 +25,33 @@ public class GameMode : MonoBehaviour
 
     public void usingML(bool isUsingML)
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         if (isUsingML)
         {
             isUsingMLAgent = true;
         }
         else
         {
-            isUsingMLAgent = false;
+             isUsingMLAgent = false;
         }
     }
 
     public void usingElement(bool isElement)
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         if (isElement)
         {
-            isUsingElement = true;
+             isUsingElement = true;
         }
         else
         {
-            isUsingElement = false;
+             isUsingElement = false;
         }
     }
 }

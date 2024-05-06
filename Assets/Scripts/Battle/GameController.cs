@@ -33,9 +33,11 @@ public class GameController : MonoBehaviour
     FighterStats currentFighterStats;
     FighterStats currentEnemyStats;
 
-    [SerializeField] GameObject ActionMainPanel;
+    [SerializeField] GameObject ActionMainElementalPanel;
+    [SerializeField] GameObject ActionMainNonElementalPanel;
     [SerializeField] GameObject ItemPanel;
-    [SerializeField] GameObject SkillPanel;
+    [SerializeField] GameObject SkillElementalPanel;
+    [SerializeField] GameObject SkillNonElementalPanel;
 
     public BattleHUD heroHUD;
     public BattleHUD enemyHUD;
@@ -65,9 +67,11 @@ public class GameController : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
-        ActionMainPanel.SetActive(false);
+        ActionMainElementalPanel.SetActive(false);
+        ActionMainNonElementalPanel.SetActive(false);
         ItemPanel.SetActive(false);
-        SkillPanel.SetActive(false);
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
         loadBasicScene = GetComponent<LoadBasicScene>();
 
         gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
@@ -136,55 +140,78 @@ public class GameController : MonoBehaviour
         battleEnemyText.gameObject.SetActive(false);
         battlePlayerText.gameObject.SetActive(false);
 
-        ActionMainPanel.SetActive(false);
+        ActionMainElementalPanel.SetActive(false);
+        ActionMainNonElementalPanel.SetActive(false);
         ItemPanel.SetActive(false);
-        SkillPanel.SetActive(false);
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
         Debug.Log("Enemy's turn");
 
-        if (gameMode.isUsingMLAgent)
+        if (GameMode.isUsingMLAgent)
         {
             Debug.Log("Using ML Agents");
             currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
         }
         else
         {
-            currentEnemyStats.GetComponent<EnemyAIAgent>();
-            Debug.Log("Using Simple AI");
-            // string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
-            int intAttackType = Random.Range(0, 4);
-            Debug.Log("intAttackType: " + intAttackType);
-            string attackType;
-            if (intAttackType == 1)
+            if (GameMode.isUsingElement)
             {
-                attackType = "stomp";
-            }
-            else if (intAttackType == 2)
-            {
-                attackType = "iceStorm";
-            }
-            else if (intAttackType == 3)
-            {
-                attackType = "windSlash";
-            }
-            else if (intAttackType == 4)
-            {
-                attackType = "guard";
+                currentEnemyStats.GetComponent<EnemyAIAgent>();
+                Debug.Log("Using Simple AI and Element");
+                int intActionType = Random.Range(0, 6);
+                Debug.Log("intAttackType: " + intActionType);
+                string actionType;
+                if (intActionType == 1)
+                {
+                    actionType = "guard";
+                }
+                else if (intActionType == 2)
+                {
+                    actionType = "iceStorm";
+                }
+                else if (intActionType == 3)
+                {
+                    actionType = "stomp";
+                }
+                else if (intActionType == 4)
+                {
+                    actionType = "windSlash";
+                }
+                else if (intActionType == 5)
+                {
+                    actionType = "ramuanMujarab";
+                }
+                else if (intActionType == 6)
+                {
+                    actionType = "ramuanPemula";
+                }
+                else
+                {
+                    actionType = "melee";
+                }
+                currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
             }
             else
             {
-                attackType = "melee";
+                currentEnemyStats.GetComponent<EnemyAIAgent>();
+                Debug.Log("Using Simple AI and Not Using Element");
+                int intActionType = Random.Range(0, 2);
+                Debug.Log("intAttackType: " + intActionType);
+                string actionType;
+                if (intActionType == 1)
+                {
+                    actionType = "guard";
+                }
+                else if (intActionType == 2)
+                {
+                    actionType = "hempasanRatu";
+                }
+                else
+                {
+                    actionType = "melee";
+                }
+                currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
             }
-            currentEnemyStats.GetComponent<FighterAction>().SelectAction(attackType);
-        }
-
-        if (gameMode.isUsingElement)
-        {
-            // Debug.Log("Using Element");
-            // currentUnit.GetComponent<FighterAction>().SelectElement();
-        }
-        else
-        {
-            // Debug.Log("Not Using Element");
         }
 
         Debug.Log("Enemy's Turn");
@@ -194,6 +221,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         heroHUD.SetHP(currentFighterStats.health);
+        enemyHUD.SetHP(currentEnemyStats.health);
         enemyHUD.SetMP(currentEnemyStats.magic);
 
         yield return new WaitForSeconds(2f);
@@ -213,101 +241,28 @@ public class GameController : MonoBehaviour
     public void HeroTurn()
     {
         battleText.gameObject.SetActive(false);
-        battleAffinityText.gameObject.SetActive(false);
         battleEnemyText.gameObject.SetActive(false);
         battlePlayerText.gameObject.SetActive(false);
 
-        battleAffinityText.text = "Pilih Aksimu!";
         bool isDead = currentFighterStats.GetDead();
         if (!isDead)
         {
-            ActionMainPanel.SetActive(true);
+            battleAffinityText.gameObject.SetActive(true);
+            battleAffinityText.text = "Giliranmu!";
+
+            if (GameMode.isUsingElement)
+            {
+                ActionMainElementalPanel.SetActive(true);
+            }
+            else
+            {
+                ActionMainNonElementalPanel.SetActive(true);
+            }
             ItemPanel.SetActive(false);
-            SkillPanel.SetActive(false);
+            SkillElementalPanel.SetActive(false);
+            SkillNonElementalPanel.SetActive(false);
         }
     }
-
-    // public void NextTurn()
-    // {
-    //     battleText.gameObject.SetActive(false);
-    //     battleAffinityText.gameObject.SetActive(false);
-    //     battleEnemyText.gameObject.SetActive(false);
-    //     battlePlayerText.gameObject.SetActive(false);
-    //     FighterStats currentFighterStats = fighterStats[0];
-    //     fighterStats.Remove(currentFighterStats);
-    //     if (enemy && hero) // If there is an enemy and a player
-    //     {
-    //         GameObject currentUnit = currentFighterStats.gameObject;
-    //         currentFighterStats.CalculateNextTurn(currentFighterStats.nextActTurn);
-    //         fighterStats.Add(currentFighterStats);
-    //         fighterStats.Sort();
-    //         if (currentUnit.CompareTag("Hero"))
-    //         {
-    //             state = BattleState.HEROTURN;
-    //             ActionMainPanel.SetActive(true);
-    //             ItemPanel.SetActive(false);
-    //             SkillPanel.SetActive(false);
-    //             Debug.Log("Hero's turn");
-    //         }
-    //         else
-    //         {
-    //             state = BattleState.ENEMYTURN;
-    //             ActionMainPanel.SetActive(false);
-    //             ItemPanel.SetActive(false);
-    //             SkillPanel.SetActive(false);
-    //             Debug.Log("Enemy's turn");
-
-    //             if (gameMode.isUsingMLAgent)
-    //             {
-    //                 // Debug.Log("Using ML Agents");
-    //                 currentUnit.GetComponent<EnemyAIAgent>().RequestDecision();
-    //             }
-    //             else
-    //             {
-    //                 // Debug.Log("Using Simple AI");
-    //                 // string attackType = Random.Range(0, 2) == 1 ? "melee" : "range";
-    //                 int intAttackType = Random.Range(0, 4);
-    //                 Debug.Log("intAttackType: " + intAttackType);
-    //                 string attackType;
-    //                 if (intAttackType == 1)
-    //                 {
-    //                     attackType = "stomp";
-    //                 }
-    //                 else if (intAttackType == 2)
-    //                 {
-    //                     attackType = "iceStorm";
-    //                 }
-    //                 else if (intAttackType == 3)
-    //                 {
-    //                     attackType = "windSlash";
-    //                 }
-    //                 else if (intAttackType == 4)
-    //                 {
-    //                     attackType = "guard";
-    //                 }
-    //                 else
-    //                 {
-    //                     attackType = "melee";
-    //                 }
-    //                 currentUnit.GetComponent<FighterAction>().SelectAttack(attackType);
-    //             }
-
-    //             if (gameMode.isUsingElement)
-    //             {
-    //                 // Debug.Log("Using Element");
-    //                 // currentUnit.GetComponent<FighterAction>().SelectElement();
-    //             }
-    //             else
-    //             {
-    //                 // Debug.Log("Not Using Element");
-    //             }
-    //         }
-    //     }
-    //     else
-    //     {
-    //         NextTurn();
-    //     }
-    // }
 
     void MainMenu()
     {
@@ -335,23 +290,20 @@ public class GameController : MonoBehaviour
 
     public void EndBattle()
     {
-
+        ActionMainElementalPanel.SetActive(false);
+        ActionMainNonElementalPanel.SetActive(false);
+        ItemPanel.SetActive(false);
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
+        battleText.gameObject.SetActive(true);
         if (state == BattleState.WON)
         {
-            ActionMainPanel.SetActive(false);
-            ItemPanel.SetActive(false);
-            SkillPanel.SetActive(false);
-            battleText.gameObject.SetActive(true);
             battleText.text = "Kamu Menang!";
             Invoke("Win", 2);
             Invoke("Credit", 5);
         }
         else if (state == BattleState.LOST)
         {
-            ActionMainPanel.SetActive(false);
-            ItemPanel.SetActive(false);
-            SkillPanel.SetActive(false);
-            battleText.gameObject.SetActive(true);
             battleText.text = "Kamu Kalah.";
             Invoke("Lose", 2);
             Invoke("MainMenu", 5);

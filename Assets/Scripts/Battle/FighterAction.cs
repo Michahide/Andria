@@ -19,6 +19,8 @@ public class FighterAction : MonoBehaviour
     [SerializeField] private GameObject windSlashPrefab;
     [SerializeField] private GameObject ramuanMujarabPrefab;
     [SerializeField] private GameObject ramuanPemulaPrefab;
+    [SerializeField] private GameObject magicBurstPrefab;
+    [SerializeField] private GameObject hempasanRatuPrefab;
 
 
     [SerializeField] private Sprite faceIcon;
@@ -88,11 +90,29 @@ public class FighterAction : MonoBehaviour
             AudioManager.Instance.Play("MagicAttack");
             SkillText(AttackText);
         }
+        else if (btn.CompareTo("guard") == 0)
+        {
+            SkillText(GuardText);
+            if (tag == "Hero")
+            {
+                hero.GetComponent<FighterStats>().guard = true;
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.ENEMYTURN;
+                GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().EnemyTurn());
+            }
+            else
+            {
+                enemy.GetComponent<FighterStats>().guard = true;
+                GetCurrentActionType = 2;
+                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.HEROTURN;
+                GameControllerObj.GetComponent<GameController>().HeroTurn();
+            }
+            // Invoke("ContinueGame", 2);
+        }
         else if (btn.CompareTo("fireball") == 0)
         {
             fireballPrefab.GetComponent<AttackScript>().Attack(victim);
             AudioManager.Instance.Play("MagicAttack");
-            GetCurrentActionType = 2;
+            GetCurrentActionType = 3;
             SkillText(FireballText);
         }
         else if (btn.CompareTo("waterSlash") == 0)
@@ -130,34 +150,32 @@ public class FighterAction : MonoBehaviour
             GetCurrentActionType = 7;
             SkillText(WindSlashText);
         }
-        else if (btn.CompareTo("guard") == 0)
-        {
-            SkillText(GuardText);
-            if (tag == "Hero")
-            {
-                hero.GetComponent<FighterStats>().guard = true;
-                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.ENEMYTURN;
-                GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().EnemyTurn());
-            }
-            else
-            {
-                enemy.GetComponent<FighterStats>().guard = true;
-                GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.HEROTURN;
-                GameControllerObj.GetComponent<GameController>().HeroTurn();
-            }
-            // Invoke("ContinueGame", 2);
-        }
         else if (btn.CompareTo("ramuanMujarab") == 0)
         {
             ramuanMujarabPrefab.GetComponent<ItemScript>().Item();
             AudioManager.Instance.Play("MagicAttack");
-            GetCurrentActionType = 8;
+            GetCurrentActionType = 9;
         }
         else if (btn.CompareTo("ramuanPemula") == 0)
         {
             ramuanPemulaPrefab.GetComponent<ItemScript>().Item();
             AudioManager.Instance.Play("MagicAttack");
-            GetCurrentActionType = 9;
+            GetCurrentActionType = 10;
+        }
+
+        // Non elemental attack
+        else if (btn.CompareTo("hempasanRatu") == 0)
+        {
+            hempasanRatuPrefab.GetComponent<AttackScript>().Attack(victim);
+            AudioManager.Instance.Play("MagicAttack");
+            GetCurrentActionType = 3;
+            SkillText("Hempasan Ratu!");
+        }
+        else if (btn.CompareTo("magicBurst") == 0)
+        {
+            magicBurstPrefab.GetComponent<AttackScript>().Attack(victim);
+            AudioManager.Instance.Play("MagicAttack");
+            SkillText("Magic Burst!");
         }
     }
 

@@ -16,7 +16,6 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private float magicCost;
     public enum magicElement { None, Physical, Fire, Ice, Water, Wind, Thunder, Earth, LastElement };
     public magicElement element;
-    public int NUM_MAGIC_ELEMENT = (int)magicElement.LastElement + 1;
     [SerializeField] private float minAttackMultiplier;
 
     [SerializeField] private float maxAttackMultiplier;
@@ -40,7 +39,7 @@ public class AttackScript : MonoBehaviour
         gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
         GameControllerObj = GameObject.Find("GameControllerObject");
 
-        if (!gameMode.isUsingElement)
+        if (!GameMode.isUsingElement)
         {
             element = magicElement.None;
         }

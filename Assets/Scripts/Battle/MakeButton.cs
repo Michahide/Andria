@@ -6,9 +6,11 @@ using UnityEngine.UI;
 
 public class MakeButton : MonoBehaviour
 {
-    [SerializeField] GameObject ActionMainPanel;
+    [SerializeField] GameObject ActionMainElementalPanel;
+    [SerializeField] GameObject ActionMainNonElementalPanel;
     [SerializeField] GameObject ItemPanel;
-    [SerializeField] GameObject SkillPanel;
+    [SerializeField] GameObject SkillElementalPanel;
+    [SerializeField] GameObject SkillNonElementalPanel;
 
     private GameObject hero;
     void Start()
@@ -26,15 +28,28 @@ public class MakeButton : MonoBehaviour
         }
         else if (btn.CompareTo("SkillBtn") == 0 || btn.CompareTo("SkillExit") == 0)
         {
-            if (SkillPanel.activeInHierarchy)
+            if (SkillElementalPanel.activeInHierarchy)
             {
-                SkillPanel.SetActive(false);
-                ActionMainPanel.SetActive(true);
+                SkillElementalPanel.SetActive(false);
+                ActionMainElementalPanel.SetActive(true);
             }
-            else if (!SkillPanel.activeInHierarchy)
+            else if (!SkillElementalPanel.activeInHierarchy)
             {
-                SkillPanel.SetActive(true);
-                ActionMainPanel.SetActive(false);
+                SkillElementalPanel.SetActive(true);
+                ActionMainElementalPanel.SetActive(false);
+            }
+        }
+        else if (btn.CompareTo("SkillNonElementalBtn") == 0 || btn.CompareTo("SkillNonElementalExit") == 0)
+        {
+            if (SkillNonElementalPanel.activeInHierarchy)
+            {
+                SkillNonElementalPanel.SetActive(false);
+                ActionMainNonElementalPanel.SetActive(true);
+            }
+            else if (!SkillNonElementalPanel.activeInHierarchy)
+            {
+                SkillNonElementalPanel.SetActive(true);
+                ActionMainNonElementalPanel.SetActive(false);
             }
         }
         else if (btn.CompareTo("ItemBtn") == 0 || btn.CompareTo("ItemExit") == 0)
@@ -42,13 +57,17 @@ public class MakeButton : MonoBehaviour
             if (ItemPanel.activeInHierarchy)
             {
                 ItemPanel.SetActive(false);
-                ActionMainPanel.SetActive(true);
+                ActionMainElementalPanel.SetActive(true);
             }
             else if (!ItemPanel.activeInHierarchy)
             {
                 ItemPanel.SetActive(true);
-                ActionMainPanel.SetActive(false);
+                ActionMainElementalPanel.SetActive(false);
             }
+        }
+        else if (btn.CompareTo("GuardBtn") == 0)
+        {
+            hero.GetComponent<FighterAction>().SelectAction("guard");
         }
         else if (btn.CompareTo("FireballBtn") == 0)
         {
@@ -62,17 +81,19 @@ public class MakeButton : MonoBehaviour
         {
             hero.GetComponent<FighterAction>().SelectAction("chainLightning");
         }
-        else if (btn.CompareTo("GuardBtn") == 0)
-        {
-            hero.GetComponent<FighterAction>().SelectAction("guard");
-        }
         else if (btn.CompareTo("RamuanMujarabBtn") == 0)
         {
             hero.GetComponent<FighterAction>().SelectAction("ramuanMujarab");
         }
-                else if (btn.CompareTo("RamuanPemulaBtn") == 0)
+        else if (btn.CompareTo("RamuanPemulaBtn") == 0)
         {
             hero.GetComponent<FighterAction>().SelectAction("ramuanPemula");
+        }
+
+        // Non Elemental Attack
+        else if (btn.CompareTo("MagicBurstBtn") == 0)
+        {
+            hero.GetComponent<FighterAction>().SelectAction("magicBurst");
         }
     }
 }
