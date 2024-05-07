@@ -540,6 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 241311265}
   - component: {fileID: 241311266}
+  - component: {fileID: 241311267}
   m_Layer: 5
   m_Name: MLToggle
   m_TagString: Untagged
@@ -614,9 +615,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1189293712}
+      - m_Target: {fileID: 241311267}
         m_TargetAssemblyTypeName: GameMode, Assembly-CSharp
-        m_MethodName: usingML
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -627,6 +628,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 1
+--- !u!114 &241311267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241311264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726da6de7969530499c24ff3ae435476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &257904796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 501646712}
   - component: {fileID: 501646713}
+  - component: {fileID: 501646714}
   m_Layer: 5
   m_Name: ElemenToggle
   m_TagString: Untagged
@@ -1276,9 +1290,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1189293712}
+      - m_Target: {fileID: 501646714}
         m_TargetAssemblyTypeName: GameMode, Assembly-CSharp
-        m_MethodName: usingElement
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1289,6 +1303,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 1
+--- !u!114 &501646714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501646711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726da6de7969530499c24ff3ae435476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &606582296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4367,6 +4393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1664904512}
   - component: {fileID: 1664904513}
+  - component: {fileID: 1664904514}
   m_Layer: 5
   m_Name: MusikSlider
   m_TagString: Untagged
@@ -4447,7 +4474,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1818213228}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AudioOptionsManager, Assembly-CSharp
         m_MethodName: OnMusicSliderValueChange
         m_Mode: 0
@@ -4459,6 +4486,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1664904514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664904511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2acd869d74da66f4b99466ae3c017e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicValue: {fileID: 0}
+  soundEffectsValue: {fileID: 0}
 --- !u!1 &1706540604
 GameObject:
   m_ObjectHideFlags: 0
@@ -4724,7 +4765,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1818213227}
   - component: {fileID: 1818213229}
-  - component: {fileID: 1818213228}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -4747,20 +4787,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1818213228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818213224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2acd869d74da66f4b99466ae3c017e14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSliderText: {fileID: 1923008929}
-  soundEffectsSliderText: {fileID: 1927434163}
 --- !u!114 &1818213229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4773,6 +4799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c200117f8d20f3943a21c535fc6e5b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicVolume: 0
+  soundEffectsVolume: 0
   musikMixerGroup: {fileID: 4598066501729278687, guid: cd5cbfb4189c8c247b26862f9dc10080,
     type: 2}
   soundEffectsMixerGroup: {fileID: -6355598865669396092, guid: cd5cbfb4189c8c247b26862f9dc10080,
@@ -4972,6 +5000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1915453257}
   - component: {fileID: 1915453258}
+  - component: {fileID: 1915453259}
   m_Layer: 5
   m_Name: SFXSlider
   m_TagString: Untagged
@@ -5052,7 +5081,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1818213228}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AudioOptionsManager, Assembly-CSharp
         m_MethodName: OnSoundEffectsSliderValueChange
         m_Mode: 0
@@ -5064,6 +5093,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1915453259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915453256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2acd869d74da66f4b99466ae3c017e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicValue: {fileID: 0}
+  soundEffectsValue: {fileID: 0}
 --- !u!1 &1923008927
 GameObject:
   m_ObjectHideFlags: 0

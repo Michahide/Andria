@@ -1,27 +1,43 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class AudioOptionsManager : MonoBehaviour
 {
-    public static float musicVolume;
-    public static float soundEffectsVolume;
+    private Slider slider;
+    private TextMeshProUGUI musicValue;
+    private TextMeshProUGUI soundEffectsValue;
 
-    [SerializeField] private TextMeshProUGUI musicSliderText;
-    [SerializeField] private TextMeshProUGUI soundEffectsSliderText;
+    void Start()
+    {
+        musicValue = GameObject.Find("MusikValue").GetComponent<TextMeshProUGUI>();
+        soundEffectsValue= GameObject.Find("SFXValue").GetComponent<TextMeshProUGUI>();
+        slider = gameObject.GetComponent<Slider>();
+        string temp = gameObject.name;
+        slider.onValueChanged.AddListener(delegate { AttachCallback(temp); });
+    }
+
+    public void AttachCallback(string temp)
+    {
+        if (temp.CompareTo("MusikSlider") == 0)
+        {
+            OnMusicSliderValueChange(slider.value);
+        }
+        else if (temp.CompareTo("SFXSlider") == 0)
+        {
+            OnSoundEffectsSliderValueChange(slider.value);
+        }
+    }
 
     public void OnMusicSliderValueChange(float value)
     {
-        musicVolume = value;
-        
-        musicSliderText.text = ((int)(value * 100)).ToString();
-        AudioManager.Instance.UpdateMixerVolume();
+        musicValue.text = ((int)(value * 100)).ToString();
+        AudioManager.Instance.UpdateMusicMixerVolume(value);
     }
 
     public void OnSoundEffectsSliderValueChange(float value)
     {
-        soundEffectsVolume = value;
-
-        soundEffectsSliderText.text = ((int)(value * 100)).ToString();
-        AudioManager.Instance.UpdateMixerVolume();
+        soundEffectsValue.text = ((int)(value * 100)).ToString();
+        AudioManager.Instance.UpdateSFXMixerVolume(value);
     }
 }

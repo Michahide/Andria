@@ -39,7 +39,7 @@ public class AttackScript : MonoBehaviour
         gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
         GameControllerObj = GameObject.Find("GameControllerObject");
 
-        if (!GameMode.isUsingElement)
+        if (!GameMode.instance.isUsingElement)
         {
             element = magicElement.None;
         }

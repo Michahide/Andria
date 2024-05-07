@@ -147,14 +147,14 @@ public class GameController : MonoBehaviour
         SkillNonElementalPanel.SetActive(false);
         Debug.Log("Enemy's turn");
 
-        if (GameMode.isUsingMLAgent)
+        if (GameMode.instance.isUsingMLAgent)
         {
             Debug.Log("Using ML Agents");
             currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
         }
         else
         {
-            if (GameMode.isUsingElement)
+            if (GameMode.instance.isUsingElement)
             {
                 currentEnemyStats.GetComponent<EnemyAIAgent>();
                 Debug.Log("Using Simple AI and Element");
@@ -250,7 +250,7 @@ public class GameController : MonoBehaviour
             battleAffinityText.gameObject.SetActive(true);
             battleAffinityText.text = "Giliranmu!";
 
-            if (GameMode.isUsingElement)
+            if (GameMode.instance.isUsingElement)
             {
                 ActionMainElementalPanel.SetActive(true);
             }

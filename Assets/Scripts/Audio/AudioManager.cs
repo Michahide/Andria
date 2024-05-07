@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+    public float musicVolume;
+    public float soundEffectsVolume;
 
     [SerializeField] private AudioMixerGroup musikMixerGroup;
     [SerializeField] private AudioMixerGroup soundEffectsMixerGroup;
@@ -14,7 +16,6 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
         if (Instance == null)
         {
             Instance = this;
@@ -23,7 +24,9 @@ public class AudioManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+        DontDestroyOnLoad(this);
 
         foreach (Sound s in sounds)
         {
@@ -88,10 +91,15 @@ public class AudioManager : MonoBehaviour
         s.source.Stop();
     }
 
-    public void UpdateMixerVolume()
+    public void UpdateMusicMixerVolume(float value)
     {
-        musikMixerGroup.audioMixer.SetFloat("Music", Mathf.Log10(AudioOptionsManager.musicVolume) * 20);
-        soundEffectsMixerGroup.audioMixer.SetFloat("SFX", Mathf.Log10(AudioOptionsManager.soundEffectsVolume) * 20);
+        musikMixerGroup.audioMixer.SetFloat("Music", Mathf.Log10(value) * 20);
+        musicVolume = Mathf.Log10(value) * 20;
+    }
+    public void UpdateSFXMixerVolume(float value)
+    {
+        soundEffectsMixerGroup.audioMixer.SetFloat("SFX", Mathf.Log10(value) * 20);
+        soundEffectsVolume = Mathf.Log10(value) * 20;
     }
 
     public void muteMusic(bool isMusicMute)
@@ -102,7 +110,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            musikMixerGroup.audioMixer.SetFloat("Music", AudioOptionsManager.musicVolume);
+            musikMixerGroup.audioMixer.SetFloat("Music", musicVolume);
         }
     }
 
@@ -114,7 +122,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            soundEffectsMixerGroup.audioMixer.SetFloat("SFX", AudioOptionsManager.soundEffectsVolume);
+            soundEffectsMixerGroup.audioMixer.SetFloat("SFX", soundEffectsVolume);
         }
     }
 }
