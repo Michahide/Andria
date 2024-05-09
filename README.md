@@ -39,3 +39,32 @@ A: This version is last compatible with protobuf 3.19.6 .\
 
 **Q: Why we need Tensorflow 2.11 lower (2.10)?**\
 A: This version is last support training using GPU.\
+
+## Vector Observation
+| Parameter | Description |
+| --- | --- |
+| Vector Obeservation Space Size | 3 |  
+| Stacked Vector | 3 |  
+
+## Actions (Element and ML)  
+| Parameter | Description |
+| --- | --- |
+| Action Space Type | Discrete |
+| Discrete Branch |  7 |
+| 0 | Physical Attack |  
+| 1 | Guard |  
+| 2 | Ice Attack |  
+| 3 | Earth Attack |  
+| 4 | Wind Attack |  
+| 5 | Ramuan Mujarab |  
+| 6 | Ramuan Pemula |  
+
+## Actions (Non Element and ML)  
+| Parameter | Description |
+| --- | --- |
+| Action Space Type | Discrete |
+| Discrete Branch |  3 |
+| 0 | Physical Attack |  
+| 1 | Guard |  
+| 2 | Hempasan Ratu |  
+

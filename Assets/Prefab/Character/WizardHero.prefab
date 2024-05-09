@@ -384,7 +384,7 @@ MonoBehaviour:
   animator: {fileID: 6105293762970895670}
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
-  health: 100
+  health: 300
   magic: 500
   melee: 10
   magicRange: 25

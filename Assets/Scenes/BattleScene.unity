@@ -4542,7 +4542,7 @@ GameObject:
   - component: {fileID: 777108784}
   - component: {fileID: 777108783}
   m_Layer: 5
-  m_Name: FireballValue
+  m_Name: MagicBurstValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8447,7 +8447,7 @@ GameObject:
   - component: {fileID: 1758248429}
   - component: {fileID: 1758248428}
   m_Layer: 5
-  m_Name: FireballText
+  m_Name: MagicBurstText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8492,7 +8492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bola Api
+  m_text: Tembakan Sihir
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7528f384053eb3b49a012a6ff6dc9ec7, type: 2}
   m_sharedMaterial: {fileID: -8492568614025518459, guid: 7528f384053eb3b49a012a6ff6dc9ec7,
@@ -8556,7 +8556,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -41.33897, w: 0}
+  m_margin: {x: 0, y: 0, z: -118.810974, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

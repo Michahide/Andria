@@ -1,0 +1,65 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 69,
+                "file_path": "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-69.onnx",
+                "reward": 0.4666666669258173,
+                "creation_time": 1715243169.6856947,
+                "auxillary_file_paths": [
+                    "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-69.pt"
+                ]
+            },
+            {
+                "steps": 79,
+                "file_path": "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-79.onnx",
+                "reward": 0.44683544328318364,
+                "creation_time": 1715243210.6785038,
+                "auxillary_file_paths": [
+                    "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-79.pt"
+                ]
+            },
+            {
+                "steps": 89,
+                "file_path": "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-89.onnx",
+                "reward": 0.43146067439170366,
+                "creation_time": 1715243258.099278,
+                "auxillary_file_paths": [
+                    "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-89.pt"
+                ]
+            },
+            {
+                "steps": 99,
+                "file_path": "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-99.onnx",
+                "reward": 0.47070707094789754,
+                "creation_time": 1715243295.1127298,
+                "auxillary_file_paths": [
+                    "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-99.pt"
+                ]
+            },
+            {
+                "steps": 101,
+                "file_path": "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-101.onnx",
+                "reward": 0.4811881190479392,
+                "creation_time": 1715243298.2818687,
+                "auxillary_file_paths": [
+                    "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-101.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 101,
+            "file_path": "results\\mlagentnonelement\\Enemy Agent.onnx",
+            "reward": 0.4811881190479392,
+            "creation_time": 1715243298.2818687,
+            "auxillary_file_paths": [
+                "results\\mlagentnonelement\\Enemy Agent\\Enemy Agent-101.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

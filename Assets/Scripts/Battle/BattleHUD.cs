@@ -54,7 +54,7 @@ public class BattleHUD : MonoBehaviour
     public void SetHP(float hp)
     {
         xNewHealthScale = hp > 0 ? healthScale.x * (hp / startHealth) : 0;
-        Debug.Log("SetHP: " + xNewHealthScale);
+        // Debug.Log("SetHP: " + xNewHealthScale);
         healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
     }
 
@@ -62,7 +62,7 @@ public class BattleHUD : MonoBehaviour
     {
 
         xNewMagicScale = magicScale.x * (mp / startMagic);
-        Debug.Log("SetMP: " + xNewMagicScale);
+        // Debug.Log("SetMP: " + xNewMagicScale);
         magicFill.transform.localScale = new Vector2(xNewMagicScale, magicScale.y);
     }
 }

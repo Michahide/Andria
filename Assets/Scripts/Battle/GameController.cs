@@ -62,7 +62,6 @@ public class GameController : MonoBehaviour
         // fighterStats.Add(currentEnemyStats);
 
         // fighterStats.Sort();
-        Debug.Log("GameController Enemy: " + enemy);
     }
     void Start()
     {
@@ -99,11 +98,23 @@ public class GameController : MonoBehaviour
         battleText.gameObject.SetActive(false);
 
         state = BattleState.HEROTURN;
+
+        if (gameMode.isUsingElement == false)
+        {
+            currentFighterStats.elementWeakness = new string[] { };
+            currentFighterStats.elementResistance = new string[] { };
+            currentFighterStats.elementBlock = new string[] { };
+            currentEnemyStats.elementWeakness = new string[] { };
+            currentEnemyStats.elementResistance = new string[] { };
+            currentEnemyStats.elementBlock = new string[] { };
+        }
         HeroTurn();
     }
 
     public IEnumerator HeroAttack()
     {
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
         enemyHUD.SetHP(currentEnemyStats.health);
         heroHUD.SetMP(currentFighterStats.magic);
 
@@ -125,6 +136,7 @@ public class GameController : MonoBehaviour
 
     public IEnumerator HeroUseItem()
     {
+        ItemPanel.SetActive(false);
         heroHUD.SetHP(currentFighterStats.health);
 
         yield return new WaitForSeconds(2f);
@@ -145,11 +157,9 @@ public class GameController : MonoBehaviour
         ItemPanel.SetActive(false);
         SkillElementalPanel.SetActive(false);
         SkillNonElementalPanel.SetActive(false);
-        Debug.Log("Enemy's turn");
 
         if (GameMode.instance.isUsingMLAgent)
         {
-            Debug.Log("Using ML Agents");
             currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
         }
         else
@@ -157,9 +167,7 @@ public class GameController : MonoBehaviour
             if (GameMode.instance.isUsingElement)
             {
                 currentEnemyStats.GetComponent<EnemyAIAgent>();
-                Debug.Log("Using Simple AI and Element");
                 int intActionType = Random.Range(0, 6);
-                Debug.Log("intAttackType: " + intActionType);
                 string actionType;
                 if (intActionType == 1)
                 {
@@ -194,9 +202,7 @@ public class GameController : MonoBehaviour
             else
             {
                 currentEnemyStats.GetComponent<EnemyAIAgent>();
-                Debug.Log("Using Simple AI and Not Using Element");
                 int intActionType = Random.Range(0, 2);
-                Debug.Log("intAttackType: " + intActionType);
                 string actionType;
                 if (intActionType == 1)
                 {
@@ -213,8 +219,6 @@ public class GameController : MonoBehaviour
                 currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
             }
         }
-
-        Debug.Log("Enemy's Turn");
 
         bool isDead = currentFighterStats.GetDead();
 

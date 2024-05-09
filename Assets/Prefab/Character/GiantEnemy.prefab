@@ -112,7 +112,7 @@ MonoBehaviour:
   animator: {fileID: 4153405973881098840}
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
-  health: 100
+  health: 300
   magic: 250
   melee: 30
   magicRange: 30
@@ -200,7 +200,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 11e5611f7325e3843a2f6019473b7921, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Enemy Agent
@@ -281,8 +281,8 @@ MonoBehaviour:
   magicAttack: 0
   magicCost: 0
   element: 1
-  minAttackMultiplier: 0.5
-  maxAttackMultiplier: 1.2
+  minAttackMultiplier: 0.3
+  maxAttackMultiplier: 1
   minDefenseMultiplier: 0.5
   maxDefenseMultiplier: 1
   targetStats: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 1178324204599956812}
   - component: {fileID: 7667807405918899866}
   m_Layer: 0
-  m_Name: 'EHempasanRatuPrefab '
+  m_Name: EHempasanRatuPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -398,7 +398,7 @@ MonoBehaviour:
   animationName: Range
   magicAttack: 1
   magicCost: 5
-  element: 0
+  element: 1
   minAttackMultiplier: 0.4
   maxAttackMultiplier: 1.2
   minDefenseMultiplier: 0.2

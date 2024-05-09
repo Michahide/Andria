@@ -64,9 +64,6 @@ public class FighterAction : MonoBehaviour
     }
     public void SelectAction(string btn)
     {
-        Debug.Log("FighterAction Hero: " + hero);
-        Debug.Log("FighterAction Enemy: " + enemy);
-        Debug.Log("btn: " + btn);
         currentTurn = enemy;
         victim = hero;
 
@@ -75,7 +72,6 @@ public class FighterAction : MonoBehaviour
             currentTurn = hero;
             victim = enemy;
         }
-        Debug.Log("Victim: " + victim);
         if (btn.CompareTo("melee") == 0)
         {
             meleePrefab.GetComponent<AttackScript>().Attack(victim);
