@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class ItemScript : MonoBehaviour
 {
     public GameObject owner;
-    private GameMode gameMode;
-    private GameObject GameControllerObj;
-    private GameObject RamuanMujarabObj;
-    private GameObject RamuanPemulaObj;
+    [SerializeField] private GameObject GameControllerObj;
     [SerializeField] private TMP_Text RamuanMujarabValue;
     [SerializeField] private TMP_Text RamuanPemulaValue;
     private FighterStats ownerStats;
@@ -19,12 +14,9 @@ public class ItemScript : MonoBehaviour
     [SerializeField] private int itemAmount;
     public void Awake()
     {
-        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
-        GameControllerObj = GameObject.Find("GameControllerObject");
-        RamuanMujarabObj = GameObject.Find("RamuanMujarabBtn");
-        RamuanPemulaObj = GameObject.Find("RamuanPemulaBtn");
-        RamuanMujarabValue = GameObject.Find("RamuanMujarabValue").GetComponent<TMP_Text>();
-        RamuanPemulaValue = GameObject.Find("RamuanPemulaValue").GetComponent<TMP_Text>();
+        if(GameControllerObj == null) GameControllerObj = GameObject.Find("GameControllerObject");
+        if(RamuanMujarabValue == null) RamuanMujarabValue = GameObject.Find("RamuanMujarabValue").GetComponent<TMP_Text>();
+        if(RamuanPemulaValue == null) RamuanPemulaValue = GameObject.Find("RamuanPemulaValue").GetComponent<TMP_Text>();
     }
 
     public void Item()

@@ -1,0 +1,65 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 224170,
+                "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-224170.onnx",
+                "reward": 0.175130898376722,
+                "creation_time": 1717751016.827009,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-224170.pt"
+                ]
+            },
+            {
+                "steps": 307894,
+                "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-307894.onnx",
+                "reward": 0.2293650908839135,
+                "creation_time": 1717753171.988183,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-307894.pt"
+                ]
+            },
+            {
+                "steps": 367173,
+                "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-367173.onnx",
+                "reward": 0.1852381032965486,
+                "creation_time": 1717754725.3677955,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-367173.pt"
+                ]
+            },
+            {
+                "steps": 368568,
+                "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-368568.onnx",
+                "reward": 0.11009616451337934,
+                "creation_time": 1717755660.6376514,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-368568.pt"
+                ]
+            },
+            {
+                "steps": 371204,
+                "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-371204.onnx",
+                "reward": -0.666666675836612,
+                "creation_time": 1717756153.9124906,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-371204.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 371204,
+            "file_path": "results\\mlagentelementnewparamsmultienv\\Enemy Agent.onnx",
+            "reward": -0.666666675836612,
+            "creation_time": 1717756153.9124906,
+            "auxillary_file_paths": [
+                "results\\mlagentelementnewparamsmultienv\\Enemy Agent\\Enemy Agent-371204.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

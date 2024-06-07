@@ -334,6 +334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4efe627e6b4ec0944a1100333bf41ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hero: {fileID: 0}
+  enemy: {fileID: 0}
   meleePrefab: {fileID: 1937701982631169968}
   rangePrefab: {fileID: 9098171152677646050}
   fireballPrefab: {fileID: 7906721284935313029}
@@ -346,6 +348,7 @@ MonoBehaviour:
   ramuanPemulaPrefab: {fileID: 8591613013770322959}
   magicBurstPrefab: {fileID: 6256766597291313877}
   hempasanRatuPrefab: {fileID: 0}
+  currentAction: 
   faceIcon: {fileID: 21300000, guid: 230a03bb62924d6489368204bfa3eec0, type: 3}
   GetCurrentActionType: 0
 --- !u!95 &6105293762970895670
@@ -385,19 +388,18 @@ MonoBehaviour:
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
   health: 300
-  magic: 500
+  magic: 100
   melee: 10
   magicRange: 25
   defense: 4
   speed: 5
   experience: 0
   elementResistance:
-  - Ice
+  - Earth
   elementWeakness:
   - Wind
-  - Physical
   elementBlock:
-  - Fire
+  - Ice
   startHealth: 0
   startMagic: 0
   nextActTurn: 0

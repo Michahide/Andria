@@ -64,7 +64,7 @@ A: This version is last support training using GPU.\
 | --- | --- |
 | Action Space Type | Discrete |
 | Discrete Branch |  3 |
-| 0 | Physical Attack |  
-| 1 | Guard |  
+| 0 | Move Forward |  
+| 1 | Move Backward |  
 | 2 | Hempasan Ratu |  
 

@@ -2321,7 +2321,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Agen ML
+  m_text: Agen
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7528f384053eb3b49a012a6ff6dc9ec7, type: 2}
   m_sharedMaterial: {fileID: -8492568614025518459, guid: 7528f384053eb3b49a012a6ff6dc9ec7,
@@ -4498,8 +4498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2acd869d74da66f4b99466ae3c017e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicValue: {fileID: 0}
-  soundEffectsValue: {fileID: 0}
 --- !u!1 &1706540604
 GameObject:
   m_ObjectHideFlags: 0
@@ -5105,8 +5103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2acd869d74da66f4b99466ae3c017e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicValue: {fileID: 0}
-  soundEffectsValue: {fileID: 0}
 --- !u!1 &1923008927
 GameObject:
   m_ObjectHideFlags: 0

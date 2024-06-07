@@ -1,17 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
-using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 public class EnemyAIAgent : Agent
 {
-    // private int selectedElement;
-    // private int NUM_ELEMENT;
     private float reward = 0f;
 
     public AttackScript attackScript;
@@ -25,158 +20,180 @@ public class EnemyAIAgent : Agent
     void Start()
     {
         behaviorParameters = GetComponent<BehaviorParameters>();
-        heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
-        enemyFighterStats = GameObject.FindWithTag("Enemy").GetComponent<FighterStats>();
-        fighterAction = GetComponent<FighterAction>();
-        gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
-        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
+        if (heroFighterStats == null) heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        if (enemyFighterStats == null) enemyFighterStats = gameObject.GetComponent<FighterStats>();
+        if (fighterAction == null) fighterAction = GetComponent<FighterAction>();
+        if (gameController == null) gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
+        gameMode = GameObject.Find("GameModeManager") ? GameObject.Find("GameModeManager").GetComponent<GameMode>() : null;
     }
 
-    public void AgentAction(ActionSegment<int> act)
+    private void HandleAction(ActionSegment<int> act)
     {
         var physicalAttack = act[0];
         var guard = act[1];
 
-        if (gameMode.isUsingElement)
+        if (gameMode != null)
         {
-            // Elemental Skill
-            var iceAttack = act[2];
-            var earthAttack = act[3];
-            var windAttack = act[4];
+            if (gameMode.isUsingElement)
+            {
+                var iceAttack = act[2];
+                var earthAttack = act[3];
+                var windAttack = act[4];
+                var ramuanMujarab = act[5];
+                var ramuanPemula = act[6];
 
-            // Item
-            var ramuanMujarab = act[5];
-            var ramuanPemula = act[6];
-
-            if (physicalAttack == 1)
-            {
-                attackScript = GameObject.Find("EMeleePrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("melee");
-                Debug.Log("Agent Melee attack");
-            }
-            else if (guard == 1)
-            {
-                fighterAction.SelectAction("guard");
-                Debug.Log("Agent Guard");
-            }
-
-            else if (iceAttack == 1)
-            {
-                attackScript = GameObject.Find("EIceStormPrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("iceStorm");
-                Debug.Log("Agent Ice Storm attack");
-            }
-            else if (earthAttack == 1)
-            {
-                attackScript = GameObject.Find("EStompPrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("stomp");
-                Debug.Log("Agent Stomp Attack");
-            }
-            else if (windAttack == 1)
-            {
-                attackScript = GameObject.Find("EWindSlashPrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("windSlash");
-                Debug.Log("Agent Wind Slash Attack");
-            }
-            else if (ramuanMujarab == 1)
-            {
-                fighterAction.SelectAction("ramuanMujarab");
-                Debug.Log("Agent use Ramuan Mujarab");
-            }
-            else if (ramuanPemula == 1)
-            {
-                fighterAction.SelectAction("ramuanPemula");
-                Debug.Log("Agent use Ramuan Pemula");
-            }
-
-            // // If the agent is trying to attack
-
-            if (physicalAttack == 1 || iceAttack == 1 || earthAttack == 1 || windAttack == 1 || guard == 1)
-            {
-                if (attackScript.IsBlockingAttack)
+                if (physicalAttack == 1)
                 {
-                    reward = -1f;
+                    ExecuteAction("melee", "EMeleePrefab");
                 }
-                else if (attackScript.IsResistingAttack)
+                else if (guard == 1)
                 {
-                    reward = -0.5f;
+                    ExecuteAction("guard", null);
                 }
-                else if (attackScript.IsWeakToAttack)
+                else if (iceAttack == 1)
                 {
-                    reward = 1f;
-
+                    ExecuteAction("iceStorm", "EIceStormPrefab");
                 }
-                else
+                else if (earthAttack == 1)
                 {
-                    reward = 0.1f;
+                    ExecuteAction("stomp", "EStompPrefab");
+                }
+                else if (windAttack == 1)
+                {
+                    ExecuteAction("windSlash", "EWindSlashPrefab");
+                }
+                else if (ramuanMujarab == 1)
+                {
+                    ExecuteAction("ramuanMujarab", null);
+                }
+                else if (ramuanPemula == 1)
+                {
+                    ExecuteAction("ramuanPemula", null);
                 }
             }
-            else if (ramuanMujarab == 1)
+            else
             {
-                if (enemyFighterStats.health > 75)
+                var hempasanRatu = act[2];
+                if (physicalAttack == 1)
                 {
-                    reward = -1f;
+                    ExecuteAction("melee", "EMeleePrefab");
                 }
-                else if (enemyFighterStats.health > 50)
+                else if (guard == 1)
                 {
-                    reward = -0.5f;
+                    ExecuteAction("guard", null);
                 }
-                else
+                else if (hempasanRatu == 1)
                 {
-                    reward = 1f;
-                }
-            }
-            else if (ramuanPemula == 1)
-            {
-                if (enemyFighterStats.health > 90)
-                {
-                    reward = -1f;
-                }
-                else if (enemyFighterStats.health > 75)
-                {
-                    reward = -0.5f;
-                }
-                else
-                {
-                    reward = 1f;
+                    ExecuteAction("hempasanRatu", "EHempasanRatuPrefab");
                 }
             }
         }
         else
         {
-            // Non elemental skill
-            var hempasanRatu = act[2];
+            var iceAttack = act[2];
+            var earthAttack = act[3];
+            var windAttack = act[4];
+            var ramuanMujarab = act[5];
+            var ramuanPemula = act[6];
+
             if (physicalAttack == 1)
             {
-                attackScript = GameObject.Find("EMeleePrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("melee");
-                Debug.Log("Agent Melee attack");
+                ExecuteAction("melee", "EMeleePrefab");
             }
             else if (guard == 1)
             {
-                fighterAction.SelectAction("guard");
-                Debug.Log("Agent Guard");
+                ExecuteAction("guard", null);
             }
-            else if (hempasanRatu == 1)
+            else if (iceAttack == 1)
             {
-                attackScript = GameObject.Find("EHempasanRatuPrefab").GetComponent<AttackScript>();
-                fighterAction.SelectAction("hempasanRatu");
-                Debug.Log("Agent Hempasan Ratu");
+                ExecuteAction("iceStorm", "EIceStormPrefab");
             }
-            if (hempasanRatu == 1)
+            else if (earthAttack == 1)
             {
-                reward = 1f;
+                ExecuteAction("stomp", "EStompPrefab");
             }
-            else if (physicalAttack == 1)
+            else if (windAttack == 1)
             {
-                reward = -1f;
+                ExecuteAction("windSlash", "EWindSlashPrefab");
             }
-
-            else if (guard == 1)
+            else if (ramuanMujarab == 1)
             {
-                reward = 0.1f;
+                ExecuteAction("ramuanMujarab", null);
+            }
+            else if (ramuanPemula == 1)
+            {
+                ExecuteAction("ramuanPemula", null);
             }
         }
+    }
+
+    private void ExecuteAction(string actionType, string prefabName)
+    {
+        attackScript = prefabName != null ? GameObject.Find(prefabName).GetComponent<AttackScript>() : null;
+        fighterAction.SelectAction(actionType);
+        // Debug.Log($"Agent {actionType} executed");
+    }
+    private void EvaluateImmediateReward()
+    {
+        if (attackScript != null)
+        {
+            if (attackScript.IsBlockingAttack)
+            {
+                reward = -0.1f;
+            }
+            else if (attackScript.IsResistingAttack)
+            {
+                reward = -0.05f;
+            }
+            else if (attackScript.IsWeakToAttack)
+            {
+                reward = 0.2f;
+            }
+            else
+            {
+                reward = 0.05f;
+            }
+        }
+        else if (fighterAction.currentAction == "ramuanMujarab")
+        {
+            if (enemyFighterStats.health > 150)
+            {
+                reward = -0.1f;
+            }
+            else if (enemyFighterStats.health > 100)
+            {
+                reward = -0.05f;
+            }
+            else
+            {
+                reward = 0.2f;
+            }
+        }
+        else if (fighterAction.currentAction == "ramuanPemula")
+        {
+            if (enemyFighterStats.health > 200)
+            {
+                reward = -0.1f;
+            }
+            else if (enemyFighterStats.health > 150)
+            {
+                reward = -0.05f;
+            }
+            else
+            {
+                reward = 0.2f;
+            }
+        }
+        else
+        {
+            reward = 0.05f;
+        }
+    }
+
+    public void EvaluateReward(float winlosereward)
+    {
+        Debug.Log("Reward: " + winlosereward);
+        AddReward(winlosereward);
     }
 
 
@@ -184,31 +201,26 @@ public class EnemyAIAgent : Agent
     {
         if (gameController.state == GameController.BattleState.ENEMYTURN)
         {
-            AgentAction(actions.DiscreteActions);
-
-            // Apply the reward
+            HandleAction(actions.DiscreteActions);
+            EvaluateImmediateReward();
             AddReward(reward);
-            Debug.Log("Reward: " + reward);
+
+            // // Only end episode if the battle is won or lost
+            // if (gameController.state == GameController.BattleState.WON || gameController.state == GameController.BattleState.LOST)
+            // {
+            //     Debug.Log("End Episode");
+            //     EndEpisode();
+            // }
         }
 
         gameController.state = GameController.BattleState.HEROTURN;
-        EndEpisode();
     }
+
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // Observe the target's health
         sensor.AddObservation(heroFighterStats.health / heroFighterStats.startHealth);
-
-        // Observe owner (enemy)'s health
         sensor.AddObservation(enemyFighterStats.health / enemyFighterStats.startHealth);
-
-        // Observe the current action type
         sensor.AddObservation(fighterAction.GetCurrentActionType / 10);
-
-        // Observe the element used by Enemy
-        // Debug.Log("Num Magic Element: " + attackScript.NUM_MAGIC_ELEMENT);
-
     }
 }
-

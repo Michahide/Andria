@@ -25,17 +25,6 @@ public class BattleHUD : MonoBehaviour
 
     void Awake()
     {
-        // if (tag == "hero")
-        // {
-        //     healthFill = GameObject.Find("HeroHealthFill");
-        //     magicFill = GameObject.Find("HeroMagicFill");
-        // }
-        // else
-        // {
-        //     healthFill = GameObject.Find("EnemyHealthFill");
-        //     magicFill = GameObject.Find("EnemyMagicFill");
-        // }
-
         healthTransform = healthFill.GetComponent<RectTransform>();
         healthScale = healthFill.transform.localScale;
 

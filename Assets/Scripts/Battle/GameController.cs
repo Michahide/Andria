@@ -7,12 +7,12 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public enum BattleState { START, HEROTURN, ENEMYTURN, WON, LOST };
     public BattleState state;
-    // private List<FighterStats> fighterStats;
 
     public TMP_Text battleText;
     public TMP_Text battleAffinityText;
@@ -44,24 +44,14 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        // Academy.Instance.AutomaticSteppingEnabled = false;
-        // fighterStats = new List<FighterStats>();
-        // hero = GameObject.FindGameObjectWithTag("Hero");
-        AudioManager.Instance.Stop("Menu");
-        AudioManager.Instance.Play("Battle");
-        hero = Instantiate(heroPrefab, heroStation);
+        if (AudioManager.Instance != null) AudioManager.Instance.Stop("Menu");
+        if (AudioManager.Instance != null) AudioManager.Instance.Play("Battle");
+
+        // hero = Instantiate(heroPrefab, heroStation);
         currentFighterStats = hero.GetComponent<FighterStats>();
 
-        // currentFighterStats.CalculateNextTurn(0);
-        // fighterStats.Add(currentFighterStats);
-
-        // enemy = GameObject.FindGameObjectWithTag("Enemy");
-        enemy = Instantiate(enemyPrefab, enemyStation);
+        // enemy = Instantiate(enemyPrefab, enemyStation);
         currentEnemyStats = enemy.GetComponent<FighterStats>();
-        // currentEnemyStats.CalculateNextTurn(0);
-        // fighterStats.Add(currentEnemyStats);
-
-        // fighterStats.Sort();
     }
     void Start()
     {
@@ -73,13 +63,9 @@ public class GameController : MonoBehaviour
         SkillNonElementalPanel.SetActive(false);
         loadBasicScene = GetComponent<LoadBasicScene>();
 
-        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
+        gameMode = GameObject.Find("GameModeManager") ? GameObject.Find("GameModeManager").GetComponent<GameMode>() : null;
 
-        // fighterStats = new List<FighterStats>();
-
-        // fighterStats.Sort();
         StartCoroutine(SetupBattle());
-        // NextTurn();
     }
 
     IEnumerator SetupBattle()
@@ -94,21 +80,27 @@ public class GameController : MonoBehaviour
 
         battleText.gameObject.SetActive(true);
         battleText.text = "Kamu bertemu Ratu Rubah!";
-        yield return new WaitForSeconds(1f);
+        // yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
         battleText.gameObject.SetActive(false);
 
         state = BattleState.HEROTURN;
 
-        if (gameMode.isUsingElement == false)
+        if (gameMode != null)
         {
-            currentFighterStats.elementWeakness = new string[] { };
-            currentFighterStats.elementResistance = new string[] { };
-            currentFighterStats.elementBlock = new string[] { };
-            currentEnemyStats.elementWeakness = new string[] { };
-            currentEnemyStats.elementResistance = new string[] { };
-            currentEnemyStats.elementBlock = new string[] { };
+
+            if (gameMode.isUsingElement == false)
+            {
+                currentFighterStats.elementWeakness = new string[] { };
+                currentFighterStats.elementResistance = new string[] { };
+                currentFighterStats.elementBlock = new string[] { };
+                currentEnemyStats.elementWeakness = new string[] { };
+                currentEnemyStats.elementResistance = new string[] { };
+                currentEnemyStats.elementBlock = new string[] { };
+            }
         }
-        HeroTurn();
+        // HeroTurn();
+        StartCoroutine(HeroTraining());
     }
 
     public IEnumerator HeroAttack()
@@ -120,12 +112,13 @@ public class GameController : MonoBehaviour
 
         bool isDead = currentEnemyStats.GetDead();
 
-        yield return new WaitForSeconds(2f);
+        // yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
 
         if (isDead)
         {
             state = BattleState.WON;
-            EndBattle();
+            // EndBattle();
         }
         else
         {
@@ -139,7 +132,8 @@ public class GameController : MonoBehaviour
         ItemPanel.SetActive(false);
         heroHUD.SetHP(currentFighterStats.health);
 
-        yield return new WaitForSeconds(2f);
+        // yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
@@ -158,68 +152,75 @@ public class GameController : MonoBehaviour
         SkillElementalPanel.SetActive(false);
         SkillNonElementalPanel.SetActive(false);
 
-        if (GameMode.instance.isUsingMLAgent)
+
+        if (GameMode.instance != null)
         {
-            currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
-        }
-        else
-        {
-            if (GameMode.instance.isUsingElement)
+            if (GameMode.instance.isUsingMLAgent)
             {
-                currentEnemyStats.GetComponent<EnemyAIAgent>();
-                int intActionType = Random.Range(0, 6);
-                string actionType;
-                if (intActionType == 1)
-                {
-                    actionType = "guard";
-                }
-                else if (intActionType == 2)
-                {
-                    actionType = "iceStorm";
-                }
-                else if (intActionType == 3)
-                {
-                    actionType = "stomp";
-                }
-                else if (intActionType == 4)
-                {
-                    actionType = "windSlash";
-                }
-                else if (intActionType == 5)
-                {
-                    actionType = "ramuanMujarab";
-                }
-                else if (intActionType == 6)
-                {
-                    actionType = "ramuanPemula";
-                }
-                else
-                {
-                    actionType = "melee";
-                }
-                currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
+                if (currentEnemyStats != null) currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
             }
             else
             {
-                currentEnemyStats.GetComponent<EnemyAIAgent>();
-                int intActionType = Random.Range(0, 2);
-                string actionType;
-                if (intActionType == 1)
+                if (GameMode.instance.isUsingElement)
                 {
-                    actionType = "guard";
-                }
-                else if (intActionType == 2)
-                {
-                    actionType = "hempasanRatu";
+                    currentEnemyStats.GetComponent<EnemyAIAgent>();
+                    int intActionType = Random.Range(0, 6);
+                    string actionType;
+                    if (intActionType == 1)
+                    {
+                        actionType = "guard";
+                    }
+                    else if (intActionType == 2)
+                    {
+                        actionType = "iceStorm";
+                    }
+                    else if (intActionType == 3)
+                    {
+                        actionType = "stomp";
+                    }
+                    else if (intActionType == 4)
+                    {
+                        actionType = "windSlash";
+                    }
+                    else if (intActionType == 5)
+                    {
+                        actionType = "ramuanMujarab";
+                    }
+                    else if (intActionType == 6)
+                    {
+                        actionType = "ramuanPemula";
+                    }
+                    else
+                    {
+                        actionType = "melee";
+                    }
+                    if (currentEnemyStats != null) currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
                 }
                 else
                 {
-                    actionType = "melee";
+                    currentEnemyStats.GetComponent<EnemyAIAgent>();
+                    int intActionType = Random.Range(0, 2);
+                    string actionType;
+                    if (intActionType == 1)
+                    {
+                        actionType = "guard";
+                    }
+                    else if (intActionType == 2)
+                    {
+                        actionType = "hempasanRatu";
+                    }
+                    else
+                    {
+                        actionType = "melee";
+                    }
+                    if (currentEnemyStats != null) currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
                 }
-                currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
             }
         }
-
+        else
+        {
+            if (currentEnemyStats != null) currentEnemyStats.GetComponent<EnemyAIAgent>().RequestDecision();
+        }
         bool isDead = currentFighterStats.GetDead();
 
         yield return new WaitForSeconds(0.1f);
@@ -228,17 +229,31 @@ public class GameController : MonoBehaviour
         enemyHUD.SetHP(currentEnemyStats.health);
         enemyHUD.SetMP(currentEnemyStats.magic);
 
-        yield return new WaitForSeconds(2f);
+        // yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
 
         if (isDead)
         {
             state = BattleState.LOST;
-            EndBattle();
+
+            currentFighterStats.health = 300;
+            currentFighterStats.magic = 100;
+            currentEnemyStats.health = 300;
+            currentEnemyStats.magic = 100;
+            heroHUD.SetHP(currentFighterStats.health);
+            heroHUD.SetMP(currentFighterStats.magic);
+            enemyHUD.SetHP(currentEnemyStats.health);
+            enemyHUD.SetMP(currentEnemyStats.magic);
+            currentEnemyStats.removeDeadStatus();
+            currentFighterStats.removeDeadStatus();
+
+            // EndBattle();
         }
         else
         {
             state = BattleState.HEROTURN;
-            HeroTurn();
+            // HeroTurn();
+            StartCoroutine(HeroTraining());
         }
     }
 
@@ -268,28 +283,174 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public IEnumerator HeroTraining()
+    {
+        battleText.gameObject.SetActive(false);
+        battleAffinityText.gameObject.SetActive(false);
+        battleEnemyText.gameObject.SetActive(false);
+        battlePlayerText.gameObject.SetActive(false);
+
+        ActionMainElementalPanel.SetActive(false);
+        ActionMainNonElementalPanel.SetActive(false);
+        ItemPanel.SetActive(false);
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
+
+        if (GameMode.instance != null)
+        {
+            if (GameMode.instance.isUsingElement)
+            {
+                int intActionType = Random.Range(0, 6);
+                string actionType;
+                if (intActionType == 1)
+                {
+                    actionType = "guard";
+                }
+                else if (intActionType == 2)
+                {
+                    actionType = "fireball";
+                }
+                else if (intActionType == 3)
+                {
+                    actionType = "chainLightning";
+                }
+                else if (intActionType == 4)
+                {
+                    actionType = "waterSlash";
+                }
+                else if (intActionType == 5)
+                {
+                    actionType = "ramuanMujarab";
+                }
+                else if (intActionType == 6)
+                {
+                    actionType = "ramuanPemula";
+                }
+                else
+                {
+                    actionType = "melee";
+                }
+                if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
+            }
+            else
+            {
+                int intActionType = Random.Range(0, 2);
+                string actionType;
+                if (intActionType == 1)
+                {
+                    actionType = "guard";
+                }
+                else if (intActionType == 2)
+                {
+                    actionType = "magicBurst";
+                }
+                else
+                {
+                    actionType = "melee";
+                }
+                if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
+            }
+        }
+        else
+        {
+            int intActionType = Random.Range(0, 6);
+            string actionType;
+            if (intActionType == 1)
+            {
+                actionType = "guard";
+            }
+            else if (intActionType == 2)
+            {
+                actionType = "fireball";
+            }
+            else if (intActionType == 3)
+            {
+                actionType = "chainLightning";
+            }
+            else if (intActionType == 4)
+            {
+                actionType = "waterSlash";
+            }
+            else if (intActionType == 5)
+            {
+                actionType = "ramuanMujarab";
+            }
+            else if (intActionType == 6)
+            {
+                actionType = "ramuanPemula";
+            }
+            else
+            {
+                actionType = "melee";
+            }
+            if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
+        }
+
+        bool isDead = currentEnemyStats.GetDead();
+
+        yield return new WaitForSeconds(0.1f);
+
+        heroHUD.SetHP(currentFighterStats.health);
+        heroHUD.SetMP(currentFighterStats.magic);
+        enemyHUD.SetHP(currentEnemyStats.health);
+
+        // yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
+
+        if (isDead)
+        {
+            state = BattleState.WON;
+
+            currentFighterStats.health = 300;
+            currentFighterStats.magic = 100;
+            currentEnemyStats.health = 300;
+            currentEnemyStats.magic = 100;
+            heroHUD.SetHP(currentFighterStats.health);
+            heroHUD.SetMP(currentFighterStats.magic);
+            enemyHUD.SetHP(currentEnemyStats.health);
+            enemyHUD.SetMP(currentEnemyStats.magic);
+            currentEnemyStats.removeDeadStatus();
+            currentFighterStats.removeDeadStatus();
+
+            // EndBattle();
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
     void MainMenu()
     {
-        AudioManager.Instance.Stop("Battle");
-        AudioManager.Instance.Play("Menu");
+        if (AudioManager.Instance != null) AudioManager.Instance.Stop("Battle");
+        if (AudioManager.Instance != null) AudioManager.Instance.Play("Menu");
         loadBasicScene.ChangeToScene("MainMenu");
     }
 
     public void Credit()
     {
-        AudioManager.Instance.Stop("Battle");
-        AudioManager.Instance.Play("Menu");
+        if (AudioManager.Instance != null) AudioManager.Instance.Stop("Battle");
+        if (AudioManager.Instance != null) AudioManager.Instance.Play("Menu");
         loadBasicScene.ChangeToScene("Credit");
     }
 
     public void Win()
     {
-        AudioManager.Instance.Play("Win");
+        // Debug.Log("Player Win");
+        if (AudioManager.Instance != null) AudioManager.Instance.Play("Win");
     }
 
     public void Lose()
     {
-        AudioManager.Instance.Play("Lose");
+        // Debug.Log("Player Lose");
+        if (AudioManager.Instance != null) AudioManager.Instance.Play("Lose");
+    }
+
+    public void RestartScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 
     public void EndBattle()
@@ -303,14 +464,18 @@ public class GameController : MonoBehaviour
         if (state == BattleState.WON)
         {
             battleText.text = "Kamu Menang!";
-            Invoke("Win", 2);
-            Invoke("Credit", 5);
+            Debug.Log("Player Win!");
+            // Invoke("Win", 2);
+            // Invoke("Credit", 5);
+            // Invoke("RestartScene", 0.1f);
         }
         else if (state == BattleState.LOST)
         {
             battleText.text = "Kamu Kalah.";
-            Invoke("Lose", 2);
-            Invoke("MainMenu", 5);
+            Debug.Log("Player Lose!");
+            // Invoke("Lose", 2);
+            // Invoke("MainMenu", 5);
+            // Invoke("RestartScene", 0.1f);
         }
     }
 }

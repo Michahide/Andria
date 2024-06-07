@@ -66,7 +66,7 @@ public class AudioManager : MonoBehaviour
     {
         Sound s = Array.Find(sounds, dummySound => dummySound.clipName == clipname);
 
-        Debug.Log("Clipname: " + clipname);
+        // Debug.Log("Clipname: " + clipname);
         if (s == null)
         {
             Debug.LogError("Sound: " + clipname + " does NOT exist!");
@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
         // if(s.source == null)
         //     gameObject.AddComponent<AudioSource>();
 
-        Debug.Log("S.source: " + s.source);
+        // Debug.Log("S.source: " + s.source);
         s.source.Play();
     }
 

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class AttackScript : MonoBehaviour
@@ -23,8 +21,7 @@ public class AttackScript : MonoBehaviour
     [SerializeField] private float minDefenseMultiplier;
 
     [SerializeField] private float maxDefenseMultiplier;
-    private GameMode gameMode;
-    private GameObject GameControllerObj;
+    [SerializeField] private GameObject GameControllerObj;
 
     private FighterStats attackerStats;
     [HideInInspector] public FighterStats targetStats;
@@ -36,12 +33,13 @@ public class AttackScript : MonoBehaviour
 
     public void Awake()
     {
-        gameMode = GameObject.Find("GameModeManager").GetComponent<GameMode>();
-        GameControllerObj = GameObject.Find("GameControllerObject");
-
-        if (!GameMode.instance.isUsingElement)
+        if(GameControllerObj == null) GameControllerObj = GameObject.Find("GameControllerObject");
+        if (GameMode.instance != null)
         {
-            element = magicElement.None;
+            if (!GameMode.instance.isUsingElement)
+            {
+                element = magicElement.None;
+            }
         }
     }
 
@@ -56,12 +54,12 @@ public class AttackScript : MonoBehaviour
             {
                 GuardMultiplier = 0.75f;
                 targetStats.guard = false;
-                Debug.Log("Target is guarding");
+                // Debug.Log("Target is guarding");
             }
             else
             {
                 GuardMultiplier = 1.0f;
-                Debug.Log("Target is not guarding");
+                // Debug.Log("Target is not guarding");
             }
 
             damage = multiplier * attackerStats.melee * GuardMultiplier;
@@ -88,7 +86,7 @@ public class AttackScript : MonoBehaviour
 
             float defenseMultiplier = Random.Range(minDefenseMultiplier, maxDefenseMultiplier);
             damage = Mathf.Max(0, damage - (defenseMultiplier * targetStats.defense));
-            Debug.Log(damage);
+            // Debug.Log(damage);
             owner.GetComponent<Animator>().Play(animationName);
             targetStats.ReceiveDamage(Mathf.CeilToInt(damage));
             attackerStats.updateMagicFill(magicCost);
@@ -140,7 +138,7 @@ public class AttackScript : MonoBehaviour
         {
             GameControllerObj.GetComponent<GameController>().battleText.gameObject.SetActive(true);
             GameControllerObj.GetComponent<GameController>().battleText.text = "Tidak cukup magic untuk menyerang!";
-            // Invoke("SkipTurnContinueGame", 4);
+            
             if (owner.tag == "Hero")
             {
                 GameControllerObj.GetComponent<GameController>().StartCoroutine(GameControllerObj.GetComponent<GameController>().HeroAttack());
@@ -151,9 +149,4 @@ public class AttackScript : MonoBehaviour
             }
         }
     }
-
-    // void SkipTurnContinueGame()
-    // {
-    //     GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
-    // }
 }

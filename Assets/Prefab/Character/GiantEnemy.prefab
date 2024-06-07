@@ -113,17 +113,16 @@ MonoBehaviour:
   healthFill: {fileID: 0}
   magicFill: {fileID: 0}
   health: 300
-  magic: 250
+  magic: 100
   melee: 30
   magicRange: 30
   defense: 5
   speed: 6
   experience: 0
   elementResistance:
-  - Physical
+  - Thunder
   elementWeakness:
   - Water
-  - Thunder
   elementBlock:
   - 
   startHealth: 0
@@ -142,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4efe627e6b4ec0944a1100333bf41ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hero: {fileID: 0}
+  enemy: {fileID: 0}
   meleePrefab: {fileID: 1851263449736735661}
   rangePrefab: {fileID: 8031948482477614433}
   fireballPrefab: {fileID: 0}
@@ -154,6 +155,7 @@ MonoBehaviour:
   ramuanPemulaPrefab: {fileID: 2935493749739214796}
   magicBurstPrefab: {fileID: 0}
   hempasanRatuPrefab: {fileID: 2838972601903925864}
+  currentAction: 
   faceIcon: {fileID: 8212810944262560738, guid: b55f9a2f4fed8b64a8f5fd2f8f9e3913,
     type: 3}
   GetCurrentActionType: 0
@@ -200,7 +202,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 11e5611f7325e3843a2f6019473b7921, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 79f8f21346ebd234ebfdfb7063f9084e, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: Enemy Agent

@@ -4,15 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class FighterStats : MonoBehaviour, IComparable
+public class FighterStats : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-
-    // Show health bar
-    [SerializeField] private GameObject healthFill;
-
-    // Show magic bar
-    [SerializeField] private GameObject magicFill;
+    [SerializeField] private GameObject GameControllerObj;
 
     [Header("Stats")]
     public float health;
@@ -37,41 +32,13 @@ public class FighterStats : MonoBehaviour, IComparable
     private bool dead = false;
     public bool guard = false;
 
-    // Resize health and magic bar
-    private Transform healthTransform;
-    private Transform magicTransform;
-
-    private Vector2 healthScale;
-    private Vector2 magicScale;
-
-    private float xNewHealthScale;
-    private float xNewMagicScale;
-
-    private GameObject GameControllerObj;
 
     void Awake()
     {
-        // if (tag == "hero")
-        // {
-        //     healthFill = GameObject.Find("HeroHealthFill");
-        //     magicFill = GameObject.Find("HeroMagicFill");
-        // }
-        // else
-        // {
-        //     healthFill = GameObject.Find("EnemyHealthFill");
-        //     magicFill = GameObject.Find("EnemyMagicFill");
-        // }
-
-        // healthTransform = healthFill.GetComponent<RectTransform>();
-        // healthScale = healthFill.transform.localScale;
-
-        // magicTransform = magicFill.GetComponent<RectTransform>();
-        // magicScale = magicFill.transform.localScale;
-
         startHealth = health;
         startMagic = magic;
 
-        GameControllerObj = GameObject.Find("GameControllerObject");
+        if (GameControllerObj == null) GameControllerObj = GameObject.Find("GameControllerObject");
     }
 
     public bool ReceiveDamage(float damage)
@@ -84,25 +51,54 @@ public class FighterStats : MonoBehaviour, IComparable
         if (health <= 0)
         {
             dead = true;
-            Destroy(healthFill);
             if (gameObject.CompareTag("Hero"))
             {
                 GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.LOST;
+
+                if (GameMode.instance != null)
+                {
+                    if (GameMode.instance.isUsingMLAgent)
+                    {
+                        if (GameControllerObj.GetComponent<GameController>().enemy != null)
+                        {
+                            Debug.Log("Agent Win");
+                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
+                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+                        }
+                    }
+                }
+                Debug.Log("Agent Win");
+                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
+                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+
                 GameControllerObj.GetComponent<GameController>().EndBattle();
             }
             else
             {
                 GameControllerObj.GetComponent<GameController>().state = GameController.BattleState.WON;
+
+                if (GameMode.instance != null)
+                {
+                    if (GameMode.instance.isUsingMLAgent)
+                    {
+                        if (GameControllerObj.GetComponent<GameController>().enemy != null)
+                        {
+                            Debug.Log("Agent Lose");
+                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
+                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+                        }
+                    }
+                }
+
+                Debug.Log("Agent Lose");
+                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
+                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+
                 GameControllerObj.GetComponent<GameController>().EndBattle();
             }
-            Destroy(gameObject);
+            // Destroy(gameObject);
             return true;
         }
-        // else if (health > 0 && damage > 0)
-        // {
-        //     xNewHealthScale = healthScale.x * (health / startHealth);
-        //     healthFill.transform.localScale = new Vector2(xNewHealthScale, healthScale.y);
-        // }
         if (health > 0)
         {
             if (gameObject.CompareTag("Hero"))
@@ -117,7 +113,6 @@ public class FighterStats : MonoBehaviour, IComparable
             }
         }
         return false;
-        // Invoke("ContinueGame", 2);
     }
 
     public void Heal(float heal)
@@ -134,8 +129,6 @@ public class FighterStats : MonoBehaviour, IComparable
         if (cost > 0)
         {
             magic = magic - cost;
-            // xNewMagicScale = magicScale.x * (magic / startMagic);
-            // magicFill.transform.localScale = new Vector2(xNewMagicScale, magicScale.y);
         }
     }
 
@@ -144,19 +137,9 @@ public class FighterStats : MonoBehaviour, IComparable
         return dead;
     }
 
-    // void ContinueGame()
-    // {
-    //     GameObject.Find("GameControllerObject").GetComponent<GameController>().NextTurn();
-    // }
-    public void CalculateNextTurn(int currentTurn)
+    public void removeDeadStatus()
     {
-        nextActTurn = currentTurn + Mathf.CeilToInt(100f / speed);
-    }
-
-    public int CompareTo(object otherStats)
-    {
-        int nex = nextActTurn.CompareTo(((FighterStats)otherStats).nextActTurn);
-        return nex;
+        dead = false;
     }
 
 }
