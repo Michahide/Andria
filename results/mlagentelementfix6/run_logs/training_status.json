@@ -2,24 +2,6 @@
     "Enemy Agent": {
         "checkpoints": [
             {
-                "steps": 625706,
-                "file_path": "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-625706.onnx",
-                "reward": 2.809374906743566,
-                "creation_time": 1717656765.5757923,
-                "auxillary_file_paths": [
-                    "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-625706.pt"
-                ]
-            },
-            {
-                "steps": 657428,
-                "file_path": "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-657428.onnx",
-                "reward": 2.562499958489622,
-                "creation_time": 1717658210.4759085,
-                "auxillary_file_paths": [
-                    "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-657428.pt"
-                ]
-            },
-            {
                 "steps": 687579,
                 "file_path": "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-687579.onnx",
                 "reward": 2.5175674626150646,
@@ -45,15 +27,33 @@
                 "auxillary_file_paths": [
                     "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-740063.pt"
                 ]
+            },
+            {
+                "steps": 740083,
+                "file_path": "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-740083.onnx",
+                "reward": 1.0500001907348633,
+                "creation_time": 1717902124.5032623,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-740083.pt"
+                ]
+            },
+            {
+                "steps": 742082,
+                "file_path": "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-742082.onnx",
+                "reward": 7.900000333786011,
+                "creation_time": 1717919287.064897,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-742082.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 740063,
+            "steps": 742082,
             "file_path": "results\\mlagentelementfix6\\Enemy Agent.onnx",
-            "reward": 2.685714189096221,
-            "creation_time": 1717662004.6023476,
+            "reward": 7.900000333786011,
+            "creation_time": 1717919287.064897,
             "auxillary_file_paths": [
-                "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-740063.pt"
+                "results\\mlagentelementfix6\\Enemy Agent\\Enemy Agent-742082.pt"
             ]
         }
     },

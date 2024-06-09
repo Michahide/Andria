@@ -1,11 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Transactions;
-using UnityEngine.SocialPlatforms;
-using Unity.MLAgents;
-using Unity.MLAgents.Actuators;
-using Unity.MLAgents.Sensors;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -41,11 +35,16 @@ public class GameController : MonoBehaviour
 
     public BattleHUD heroHUD;
     public BattleHUD enemyHUD;
+    public bool battleEnded;
+    public bool winLoseML;
 
     void Awake()
     {
-        if (AudioManager.Instance != null) AudioManager.Instance.Stop("Menu");
-        if (AudioManager.Instance != null) AudioManager.Instance.Play("Battle");
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.Stop("Menu");
+            AudioManager.Instance.Play("Battle");
+        }
 
         // hero = Instantiate(heroPrefab, heroStation);
         currentFighterStats = hero.GetComponent<FighterStats>();
@@ -55,14 +54,13 @@ public class GameController : MonoBehaviour
     }
     void Start()
     {
+        Debug.Log("Game Start!");
+        battleEnded = false;
+        winLoseML = false;
         state = BattleState.START;
-        ActionMainElementalPanel.SetActive(false);
-        ActionMainNonElementalPanel.SetActive(false);
-        ItemPanel.SetActive(false);
-        SkillElementalPanel.SetActive(false);
-        SkillNonElementalPanel.SetActive(false);
-        loadBasicScene = GetComponent<LoadBasicScene>();
+        DisableAllPanels();
 
+        loadBasicScene = GetComponent<LoadBasicScene>();
         gameMode = GameObject.Find("GameModeManager") ? GameObject.Find("GameModeManager").GetComponent<GameMode>() : null;
 
         StartCoroutine(SetupBattle());
@@ -70,10 +68,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator SetupBattle()
     {
-        battleText.gameObject.SetActive(false);
-        battleAffinityText.gameObject.SetActive(false);
-        battleEnemyText.gameObject.SetActive(false);
-        battlePlayerText.gameObject.SetActive(false);
+        DisableBattleTexts();
 
         heroHUD.SetHUD(currentFighterStats);
         enemyHUD.SetHUD(currentEnemyStats);
@@ -86,29 +81,18 @@ public class GameController : MonoBehaviour
 
         state = BattleState.HEROTURN;
 
-        if (gameMode != null)
+        if (gameMode != null && !gameMode.isUsingElement)
         {
-
-            if (gameMode.isUsingElement == false)
-            {
-                currentFighterStats.elementWeakness = new string[] { };
-                currentFighterStats.elementResistance = new string[] { };
-                currentFighterStats.elementBlock = new string[] { };
-                currentEnemyStats.elementWeakness = new string[] { };
-                currentEnemyStats.elementResistance = new string[] { };
-                currentEnemyStats.elementBlock = new string[] { };
-            }
+            ClearElementData(currentFighterStats);
+            ClearElementData(currentEnemyStats);
         }
         // HeroTurn();
         StartCoroutine(HeroTraining());
     }
-
     public IEnumerator HeroAttack()
     {
-        SkillElementalPanel.SetActive(false);
-        SkillNonElementalPanel.SetActive(false);
-        enemyHUD.SetHP(currentEnemyStats.health);
-        heroHUD.SetMP(currentFighterStats.magic);
+        DisableAllPanels();
+        UpdateHUDs();
 
         bool isDead = currentEnemyStats.GetDead();
 
@@ -118,7 +102,7 @@ public class GameController : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
-            // EndBattle();
+            EndBattle();
         }
         else
         {
@@ -141,16 +125,8 @@ public class GameController : MonoBehaviour
 
     public IEnumerator EnemyTurn()
     {
-        battleText.gameObject.SetActive(false);
-        battleAffinityText.gameObject.SetActive(false);
-        battleEnemyText.gameObject.SetActive(false);
-        battlePlayerText.gameObject.SetActive(false);
-
-        ActionMainElementalPanel.SetActive(false);
-        ActionMainNonElementalPanel.SetActive(false);
-        ItemPanel.SetActive(false);
-        SkillElementalPanel.SetActive(false);
-        SkillNonElementalPanel.SetActive(false);
+        DisableBattleTexts();
+        DisableAllPanels();
 
 
         if (GameMode.instance != null)
@@ -163,7 +139,6 @@ public class GameController : MonoBehaviour
             {
                 if (GameMode.instance.isUsingElement)
                 {
-                    currentEnemyStats.GetComponent<EnemyAIAgent>();
                     int intActionType = Random.Range(0, 6);
                     string actionType;
                     if (intActionType == 1)
@@ -194,11 +169,10 @@ public class GameController : MonoBehaviour
                     {
                         actionType = "melee";
                     }
-                    if (currentEnemyStats != null) currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
+                    currentEnemyStats?.GetComponent<FighterAction>().SelectAction(actionType);
                 }
                 else
                 {
-                    currentEnemyStats.GetComponent<EnemyAIAgent>();
                     int intActionType = Random.Range(0, 2);
                     string actionType;
                     if (intActionType == 1)
@@ -213,7 +187,7 @@ public class GameController : MonoBehaviour
                     {
                         actionType = "melee";
                     }
-                    if (currentEnemyStats != null) currentEnemyStats.GetComponent<FighterAction>().SelectAction(actionType);
+                    currentEnemyStats?.GetComponent<FighterAction>().SelectAction(actionType);
                 }
             }
         }
@@ -225,9 +199,7 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        heroHUD.SetHP(currentFighterStats.health);
-        enemyHUD.SetHP(currentEnemyStats.health);
-        enemyHUD.SetMP(currentEnemyStats.magic);
+        UpdateHUDs();
 
         // yield return new WaitForSeconds(2f);
         yield return new WaitForSeconds(0.1f);
@@ -235,19 +207,9 @@ public class GameController : MonoBehaviour
         if (isDead)
         {
             state = BattleState.LOST;
-
-            currentFighterStats.health = 300;
-            currentFighterStats.magic = 100;
-            currentEnemyStats.health = 300;
-            currentEnemyStats.magic = 100;
-            heroHUD.SetHP(currentFighterStats.health);
-            heroHUD.SetMP(currentFighterStats.magic);
-            enemyHUD.SetHP(currentEnemyStats.health);
-            enemyHUD.SetMP(currentEnemyStats.magic);
-            currentEnemyStats.removeDeadStatus();
-            currentFighterStats.removeDeadStatus();
-
             // EndBattle();
+            TrainingOnly();
+            StartCoroutine(HeroTraining());
         }
         else
         {
@@ -259,16 +221,14 @@ public class GameController : MonoBehaviour
 
     public void HeroTurn()
     {
-        battleText.gameObject.SetActive(false);
-        battleEnemyText.gameObject.SetActive(false);
-        battlePlayerText.gameObject.SetActive(false);
+        DisableBattleTexts();
 
         bool isDead = currentFighterStats.GetDead();
         if (!isDead)
         {
             battleAffinityText.gameObject.SetActive(true);
             battleAffinityText.text = "Giliranmu!";
-
+            DisableAllPanels();
             if (GameMode.instance.isUsingElement)
             {
                 ActionMainElementalPanel.SetActive(true);
@@ -277,122 +237,22 @@ public class GameController : MonoBehaviour
             {
                 ActionMainNonElementalPanel.SetActive(true);
             }
-            ItemPanel.SetActive(false);
-            SkillElementalPanel.SetActive(false);
-            SkillNonElementalPanel.SetActive(false);
         }
     }
 
     public IEnumerator HeroTraining()
     {
-        battleText.gameObject.SetActive(false);
-        battleAffinityText.gameObject.SetActive(false);
-        battleEnemyText.gameObject.SetActive(false);
-        battlePlayerText.gameObject.SetActive(false);
+        DisableBattleTexts();
+        DisableAllPanels();
 
-        ActionMainElementalPanel.SetActive(false);
-        ActionMainNonElementalPanel.SetActive(false);
-        ItemPanel.SetActive(false);
-        SkillElementalPanel.SetActive(false);
-        SkillNonElementalPanel.SetActive(false);
-
-        if (GameMode.instance != null)
-        {
-            if (GameMode.instance.isUsingElement)
-            {
-                int intActionType = Random.Range(0, 6);
-                string actionType;
-                if (intActionType == 1)
-                {
-                    actionType = "guard";
-                }
-                else if (intActionType == 2)
-                {
-                    actionType = "fireball";
-                }
-                else if (intActionType == 3)
-                {
-                    actionType = "chainLightning";
-                }
-                else if (intActionType == 4)
-                {
-                    actionType = "waterSlash";
-                }
-                else if (intActionType == 5)
-                {
-                    actionType = "ramuanMujarab";
-                }
-                else if (intActionType == 6)
-                {
-                    actionType = "ramuanPemula";
-                }
-                else
-                {
-                    actionType = "melee";
-                }
-                if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
-            }
-            else
-            {
-                int intActionType = Random.Range(0, 2);
-                string actionType;
-                if (intActionType == 1)
-                {
-                    actionType = "guard";
-                }
-                else if (intActionType == 2)
-                {
-                    actionType = "magicBurst";
-                }
-                else
-                {
-                    actionType = "melee";
-                }
-                if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
-            }
-        }
-        else
-        {
-            int intActionType = Random.Range(0, 6);
-            string actionType;
-            if (intActionType == 1)
-            {
-                actionType = "guard";
-            }
-            else if (intActionType == 2)
-            {
-                actionType = "fireball";
-            }
-            else if (intActionType == 3)
-            {
-                actionType = "chainLightning";
-            }
-            else if (intActionType == 4)
-            {
-                actionType = "waterSlash";
-            }
-            else if (intActionType == 5)
-            {
-                actionType = "ramuanMujarab";
-            }
-            else if (intActionType == 6)
-            {
-                actionType = "ramuanPemula";
-            }
-            else
-            {
-                actionType = "melee";
-            }
-            if (currentFighterStats != null) currentFighterStats.GetComponent<FighterAction>().SelectAction(actionType);
-        }
+        string actionType = SelectHeroAction();
+        currentFighterStats?.GetComponent<FighterAction>().SelectAction(actionType);
 
         bool isDead = currentEnemyStats.GetDead();
 
         yield return new WaitForSeconds(0.1f);
 
-        heroHUD.SetHP(currentFighterStats.health);
-        heroHUD.SetMP(currentFighterStats.magic);
-        enemyHUD.SetHP(currentEnemyStats.health);
+        UpdateHUDs();
 
         // yield return new WaitForSeconds(2f);
         yield return new WaitForSeconds(0.1f);
@@ -400,25 +260,27 @@ public class GameController : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
-
-            currentFighterStats.health = 300;
-            currentFighterStats.magic = 100;
-            currentEnemyStats.health = 300;
-            currentEnemyStats.magic = 100;
-            heroHUD.SetHP(currentFighterStats.health);
-            heroHUD.SetMP(currentFighterStats.magic);
-            enemyHUD.SetHP(currentEnemyStats.health);
-            enemyHUD.SetMP(currentEnemyStats.magic);
-            currentEnemyStats.removeDeadStatus();
-            currentFighterStats.removeDeadStatus();
-
             // EndBattle();
+
+            TrainingOnly();
+            StartCoroutine(EnemyTurn());
         }
         else
         {
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
         }
+    }
+
+    string SelectHeroAction()
+    {
+        string[] actionsWithElement = { "melee", "guard", "fireball", "chainLightning", "waterSlash", "ramuanMujarab", "ramuanPemula" };
+        string[] actionsWithoutElement = { "melee", "guard", "magicBurst" };
+
+        string[] actions = GameMode.instance?.isUsingElement ?? true ? actionsWithElement : actionsWithoutElement;
+        int intActionType = Random.Range(0, actions.Length);
+
+        return actions[intActionType];
     }
 
     void MainMenu()
@@ -455,12 +317,12 @@ public class GameController : MonoBehaviour
 
     public void EndBattle()
     {
-        ActionMainElementalPanel.SetActive(false);
-        ActionMainNonElementalPanel.SetActive(false);
-        ItemPanel.SetActive(false);
-        SkillElementalPanel.SetActive(false);
-        SkillNonElementalPanel.SetActive(false);
+        if (battleEnded) return;
+        battleEnded = true;
+        
+        DisableAllPanels();
         battleText.gameObject.SetActive(true);
+
         if (state == BattleState.WON)
         {
             battleText.text = "Kamu Menang!";
@@ -477,5 +339,71 @@ public class GameController : MonoBehaviour
             // Invoke("MainMenu", 5);
             // Invoke("RestartScene", 0.1f);
         }
+    }
+
+    
+    private void ClearElementData(FighterStats stats)
+    {
+        stats.elementWeakness = new string[] { };
+        stats.elementResistance = new string[] { };
+        stats.elementBlock = new string[] { };
+    }
+
+    private void DisableAllPanels()
+    {
+        ActionMainElementalPanel.SetActive(false);
+        ActionMainNonElementalPanel.SetActive(false);
+        ItemPanel.SetActive(false);
+        SkillElementalPanel.SetActive(false);
+        SkillNonElementalPanel.SetActive(false);
+    }
+
+    private void DisableBattleTexts()
+    {
+        battleText.gameObject.SetActive(false);
+        battleAffinityText.gameObject.SetActive(false);
+        battleEnemyText.gameObject.SetActive(false);
+        battlePlayerText.gameObject.SetActive(false);
+    }
+
+    private void UpdateHUDs()
+    {
+        heroHUD.SetHP(currentFighterStats.health);
+        heroHUD.SetMP(currentFighterStats.magic);
+        enemyHUD.SetHP(currentEnemyStats.health);
+        enemyHUD.SetMP(currentEnemyStats.magic);
+    }
+
+
+    public void AgentWin()
+    {
+        if (winLoseML) return;
+        Debug.Log("Agent Win");
+        enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
+        enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+        winLoseML = true;
+    }
+
+    public void AgentLose()
+    {
+        if (winLoseML) return;
+        Debug.Log("Agent Lose");
+        enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
+        enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+        winLoseML = true;
+    }
+
+    private void TrainingOnly()
+    {
+        currentFighterStats.health = 300;
+        currentFighterStats.magic = 100;
+        currentEnemyStats.health = 300;
+        currentEnemyStats.magic = 100;
+        heroHUD.SetHP(currentFighterStats.health);
+        heroHUD.SetMP(currentFighterStats.magic);
+        enemyHUD.SetHP(currentEnemyStats.health);
+        enemyHUD.SetMP(currentEnemyStats.magic);
+        currentEnemyStats.removeDeadStatus();
+        currentFighterStats.removeDeadStatus();
     }
 }

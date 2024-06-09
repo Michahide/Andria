@@ -61,17 +61,13 @@ public class FighterStats : MonoBehaviour
                     {
                         if (GameControllerObj.GetComponent<GameController>().enemy != null)
                         {
-                            Debug.Log("Agent Win");
-                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
-                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+                            GameControllerObj.GetComponent<GameController>().AgentWin();
                         }
                     }
                 }
-                Debug.Log("Agent Win");
-                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
-                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+                GameControllerObj.GetComponent<GameController>().AgentWin();
 
-                GameControllerObj.GetComponent<GameController>().EndBattle();
+                // GameControllerObj.GetComponent<GameController>().EndBattle();
             }
             else
             {
@@ -83,18 +79,12 @@ public class FighterStats : MonoBehaviour
                     {
                         if (GameControllerObj.GetComponent<GameController>().enemy != null)
                         {
-                            Debug.Log("Agent Lose");
-                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
-                            GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+                            GameControllerObj.GetComponent<GameController>().AgentLose();
                         }
                     }
                 }
 
-                Debug.Log("Agent Lose");
-                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
-                GameControllerObj.GetComponent<GameController>().enemy.GetComponent<EnemyAIAgent>().EndEpisode();
-
-                GameControllerObj.GetComponent<GameController>().EndBattle();
+                GameControllerObj.GetComponent<GameController>().AgentLose();
             }
             // Destroy(gameObject);
             return true;

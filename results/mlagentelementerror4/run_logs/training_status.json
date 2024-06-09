@@ -1,0 +1,29 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 844,
+                "file_path": "results\\mlagentelementerror4\\Enemy Agent\\Enemy Agent-844.onnx",
+                "reward": -0.8500000238418579,
+                "creation_time": 1717929790.663171,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementerror4\\Enemy Agent\\Enemy Agent-844.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 844,
+            "file_path": "results\\mlagentelementerror4\\Enemy Agent.onnx",
+            "reward": -0.8500000238418579,
+            "creation_time": 1717929790.663171,
+            "auxillary_file_paths": [
+                "results\\mlagentelementerror4\\Enemy Agent\\Enemy Agent-844.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

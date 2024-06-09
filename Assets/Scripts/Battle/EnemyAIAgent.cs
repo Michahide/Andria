@@ -19,11 +19,11 @@ public class EnemyAIAgent : Agent
 
     void Start()
     {
-        behaviorParameters = GetComponent<BehaviorParameters>();
-        if (heroFighterStats == null) heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
-        if (enemyFighterStats == null) enemyFighterStats = gameObject.GetComponent<FighterStats>();
-        if (fighterAction == null) fighterAction = GetComponent<FighterAction>();
-        if (gameController == null) gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
+        if(behaviorParameters == null) behaviorParameters = GetComponent<BehaviorParameters>();
+        if(heroFighterStats == null) heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        if(enemyFighterStats == null) enemyFighterStats = gameObject.GetComponent<FighterStats>();
+        if(fighterAction == null) fighterAction = GetComponent<FighterAction>();
+        if(gameController == null) gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
         gameMode = GameObject.Find("GameModeManager") ? GameObject.Find("GameModeManager").GetComponent<GameMode>() : null;
     }
 
@@ -131,7 +131,7 @@ public class EnemyAIAgent : Agent
     {
         attackScript = prefabName != null ? GameObject.Find(prefabName).GetComponent<AttackScript>() : null;
         fighterAction.SelectAction(actionType);
-        // Debug.Log($"Agent {actionType} executed");
+        Debug.Log($"Agent {actionType} executed");
     }
     private void EvaluateImmediateReward()
     {
@@ -192,7 +192,7 @@ public class EnemyAIAgent : Agent
 
     public void EvaluateReward(float winlosereward)
     {
-        Debug.Log("Reward: " + winlosereward);
+        Debug.Log("Winlose Reward: " + winlosereward);
         AddReward(winlosereward);
     }
 
@@ -204,6 +204,7 @@ public class EnemyAIAgent : Agent
             HandleAction(actions.DiscreteActions);
             EvaluateImmediateReward();
             AddReward(reward);
+            Debug.Log("Immediate Reward: " + reward);
 
             // // Only end episode if the battle is won or lost
             // if (gameController.state == GameController.BattleState.WON || gameController.state == GameController.BattleState.LOST)
