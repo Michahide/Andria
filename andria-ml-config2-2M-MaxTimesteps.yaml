@@ -1,0 +1,115 @@
+default_settings:
+behaviors:
+  Enemy Agent:
+    trainer_type: ppo
+    hyperparameters:
+      # Hyperparameters common to PPO and SAC
+      # Batch Size: Number of experiences in each iteration of gradient descent. 
+      batch_size: 512
+      # Buffer Size: Number of experiences to collect before updating the policy model. 
+      # Corresponds to how many experiences should be collected before we do any learning or updating of the model.
+      buffer_size: 5120
+      # Learning Rate: The rate at which the agent learns from its experiences. 
+      # The learning rate is the step size in gradient descent. Initial learning rate for gradient descent. 
+      # Corresponds to the strength of each gradient descent update step. 
+      learning_rate: 0.0001
+
+      # PPO-specific hyperparameters
+      # Beta: Strength of the entropy regularization, which makes the policy "more random." This ensures that agents properly explore the action space during training.
+      beta: 0.01
+      # Epsilon: The clipping parameter for the PPO loss function. Influences how rapidly the policy can evolve during training. Corresponds to the acceptable threshold of divergence between the old and new policies during gradient descent updating.
+      epsilon: 0.2
+      # Lambda: The discount factor for the Generalized Advantage Estimation (GAE) calculation. 
+      # Corresponds to the discount factor for the return calculation. 
+      # Indicates how much the agent relies on its current value estimate when calculating an updated value estimate.
+      lambd: 0.95
+      # Number of epochs: Number of times the agent will iterate over the entire training data set. 
+      # Corresponds to the number of times the gradient descent algorithm will be run over the entire training data set.
+      num_epoch: 5
+      shared_critic: false
+      learning_rate_schedule: linear
+      beta_schedule: linear
+      epsilon_schedule: linear
+    
+    # Configuration of the neural network (common to PPO/SAC)
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      vis_encode_type: simple
+      # Memory settings
+      memory: null
+      goal_conditioning_type: hyper
+      deterministic: false
+
+    # Trainer configurations common to all trainers
+    max_steps: 2000000
+    time_horizon: 64
+    summary_freq: 10000
+    keep_checkpoints: 5
+    checkpoint_interval: 500000
+    threaded: false
+    init_path: null
+    
+    # Behavior Cloning configuration
+    behavioral_cloning: null
+
+    reward_signals:   
+      # Environment reward (default)
+      extrinsic:
+        # Gamma: Discount factor for future rewards coming from the environment. This can be thought of as how far into the future the agent should care about possible rewards. 
+        gamma: 0.99
+        # Strength: Factor by which to multiply the reward given by the environment.
+        strength: 1.0
+        network_settings:
+          normalize: false
+          hidden_units: 128
+          num_layers: 2
+          vis_encode_type: simple
+          memory: null
+          goal_conditioning_type: hyper
+          deterministic: false
+
+    # Self-play configuration
+    self_play: null  
+
+# Environment settings
+env_settings:
+  env_path: null
+  env_args: null
+  base_port: 5005
+  num_envs: 1
+  num_areas: 1
+  seed: -1
+  max_lifetime_restarts: 10
+  restarts_rate_limit_n: 1
+  restarts_rate_limit_period_s: 90
+
+# Engine settings
+engine_settings:
+  width: 84
+  height: 84
+  quality_level: 1
+  time_scale: 20.0
+  target_frame_rate: -1
+  capture_frame_rate: 60
+  no_graphics: false
+
+# Environment Parameters settings
+environment_parameters: null
+
+# Checkpoint Settings
+checkpoint_settings:
+  initialize_from: null
+  load_model: false
+  resume: false
+  force: false
+  train_model: false
+  inference: false
+  results_dir: results
+
+# Torch Settings
+torch_settings:
+  device: null
+
+debug: false

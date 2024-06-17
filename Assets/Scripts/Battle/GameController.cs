@@ -207,9 +207,10 @@ public class GameController : MonoBehaviour
         if (isDead)
         {
             state = BattleState.LOST;
-            // EndBattle();
-            TrainingOnly();
-            StartCoroutine(HeroTraining());
+            EndBattle();
+
+            // TrainingOnly();
+            // StartCoroutine(HeroTraining());
         }
         else
         {
@@ -260,10 +261,10 @@ public class GameController : MonoBehaviour
         if (isDead)
         {
             state = BattleState.WON;
-            // EndBattle();
+            EndBattle();
 
-            TrainingOnly();
-            StartCoroutine(EnemyTurn());
+            // TrainingOnly();
+            // StartCoroutine(EnemyTurn());
         }
         else
         {
@@ -319,7 +320,7 @@ public class GameController : MonoBehaviour
     {
         if (battleEnded) return;
         battleEnded = true;
-        
+
         DisableAllPanels();
         battleText.gameObject.SetActive(true);
 
@@ -329,7 +330,7 @@ public class GameController : MonoBehaviour
             Debug.Log("Player Win!");
             // Invoke("Win", 2);
             // Invoke("Credit", 5);
-            // Invoke("RestartScene", 0.1f);
+            Invoke("RestartScene", 0.1f);
         }
         else if (state == BattleState.LOST)
         {
@@ -337,11 +338,11 @@ public class GameController : MonoBehaviour
             Debug.Log("Player Lose!");
             // Invoke("Lose", 2);
             // Invoke("MainMenu", 5);
-            // Invoke("RestartScene", 0.1f);
+            Invoke("RestartScene", 0.1f);
         }
     }
 
-    
+
     private void ClearElementData(FighterStats stats)
     {
         stats.elementWeakness = new string[] { };
@@ -380,7 +381,9 @@ public class GameController : MonoBehaviour
         if (winLoseML) return;
         Debug.Log("Agent Win");
         enemy.GetComponent<EnemyAIAgent>().EvaluateReward(1.0f);
+        Debug.Log("Cumulative Reward before End Episode: " + enemy.GetComponent<EnemyAIAgent>().GetCumulativeReward());
         enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+        Debug.Log("Cumulative Reward after End Episode: " + enemy.GetComponent<EnemyAIAgent>().GetCumulativeReward());
         winLoseML = true;
     }
 
@@ -389,7 +392,9 @@ public class GameController : MonoBehaviour
         if (winLoseML) return;
         Debug.Log("Agent Lose");
         enemy.GetComponent<EnemyAIAgent>().EvaluateReward(-1.0f);
+        Debug.Log("Cumulative Reward before End Episode: " + enemy.GetComponent<EnemyAIAgent>().GetCumulativeReward());
         enemy.GetComponent<EnemyAIAgent>().EndEpisode();
+        Debug.Log("Cumulative Reward after End Episode: " + enemy.GetComponent<EnemyAIAgent>().GetCumulativeReward());
         winLoseML = true;
     }
 

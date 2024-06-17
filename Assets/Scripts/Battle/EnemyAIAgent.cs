@@ -19,11 +19,11 @@ public class EnemyAIAgent : Agent
 
     void Start()
     {
-        if(behaviorParameters == null) behaviorParameters = GetComponent<BehaviorParameters>();
-        if(heroFighterStats == null) heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
-        if(enemyFighterStats == null) enemyFighterStats = gameObject.GetComponent<FighterStats>();
-        if(fighterAction == null) fighterAction = GetComponent<FighterAction>();
-        if(gameController == null) gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
+        if (behaviorParameters == null) behaviorParameters = GetComponent<BehaviorParameters>();
+        if (heroFighterStats == null) heroFighterStats = GameObject.FindWithTag("Hero").GetComponent<FighterStats>();
+        if (enemyFighterStats == null) enemyFighterStats = gameObject.GetComponent<FighterStats>();
+        if (fighterAction == null) fighterAction = GetComponent<FighterAction>();
+        if (gameController == null) gameController = GameObject.Find("GameControllerObject").GetComponent<GameController>();
         gameMode = GameObject.Find("GameModeManager") ? GameObject.Find("GameModeManager").GetComponent<GameMode>() : null;
     }
 
@@ -77,14 +77,17 @@ public class EnemyAIAgent : Agent
                 if (physicalAttack == 1)
                 {
                     ExecuteAction("melee", "EMeleePrefab");
+                    reward = -0.1f;
                 }
                 else if (guard == 1)
                 {
                     ExecuteAction("guard", null);
+                    reward = 0.05f;
                 }
                 else if (hempasanRatu == 1)
                 {
                     ExecuteAction("hempasanRatu", "EHempasanRatuPrefab");
+                    reward = 0.2f;
                 }
             }
         }
@@ -124,6 +127,23 @@ public class EnemyAIAgent : Agent
             {
                 ExecuteAction("ramuanPemula", null);
             }
+
+            // var hempasanRatu = act[2];
+            // if (physicalAttack == 1)
+            // {
+            //     ExecuteAction("melee", "EMeleePrefab");
+            //     reward = -0.1f;
+            // }
+            // else if (guard == 1)
+            // {
+            //     ExecuteAction("guard", null);
+            //     reward = 0.05f;
+            // }
+            // else if (hempasanRatu == 1)
+            // {
+            //     ExecuteAction("hempasanRatu", "EHempasanRatuPrefab");
+            //     reward = 0.2f;
+            // }
         }
     }
 

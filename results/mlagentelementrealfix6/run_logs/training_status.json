@@ -1,0 +1,56 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 209995,
+                "file_path": "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-209995.onnx",
+                "reward": -0.13470253662836787,
+                "creation_time": 1718099019.8828454,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-209995.pt"
+                ]
+            },
+            {
+                "steps": 499991,
+                "file_path": "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-499991.onnx",
+                "reward": 0.2172973170272402,
+                "creation_time": 1718125371.828914,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-499991.pt"
+                ]
+            },
+            {
+                "steps": 999992,
+                "file_path": "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-999992.onnx",
+                "reward": 0.8685552757497212,
+                "creation_time": 1718132319.435812,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-999992.pt"
+                ]
+            },
+            {
+                "steps": 1000020,
+                "file_path": "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-1000020.onnx",
+                "reward": 0.8692090748098947,
+                "creation_time": 1718132319.7062006,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-1000020.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000020,
+            "file_path": "results\\mlagentelementrealfix6\\Enemy Agent.onnx",
+            "reward": 0.8692090748098947,
+            "creation_time": 1718132319.7062006,
+            "auxillary_file_paths": [
+                "results\\mlagentelementrealfix6\\Enemy Agent\\Enemy Agent-1000020.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

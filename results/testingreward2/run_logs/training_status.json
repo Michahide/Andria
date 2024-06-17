@@ -1,0 +1,29 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 2077,
+                "file_path": "results\\testingreward2\\Enemy Agent\\Enemy Agent-2077.onnx",
+                "reward": 1.1599397537219955,
+                "creation_time": 1718169054.125957,
+                "auxillary_file_paths": [
+                    "results\\testingreward2\\Enemy Agent\\Enemy Agent-2077.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2077,
+            "file_path": "results\\testingreward2\\Enemy Agent.onnx",
+            "reward": 1.1599397537219955,
+            "creation_time": 1718169054.125957,
+            "auxillary_file_paths": [
+                "results\\testingreward2\\Enemy Agent\\Enemy Agent-2077.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

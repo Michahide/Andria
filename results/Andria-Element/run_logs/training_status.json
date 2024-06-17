@@ -1,0 +1,65 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 2393271,
+                "file_path": "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2393271.onnx",
+                "reward": 0.9833333690961202,
+                "creation_time": 1718226431.8160245,
+                "auxillary_file_paths": [
+                    "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2393271.pt"
+                ]
+            },
+            {
+                "steps": 2499983,
+                "file_path": "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2499983.onnx",
+                "reward": 1.5593496353282192,
+                "creation_time": 1718241210.779205,
+                "auxillary_file_paths": [
+                    "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2499983.pt"
+                ]
+            },
+            {
+                "steps": 2753418,
+                "file_path": "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2753418.onnx",
+                "reward": 1.4662162606176492,
+                "creation_time": 1718245897.1016004,
+                "auxillary_file_paths": [
+                    "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2753418.pt"
+                ]
+            },
+            {
+                "steps": 2999999,
+                "file_path": "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2999999.onnx",
+                "reward": 1.6606218128276922,
+                "creation_time": 1718250168.5260248,
+                "auxillary_file_paths": [
+                    "results\\Andria-Element\\Enemy Agent\\Enemy Agent-2999999.pt"
+                ]
+            },
+            {
+                "steps": 3000023,
+                "file_path": "results\\Andria-Element\\Enemy Agent\\Enemy Agent-3000023.onnx",
+                "reward": 1.6716495364251518,
+                "creation_time": 1718250168.868047,
+                "auxillary_file_paths": [
+                    "results\\Andria-Element\\Enemy Agent\\Enemy Agent-3000023.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3000023,
+            "file_path": "results\\Andria-Element\\Enemy Agent.onnx",
+            "reward": 1.6716495364251518,
+            "creation_time": 1718250168.868047,
+            "auxillary_file_paths": [
+                "results\\Andria-Element\\Enemy Agent\\Enemy Agent-3000023.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

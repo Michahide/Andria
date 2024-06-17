@@ -1,0 +1,47 @@
+{
+    "Enemy Agent": {
+        "checkpoints": [
+            {
+                "steps": 499976,
+                "file_path": "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-499976.onnx",
+                "reward": 1.3957399387797966,
+                "creation_time": 1717941871.3937006,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-499976.pt"
+                ]
+            },
+            {
+                "steps": 999983,
+                "file_path": "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-999983.onnx",
+                "reward": 1.4495699345664952,
+                "creation_time": 1717948196.4127777,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-999983.pt"
+                ]
+            },
+            {
+                "steps": 1000002,
+                "file_path": "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-1000002.onnx",
+                "reward": 1.4524678530595205,
+                "creation_time": 1717948196.597054,
+                "auxillary_file_paths": [
+                    "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-1000002.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000002,
+            "file_path": "results\\mlagentelementmultienvfix2\\Enemy Agent.onnx",
+            "reward": 1.4524678530595205,
+            "creation_time": 1717948196.597054,
+            "auxillary_file_paths": [
+                "results\\mlagentelementmultienvfix2\\Enemy Agent\\Enemy Agent-1000002.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}
